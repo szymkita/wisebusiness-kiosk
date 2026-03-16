@@ -1,0 +1,255 @@
+.cv {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  height: 100%;
+  gap: 2vw;
+}
+
+/* ── Left: QR + info ── */
+.cv-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5vh;
+  padding: 3vh 2vw;
+}
+
+.cv-qr-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  padding: min(4vh, 36px) min(3vw, 48px);
+  box-shadow: var(--shadow-m);
+}
+
+.cv-qr-frame {
+  width: clamp(140px, 14vw, 220px);
+  height: clamp(140px, 14vw, 220px);
+  padding: min(1.5vh, 12px);
+  background: white;
+  border-radius: var(--rs);
+  border: 2px solid var(--green-mid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cv-qr-hint {
+  margin-top: 1.5vh;
+  font-size: clamp(10px, .7vw, 14px);
+  color: var(--text2);
+  text-align: center;
+}
+
+.cv-qr-url {
+  margin-top: .6vh;
+  font-size: clamp(12px, .9vw, 17px);
+  font-weight: 800;
+  letter-spacing: -.02em;
+  color: var(--green-dark);
+}
+
+/* Info rows */
+.cv-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2vh;
+  width: 100%;
+  max-width: 20vw;
+}
+
+.cv-info-row {
+  display: flex;
+  align-items: center;
+  gap: .8vw;
+  padding: 1vh 1.2vw;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--rs);
+}
+
+.cv-info-ico {
+  width: clamp(30px, 2.5vw, 40px);
+  height: clamp(30px, 2.5vw, 40px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: var(--green-light);
+  color: var(--green-dark);
+  flex-shrink: 0;
+}
+
+.cv-info-label {
+  font-size: clamp(9px, .55vw, 11px);
+  font-weight: 600;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.cv-info-val {
+  font-size: clamp(12px, .82vw, 15px);
+  font-weight: 700;
+  color: var(--text);
+}
+
+.cv-brand {
+  margin-top: auto;
+}
+
+.cv-brand-logo {
+  width: clamp(100px, 9vw, 160px);
+  opacity: .12;
+}
+
+/* ── Right: form ── */
+.cv-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3vh 3vw 3vh 0;
+}
+
+.cv-form-card {
+  width: 100%;
+  max-width: 32vw;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  padding: min(3.5vh, 36px) min(2.5vw, 40px);
+  box-shadow: var(--shadow-m);
+}
+
+.cv-form-title {
+  font-size: clamp(18px, 1.4vw, 28px);
+  font-weight: 800;
+  letter-spacing: -.03em;
+  color: var(--text);
+  margin-bottom: .3vh;
+}
+
+.cv-form-sub {
+  font-size: clamp(10px, .72vw, 14px);
+  color: var(--text2);
+  margin-bottom: 2.5vh;
+}
+
+.cv-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5vh;
+}
+
+.cv-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1vw;
+}
+
+.cv-field {
+  display: flex;
+  flex-direction: column;
+  gap: .4vh;
+}
+
+.cv-label {
+  font-size: clamp(9px, .58vw, 12px);
+  font-weight: 700;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: .03em;
+}
+
+.cv-input {
+  padding: min(1.2vh, 12px) min(1vw, 14px);
+  border: 1.5px solid var(--border);
+  border-radius: var(--rs);
+  background: var(--bg);
+  font-family: inherit;
+  font-size: clamp(12px, .82vw, 16px);
+  color: var(--text);
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+  -webkit-appearance: none;
+}
+
+.cv-input::placeholder {
+  color: var(--text3);
+}
+
+.cv-input:focus {
+  border-color: var(--green-mid);
+  box-shadow: 0 0 0 3px var(--green-glow);
+}
+
+.cv-textarea {
+  resize: none;
+  min-height: min(10vh, 100px);
+}
+
+.cv-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5vw;
+  padding: min(1.4vh, 14px) 2vw;
+  background: var(--green);
+  color: #fff;
+  border: none;
+  border-radius: 100px;
+  font-family: inherit;
+  font-size: clamp(12px, .85vw, 16px);
+  font-weight: 800;
+  cursor: pointer;
+  transition: all .25s ease;
+  margin-top: .5vh;
+}
+
+.cv-submit:hover {
+  background: var(--green-dark);
+  box-shadow: 0 4px 20px rgba(0, 205, 119, 0.3);
+}
+
+.cv-submit:active {
+  transform: scale(.97);
+}
+
+/* Success state */
+.cv-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4vh 0;
+  gap: 1.2vh;
+}
+
+.cv-success-ico {
+  width: clamp(56px, 5vw, 80px);
+  height: clamp(56px, 5vw, 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--green-light);
+  color: var(--green-dark);
+  margin-bottom: 1vh;
+}
+
+.cv-success h3 {
+  font-size: clamp(18px, 1.4vw, 28px);
+  font-weight: 800;
+  color: var(--text);
+}
+
+.cv-success p {
+  font-size: clamp(11px, .78vw, 15px);
+  color: var(--text2);
+  line-height: 1.5;
+}
