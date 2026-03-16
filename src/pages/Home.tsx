@@ -97,11 +97,6 @@ export function Home() {
         </AnimatePresence>
       </main>
 
-      <footer className="ftr">
-        <span>wisebusiness.pl</span>
-        <span className="ftr-dot" />
-        <span className="ftr-cta">Dotknij kafelek, aby poznać szczegóły</span>
-      </footer>
     </div>
   );
 }
