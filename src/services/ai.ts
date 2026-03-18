@@ -59,15 +59,22 @@ FORMAT: Odpowiedz WYŁĄCZNIE poprawnym JSON-em, bez dodatkowego tekstu, bez mar
   "cta": "Jedno zdanie zachęcające do rozmowy — nawiąż do konkretnej branży użytkownika"
 }`;
 
-function buildUserPrompt(industry: string, challenges: string[], size: string, excludeIdeas?: string[]): string {
+function buildUserPrompt(industry: string, context: string[], size: string, excludeIdeas?: string[]): string {
+  // context contains: [activity, ...workflow issues, "Priorytet: X"]
+  const activity = context[0];
+  const issues = context.slice(1, -1);
+  const priority = context[context.length - 1];
+
   let prompt = `Wygeneruj spersonalizowaną inspirację automatyzacyjną.
 
 BRANŻA: ${industry}
-GŁÓWNE WYZWANIA:
-${challenges.map(s => `- ${s}`).join('\n')}
+CORE DZIAŁALNOŚCI: ${activity}
+REALIA CODZIENNEJ PRACY:
+${issues.map(s => `- ${s}`).join('\n')}
+${priority}
 SKALA FIRMY: ${size}
 
-Pamiętaj: pomysły muszą być specyficzne dla branży "${industry}" i bezpośrednio adresować wybrane wyzwania. Nie pisz ogólników.`;
+Pomysły MUSZĄ być specyficzne dla branży "${industry}" i bezpośrednio adresować opisaną działalność i realia. Priorytet użytkownika powinien być widoczny w rozwiązaniach. Nie pisz ogólników — bądź boleśnie konkretny.`;
 
   if (excludeIdeas && excludeIdeas.length > 0) {
     prompt += `
