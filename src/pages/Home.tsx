@@ -45,83 +45,81 @@ export function Home() {
 
   return (
     <div className="home">
-      {/* Decorative background */}
-      <div className="mesh">
-        <div className="mesh-orb mesh-orb--1" />
-        <div className="mesh-orb mesh-orb--2" />
-        <div className="mesh-orb mesh-orb--3" />
-        <div className="mesh-orb mesh-orb--4" />
-        <div className="mesh-grid" />
-      </div>
+      {/* Top bar — compact single row */}
+      <header className="topbar">
+        <Logo className="topbar-logo" />
+        <span className="topbar-sep" />
+        <span className="topbar-tagline">
+          Tworzymy oprogramowanie dla biznesu
+        </span>
 
-      <header className="hdr">
-        <div className="hdr-left">
-          <Logo className="hdr-logo" />
-          <div className="hdr-divider" />
-          <span className="hdr-tag">
-            <span className="hdr-tag-accent">Tworzymy</span> oprogramowanie dla biznesu
-          </span>
-        </div>
-        <div className="hdr-pill">
-          <span className="hdr-pill-dot" />
-          <span className="hdr-pill-text">www.letsautomate.pl</span>
-        </div>
-      </header>
-
-      <nav className="tabs">
-        <div className="tabs-track">
+        <nav className="topbar-tabs">
           {allTabs.map((t, i) => (
-            <button key={t.id} className={`tab ${i === activeTab ? 'on' : ''}`}
+            <button key={t.id} className={`topbar-tab ${i === activeTab ? 'on' : ''}`}
               onClick={() => { setActiveTab(i); resetIdle(); }}>
-              <Icon name={t.icon} size={14} strokeWidth={2} />
-              <span className="tab-label">{t.label}</span>
+              <Icon name={t.icon} size={13} strokeWidth={2} />
+              <span>{t.label}</span>
               {t.id !== 'contact' && (
-                <span className="tab-n">{tabs.find(x => x.id === t.id)?.tiles.length}</span>
+                <span className="topbar-tab-count">{tabs.find(x => x.id === t.id)?.tiles.length}</span>
               )}
               {i === activeTab && (
-                <motion.div className="tab-indicator" layoutId="tab-indicator"
+                <motion.div className="topbar-tab-bg" layoutId="tab-bg"
                   transition={{ type: 'spring', stiffness: 400, damping: 35 }} />
               )}
             </button>
           ))}
-        </div>
-      </nav>
+        </nav>
 
-      <main className="tiles">
+        <div className="topbar-site">
+          <span className="topbar-site-dot" />
+          www.letsautomate.pl
+        </div>
+      </header>
+
+      {/* Main content — fills everything below */}
+      <main className="content">
         <AnimatePresence mode="wait">
           {isContact ? (
             <motion.div key="contact" className="contact-wrap"
-              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }}
+              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }}
               transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}>
               <ContactView />
             </motion.div>
           ) : tileTab ? (
             <motion.div className="grid" key={tileTab.id}
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}>
+              transition={{ duration: 0.25 }}>
               {tileTab.tiles.map((t, i) => (
-                <motion.button className={`tile ${t.demoId ? 'tile--has-demo' : ''}`} key={t.id}
-                  style={{ '--c': t.color, '--cbg': `${t.color}10`, '--cbrd': `${t.color}30`, '--cglow': `${t.color}0a` } as React.CSSProperties}
-                  initial={{ opacity: 0, y: 20, scale: 0.97 }}
+                <motion.button className={`tile ${t.demoId ? 'tile--demo' : ''}`} key={t.id}
+                  style={{
+                    '--c': t.color,
+                    '--c-l': `${t.color}18`,
+                    '--c-m': `${t.color}30`,
+                  } as React.CSSProperties}
+                  initial={{ opacity: 0, y: 24, scale: 0.96 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ duration: 0.5, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{ duration: 0.5, delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
                   onClick={() => onTile(t)}>
-                  <div className="tile-glow" />
-                  <div className="tile-top">
-                    <div className="tile-ico">
-                      <Icon name={t.icon} size={20} strokeWidth={1.6} />
+                  {/* Colored top gradient */}
+                  <div className="tile-gradient" />
+
+                  <div className="tile-head">
+                    <div className="tile-icon">
+                      <Icon name={t.icon} size={22} strokeWidth={1.8} />
                     </div>
                     {t.demoId && (
-                      <span className="tile-go">
-                        <Icon name="arrow-up-right" size={12} strokeWidth={2.5} />
+                      <span className="tile-arrow">
+                        <Icon name="arrow-up-right" size={14} strokeWidth={2.5} />
                       </span>
                     )}
                   </div>
-                  <div className="tile-body">
+
+                  <div className="tile-info">
                     <span className="tile-name">{t.name}</span>
                     <span className="tile-desc">{t.desc}</span>
                   </div>
-                  {t.demoId && <span className="tile-demo-badge">Demo</span>}
+
+                  {t.demoId && <span className="tile-badge">Demo</span>}
                 </motion.button>
               ))}
             </motion.div>
