@@ -100,23 +100,21 @@ export function Home() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ duration: 0.5, delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
                   onClick={() => onTile(t)}>
-                  {/* Colored top gradient */}
                   <div className="tile-gradient" />
 
                   <div className="tile-head">
                     <div className="tile-icon">
-                      <Icon name={t.icon} size={22} strokeWidth={1.8} />
+                      <Icon name={t.icon} size={18} strokeWidth={1.8} />
+                    </div>
+                    <div className="tile-info">
+                      <span className="tile-name">{t.name}</span>
+                      <span className="tile-desc">{t.desc}</span>
                     </div>
                     {t.demoId && (
                       <span className="tile-arrow">
                         <Icon name="arrow-up-right" size={14} strokeWidth={2.5} />
                       </span>
                     )}
-                  </div>
-
-                  <div className="tile-info">
-                    <span className="tile-name">{t.name}</span>
-                    <span className="tile-desc">{t.desc}</span>
                   </div>
 
                   {t.demoId && <span className="tile-badge">Demo</span>}
