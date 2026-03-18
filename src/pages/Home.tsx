@@ -4,12 +4,14 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Logo } from '../components/Logo';
 import { Icon } from '../components/Icon';
 import { ContactView } from '../components/ContactView';
+import { CaseStudies } from '../components/CaseStudies';
 import { tabs } from '../data/tiles';
 import type { TileData } from '../data/tiles';
 import './Home.css';
 
 const allTabs = [
   ...tabs.map(t => ({ id: t.id, label: t.label, icon: t.icon })),
+  { id: 'cases', label: 'Case Studies', icon: 'trending-up' },
   { id: 'contact', label: 'Kontakt', icon: 'map-pin' },
 ];
 
@@ -40,8 +42,10 @@ export function Home() {
 
   const onTile = (t: TileData) => { if (t.demoId) navigate(`/demo/${t.demoId}`); };
 
-  const isContact = allTabs[activeTab]?.id === 'contact';
-  const tileTab = !isContact ? tabs[activeTab] : null;
+  const currentTabId = allTabs[activeTab]?.id;
+  const isContact = currentTabId === 'contact';
+  const isCases = currentTabId === 'cases';
+  const tileTab = !isContact && !isCases ? tabs[activeTab] : null;
 
   return (
     <div className="home">
@@ -59,8 +63,11 @@ export function Home() {
               onClick={() => { setActiveTab(i); resetIdle(); }}>
               <Icon name={t.icon} size={13} strokeWidth={2} />
               <span>{t.label}</span>
-              {t.id !== 'contact' && (
+              {t.id !== 'contact' && t.id !== 'cases' && (
                 <span className="topbar-tab-count">{tabs.find(x => x.id === t.id)?.tiles.length}</span>
+              )}
+              {t.id === 'cases' && (
+                <span className="topbar-tab-count">6</span>
               )}
               {i === activeTab && (
                 <motion.div className="topbar-tab-bg" layoutId="tab-bg"
@@ -84,6 +91,12 @@ export function Home() {
               initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }}
               transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}>
               <ContactView />
+            </motion.div>
+          ) : isCases ? (
+            <motion.div key="cases" className="cases-wrap"
+              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}>
+              <CaseStudies />
             </motion.div>
           ) : tileTab ? (
             <motion.div className="grid" key={tileTab.id}

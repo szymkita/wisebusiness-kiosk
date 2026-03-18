@@ -1,0 +1,141 @@
+/* ═══════════════════════
+   CASE STUDIES GRID
+   ═══════════════════════ */
+
+.cs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: clamp(8px, 0.8vw, 14px);
+  height: 100%;
+}
+
+/* ── Card ── */
+.cs-card {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(14px, 1.6vh, 22px) clamp(14px, 1.4vw, 22px);
+  background: #fff;
+  border-radius: var(--r);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.03);
+  border-left: 3px solid var(--cs-c);
+  transition: transform 0.3s var(--ease-spring), box-shadow 0.3s var(--ease-spring);
+}
+
+.cs-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.03);
+}
+
+/* Top — icon + client */
+.cs-top {
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 0.6vw, 12px);
+  margin-bottom: clamp(8px, 0.8vh, 12px);
+}
+
+.cs-ico {
+  width: clamp(30px, 2.2vw, 38px);
+  height: clamp(30px, 2.2vw, 38px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: var(--cs-cm);
+  color: var(--cs-c);
+  flex-shrink: 0;
+}
+
+.cs-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.cs-client {
+  font-size: clamp(12px, 0.82vw, 16px);
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.cs-industry {
+  font-size: clamp(9px, 0.55vw, 12px);
+  font-weight: 600;
+  color: var(--cs-c);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Title */
+.cs-title {
+  font-size: clamp(12px, 0.82vw, 16px);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  margin-bottom: clamp(4px, 0.4vh, 8px);
+}
+
+/* Description */
+.cs-desc {
+  font-size: clamp(9px, 0.6vw, 12px);
+  color: var(--text2);
+  line-height: 1.5;
+  flex: 1;
+}
+
+/* Metrics row */
+.cs-metrics {
+  display: flex;
+  gap: clamp(6px, 0.5vw, 12px);
+  margin-top: clamp(8px, 0.8vh, 14px);
+  padding-top: clamp(8px, 0.8vh, 12px);
+  border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+.cs-metric {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.cs-metric-val {
+  font-size: clamp(14px, 1vw, 20px);
+  font-weight: 800;
+  color: var(--cs-c);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.cs-metric-label {
+  font-size: clamp(7px, 0.48vw, 10px);
+  font-weight: 600;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-top: 1px;
+}
+
+/* Tags */
+.cs-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(3px, 0.25vw, 5px);
+  margin-top: clamp(6px, 0.6vh, 10px);
+}
+
+.cs-tag {
+  padding: 2px clamp(6px, 0.5vw, 10px);
+  background: var(--cs-cl);
+  color: var(--cs-c);
+  border-radius: 6px;
+  font-size: clamp(8px, 0.48vw, 10px);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
