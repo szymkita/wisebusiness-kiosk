@@ -1,135 +1,101 @@
-/* ═══════════════════════════════════════
-   HOME — Full-bleed colorful tile layout
-   ═══════════════════════════════════════ */
-
 .home {
   width: 100vw; height: 100dvh;
   display: flex; flex-direction: column;
-  background: linear-gradient(145deg, #eef1f8 0%, #f4f0ed 40%, #f0eff6 100%);
+  background: var(--bg);
   overflow: hidden;
 }
 
-/* ── Top Bar — single compact row ── */
+/* ── Top Bar ── */
 .topbar {
   display: flex;
   align-items: center;
-  gap: clamp(10px, 1.2vw, 22px);
-  padding: clamp(10px, 1.2vh, 16px) clamp(16px, 2vw, 32px);
+  gap: clamp(12px, 1.5vw, 28px);
+  padding: clamp(14px, 1.6vh, 22px) clamp(20px, 2.5vw, 40px);
   flex-shrink: 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
 }
 
-.topbar-logo {
-  width: clamp(100px, 9vw, 170px);
-  height: auto;
-  flex-shrink: 0;
-}
+.topbar-logo { width: clamp(90px, 8vw, 150px); height: auto; flex-shrink: 0; }
 
 .topbar-sep {
-  width: 1px;
-  height: clamp(16px, 1.6vw, 24px);
-  background: rgba(0,0,0,0.1);
+  width: 1px; height: 20px;
+  background: var(--border);
   flex-shrink: 0;
 }
 
 .topbar-tagline {
-  font-size: clamp(11px, 0.82vw, 15px);
-  font-weight: 500;
-  color: var(--text2);
+  font-size: clamp(11px, 0.78vw, 14px);
+  font-weight: 400;
+  color: var(--text3);
   white-space: nowrap;
   flex-shrink: 0;
 }
 
-/* Tabs — large touch targets */
 .topbar-tabs {
-  display: flex;
-  gap: 3px;
-  padding: 4px;
-  background: rgba(0,0,0,0.05);
-  border-radius: 16px;
+  display: flex; gap: 0;
   margin-left: auto;
   flex-shrink: 0;
 }
 
 .topbar-tab {
   position: relative;
-  display: flex;
-  align-items: center;
-  gap: clamp(6px, 0.5vw, 10px);
-  padding: clamp(10px, 1.2vh, 16px) clamp(16px, 1.6vw, 28px);
-  font-size: clamp(13px, 0.9vw, 17px);
-  font-weight: 600;
+  display: flex; align-items: center;
+  gap: clamp(5px, 0.4vw, 8px);
+  padding: clamp(10px, 1.1vh, 16px) clamp(16px, 1.5vw, 26px);
+  font-size: clamp(12px, 0.82vw, 15px);
+  font-weight: 500;
   font-family: inherit;
   color: var(--text3);
   background: transparent;
   border: none;
-  border-radius: 13px;
-  cursor: pointer;
-  outline: none;
-  transition: color 0.25s;
+  cursor: pointer; outline: none;
+  transition: color 0.2s;
   z-index: 1;
-  min-height: 48px;
+  min-height: 44px;
 }
 
-.topbar-tab.on { color: var(--text); }
+.topbar-tab.on { color: var(--text); font-weight: 600; }
 
 .topbar-tab-bg {
   position: absolute;
   inset: 0;
-  background: #fff;
-  border-radius: 13px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-bottom: 2px solid var(--text);
   z-index: -1;
 }
 
 .topbar-tab-count {
   position: relative; z-index: 1;
-  min-width: 1.5em; height: 1.5em;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 7px;
-  font-size: 0.8em;
-  font-weight: 800;
-  background: rgba(0,0,0,0.05);
+  font-size: 0.75em; font-weight: 600;
   color: var(--text3);
-  transition: all 0.25s;
+  transition: all 0.2s;
 }
-.topbar-tab.on .topbar-tab-count {
-  background: var(--primary);
-  color: #fff;
-}
+.topbar-tab.on .topbar-tab-count { color: var(--text2); }
 
-/* Site pill */
 .topbar-site {
-  display: flex;
-  align-items: center;
-  gap: clamp(6px, 0.5vw, 10px);
-  padding: clamp(10px, 1.1vh, 15px) clamp(14px, 1.4vw, 22px);
-  background: rgba(16,185,129,0.08);
-  border-radius: 13px;
-  font-size: clamp(12px, 0.8vw, 15px);
-  font-weight: 700;
-  color: var(--primary-dark);
+  display: flex; align-items: center;
+  gap: 6px;
+  font-size: clamp(11px, 0.72vw, 13px);
+  font-weight: 500;
+  color: var(--text3);
   flex-shrink: 0;
-  min-height: 48px;
 }
 
 .topbar-site-dot {
-  width: 6px; height: 6px;
+  width: 5px; height: 5px;
   border-radius: 50%;
-  background: var(--primary);
-  animation: blink 2s ease-in-out infinite;
-}
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+  background: var(--accent);
 }
 
-/* ── Main Content ── */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* ── Content ── */
 .content {
-  flex: 1;
-  min-height: 0;
-  padding: 0 clamp(12px, 1.5vw, 24px) clamp(12px, 1.5vh, 20px);
+  flex: 1; min-height: 0;
+  padding: clamp(14px, 1.6vh, 22px) clamp(20px, 2.5vw, 40px);
 }
 
 .contact-wrap { height: 100%; }
@@ -140,110 +106,82 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(2, 1fr);
-  gap: clamp(8px, 0.8vw, 14px);
+  gap: clamp(10px, 1vw, 16px);
   height: 100%;
 }
 
 /* ── Tile ── */
 .tile {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  padding: clamp(16px, 1.8vh, 24px) clamp(14px, 1.4vw, 24px);
-  background: #fff;
+  display: flex; flex-direction: column;
+  justify-content: flex-end;
+  padding: clamp(18px, 2vh, 28px) clamp(16px, 1.6vw, 26px);
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--r);
-  border: none;
-  cursor: pointer;
-  outline: none;
+  cursor: pointer; outline: none;
   text-align: left;
   font-family: inherit;
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.03);
-  transition: transform 0.15s var(--ease-spring), box-shadow 0.15s;
+  transition: transform 0.12s;
 }
+.tile:active { transform: scale(0.98); }
 
-.tile:active {
-  transform: scale(0.97);
-}
+.tile-gradient { display: none; }
 
-/* Gradient wash */
-.tile-gradient {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(150deg, var(--c-l) 0%, transparent 50%);
-  pointer-events: none;
-}
-
-/* Top row — icon left, arrow right */
 .tile-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  position: relative;
-  z-index: 1;
+  display: flex; align-items: flex-start; justify-content: space-between;
+  position: relative; z-index: 1;
+  margin-bottom: auto;
 }
 
 .tile-icon {
-  width: clamp(36px, 2.8vw, 46px);
-  height: clamp(36px, 2.8vw, 46px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 12px;
-  background: var(--c-m);
-  color: var(--c);
+  width: clamp(32px, 2.4vw, 40px);
+  height: clamp(32px, 2.4vw, 40px);
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 10px;
+  background: var(--surface-alt);
+  color: var(--text2);
   flex-shrink: 0;
 }
 
 .tile-arrow {
-  width: clamp(28px, 2vw, 34px);
-  height: clamp(28px, 2vw, 34px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  background: var(--c-l);
-  color: var(--c);
-  flex-shrink: 0;
+  width: 24px; height: 24px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text3);
 }
 
-/* Text — below icon, pushed to bottom */
 .tile-info {
-  display: flex;
-  flex-direction: column;
+  display: flex; flex-direction: column;
   gap: 2px;
-  position: relative;
-  z-index: 1;
-  margin-top: auto;
+  position: relative; z-index: 1;
 }
 
 .tile-name {
-  font-size: clamp(15px, 1.1vw, 22px);
-  font-weight: 800;
+  font-size: clamp(14px, 1vw, 20px);
+  font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text);
-  line-height: 1.2;
 }
 
 .tile-desc {
-  font-size: clamp(10px, 0.7vw, 14px);
-  color: var(--text2);
+  font-size: clamp(10px, 0.65vw, 13px);
+  color: var(--text3);
   line-height: 1.4;
   font-weight: 400;
 }
 
-/* Demo badge */
 .tile-badge {
   position: absolute;
-  bottom: clamp(16px, 1.8vh, 24px);
-  right: clamp(14px, 1.4vw, 24px);
-  padding: 3px 10px;
-  font-size: clamp(8px, 0.52vw, 11px);
-  font-weight: 800;
+  top: clamp(18px, 2vh, 28px);
+  right: clamp(16px, 1.6vw, 26px);
+  padding: 2px 8px;
+  font-size: clamp(8px, 0.5vw, 10px);
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--c);
-  background: var(--c-l);
-  border-radius: 7px;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border-radius: 6px;
   z-index: 1;
 }

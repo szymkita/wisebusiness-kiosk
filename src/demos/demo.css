@@ -17,7 +17,7 @@
   color:var(--text2); cursor:pointer; border:none; background:none;
   width:100%; text-align:left; font-family:inherit; transition:all .2s var(--ease-out-expo);
 }
-.da-nav.on { background:var(--primary-bg); color:var(--primary-dark); border-right:2px solid var(--primary); }
+.da-nav.on { background:var(--surface-alt); color:var(--text); border-right:2px solid var(--text); }
 
 /* Main */
 .da-main { flex:1; padding: 2vh 2vw; overflow-y:auto; }
