@@ -139,7 +139,7 @@ export async function generateIdeas(
         'anthropic-dangerous-direct-browser-access': 'true',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6-20250627',
+        model: 'claude-sonnet-4-20250514',
         max_tokens: 2500,
         temperature: 0.9,
         system: SYSTEM_PROMPT,
