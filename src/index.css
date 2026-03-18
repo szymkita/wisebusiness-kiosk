@@ -58,6 +58,14 @@ html, body, #root {
   -webkit-font-smoothing: antialiased;
   user-select: none;
   -webkit-user-select: none;
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
+}
+
+/* Touch screen — no hover effects, prevent double-tap zoom */
+button, [role="button"] {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 ::-webkit-scrollbar { width: 6px; }

@@ -151,7 +151,7 @@
   margin-bottom: clamp(10px, 1.2vh, 18px);
 }
 
-/* Dialer grid — functional buttons */
+/* Dialer grid */
 .cv-dialer {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -170,17 +170,11 @@
   border-radius: 14px;
   cursor: pointer;
   font-family: inherit;
-  transition: all 0.12s;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.cv-dial-key:hover {
-  background: rgba(16,185,129,0.06);
-  border-color: rgba(16,185,129,0.15);
+  transition: transform 0.1s, background 0.1s;
 }
 
 .cv-dial-key:active {
-  transform: scale(0.94);
+  transform: scale(0.93);
   background: rgba(16,185,129,0.12);
 }
 
@@ -188,17 +182,12 @@
   background: rgba(239,68,68,0.04);
   color: var(--text3);
 }
-.cv-dial-key--del:hover {
-  background: rgba(239,68,68,0.08);
-  border-color: rgba(239,68,68,0.15);
-  color: #ef4444;
+.cv-dial-key--del:active {
+  background: rgba(239,68,68,0.12);
 }
 
 .cv-dial-key--plus {
   background: rgba(16,185,129,0.04);
-}
-.cv-dial-key--plus:hover {
-  background: rgba(16,185,129,0.08);
 }
 
 .cv-dial-digit {
@@ -225,22 +214,22 @@
   font-size: clamp(14px, 1vw, 20px);
   font-weight: 800;
   cursor: pointer;
-  transition: all 0.25s var(--ease-out-expo);
+  transition: transform 0.1s;
   box-shadow: 0 4px 14px rgba(16,185,129,0.3);
   min-height: 56px;
 }
 
-.cv-send-btn:hover {
-  background: var(--green-dark);
-  box-shadow: 0 6px 24px rgba(16,185,129,0.4);
-  transform: translateY(-2px);
-}
-
 .cv-send-btn:active {
-  transform: scale(0.97);
+  transform: scale(0.96);
 }
 
-/* Dialer wrapper for AnimatePresence */
+.cv-send-btn--disabled {
+  opacity: 0.35;
+  pointer-events: none;
+  box-shadow: none;
+}
+
+/* Dialer wrapper */
 .cv-dialer-wrap {
   display: flex;
   flex-direction: column;

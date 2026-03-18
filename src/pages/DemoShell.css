@@ -17,7 +17,6 @@
   color: var(--text2); font-size: clamp(11px,.72vw,14px); font-weight: 600;
   font-family: inherit; cursor: pointer; transition: all .2s;
 }
-.ds-back:hover { background: rgba(16,185,129,0.06); border-color: rgba(16,185,129,0.2); color: var(--green-dark); }
 .ds-center { flex:1; display:flex; justify-content:center; }
 .ds-logo { width: clamp(80px,7vw,130px); opacity: .06; }
 .ds-title { display:flex; align-items:center; gap: clamp(5px, 0.4vw, 8px); }

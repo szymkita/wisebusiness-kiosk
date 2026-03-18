@@ -157,14 +157,12 @@ export function ContactView() {
                 ))}
               </div>
 
-              {isReady && (
-                <motion.button className="cv-send-btn" onClick={send}
-                  initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}>
-                  <Icon name="zap" size={18} strokeWidth={2} />
-                  Wyślij — oddzwonimy!
-                </motion.button>
-              )}
+              <button className={`cv-send-btn ${isReady ? '' : 'cv-send-btn--disabled'}`}
+                onClick={isReady ? send : undefined}
+                disabled={!isReady}>
+                <Icon name="zap" size={18} strokeWidth={2} />
+                Wyślij — oddzwonimy!
+              </button>
             </motion.div>
           )}
         </AnimatePresence>

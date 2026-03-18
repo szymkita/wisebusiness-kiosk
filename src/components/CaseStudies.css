@@ -24,11 +24,7 @@
   outline: none;
   -webkit-tap-highlight-color: transparent;
   box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.03);
-  transition: transform 0.3s var(--ease-spring), box-shadow 0.3s var(--ease-spring);
-}
-.cs-card:hover {
-  transform: translateY(-3px) scale(1.005);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+  transition: transform 0.1s;
 }
 .cs-card:active { transform: scale(0.98); }
 
@@ -120,14 +116,7 @@
   font-size: clamp(9px, 0.58vw, 12px);
   font-weight: 700;
   color: var(--cs-c);
-  opacity: 0;
-  transform: translateX(-4px);
-  transition: all 0.25s;
   position: relative; z-index: 1;
-}
-.cs-card:hover .cs-card-open {
-  opacity: 1;
-  transform: translateX(0);
 }
 
 /* ═══ DETAIL VIEW ═══ */
@@ -154,13 +143,11 @@
   margin-bottom: clamp(8px, 0.8vh, 14px);
   flex-shrink: 0;
   align-self: flex-start;
-  transition: all 0.2s;
+  transition: transform 0.1s;
   min-height: 44px;
 }
-.cs-back:hover {
-  background: var(--cs-cl);
-  color: var(--cs-c);
-  border-color: var(--cs-cm);
+.cs-back:active {
+  transform: scale(0.96);
 }
 
 .cs-detail-grid {
@@ -329,7 +316,6 @@
   position: relative;
   transition: all 0.2s;
 }
-.cs-chart-bar:hover { filter: brightness(1.1); transform: scaleY(1.03); transform-origin: bottom; }
 
 .cs-chart-bar span {
   position: absolute;

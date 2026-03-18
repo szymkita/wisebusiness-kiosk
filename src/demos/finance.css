@@ -11,12 +11,10 @@
   -webkit-tap-highlight-color: transparent;
 }
 .fin-big-btn.pri { background: var(--primary); color: #fff; }
-.fin-big-btn.pri:hover { background: var(--primary-dark); box-shadow: var(--shadow-primary); }
 .fin-big-btn.pri:active { transform: scale(.97); }
 .fin-big-btn.pri:disabled { opacity: .4; pointer-events: none; }
 .fin-big-btn.pri.confirm { background: var(--primary-dark); padding: min(1.8vh,18px) min(2.5vw,32px); font-size: clamp(13px,.88vw,17px); }
 .fin-big-btn.sec { background: var(--bg-white); color: var(--text); border: 1px solid var(--border); }
-.fin-big-btn.sec:hover { border-color: var(--border-hover); background: var(--bg-subtle); }
 .fin-big-btn.full { width: 100%; }
 
 /* Accounts row */
@@ -28,7 +26,6 @@
   cursor: pointer; transition: all .25s var(--ease-out-expo);
   box-shadow: var(--shadow-xs);
 }
-.fin-acc:hover { box-shadow: var(--shadow-l); transform: translateY(-2px); border-color: var(--border-hover); }
 .fin-acc:active { transform: scale(.98); }
 .fin-acc-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: .4vh; }
 .fin-acc-name { font-size: clamp(9px,.58vw,12px); font-weight: 600; color: var(--text2); }
@@ -53,7 +50,6 @@
   cursor: pointer; transition: all .2s var(--ease-out-expo);
   min-height: 48px; box-shadow: var(--shadow-xs);
 }
-.fin-tx:hover { border-color: var(--border-hover); background: var(--bg-subtle); box-shadow: var(--shadow-s); }
 .fin-tx:active { background: var(--bg-white); }
 .fin-tx-dot {
   width: clamp(32px,2.5vw,40px); height: clamp(32px,2.5vw,40px);
@@ -77,7 +73,6 @@
   cursor: pointer; transition: all .25s var(--ease-out-expo);
   min-height: 44px;
 }
-.fin-link-btn:hover { background: var(--primary-bg); border-color: var(--primary-border); }
 
 /* Filters */
 .fin-filters { display: flex; gap: min(.4vw,6px); }
@@ -89,7 +84,6 @@
   cursor: pointer; transition: all .2s var(--ease-out-expo);
   min-height: 40px;
 }
-.fin-filter:hover { color: var(--text); background: var(--bg-subtle); }
 .fin-filter.on { background: var(--primary-bg); color: var(--primary-dark); border-color: var(--primary-border); }
 
 /* ─── Transfer Flow ─── */
@@ -137,7 +131,6 @@
   min-height: 52px; text-align: left; color: var(--text2);
   box-shadow: var(--shadow-xs);
 }
-.fin-saved:hover { border-color: var(--primary-border); background: var(--primary-bg); color: var(--primary-dark); }
 .fin-saved:active { transform: scale(.99); }
 .fin-saved-avatar {
   width: clamp(34px,2.8vw,44px); height: clamp(34px,2.8vw,44px);
@@ -189,7 +182,6 @@
   cursor: pointer; transition: all .2s var(--ease-out-expo); text-align: center;
   min-height: 42px;
 }
-.fin-quick-amt:hover { border-color: var(--primary-border); color: var(--primary-dark); background: var(--primary-bg); }
 .fin-quick-amt:active { transform: scale(.97); }
 
 /* Account selector */
@@ -202,7 +194,6 @@
   font-family: inherit; text-align: left;
   min-height: 48px;
 }
-.fin-acc-opt:hover { border-color: var(--border-hover); background: var(--bg-subtle); }
 .fin-acc-opt.on { border-color: var(--primary-border); background: var(--primary-bg); }
 .fin-acc-opt-name { font-size: clamp(11px,.75vw,14px); font-weight: 600; color: var(--text); }
 .fin-acc-opt-bal { font-size: clamp(11px,.72vw,14px); font-weight: 700; color: var(--text2); font-variant-numeric: tabular-nums; }
@@ -257,7 +248,6 @@
   cursor: pointer; transition: all .2s var(--ease-out-expo);
   min-height: 52px; box-shadow: var(--shadow-xs);
 }
-.fin-kpi:hover { background: var(--bg-subtle); box-shadow: var(--shadow-m); }
 .fin-kpi:active { transform: scale(.98); }
 .fin-kpi-ico {
   width: clamp(34px,2.8vw,44px); height: clamp(34px,2.8vw,44px);
@@ -278,7 +268,6 @@
   border-radius: var(--rs); cursor: pointer; transition: all .2s var(--ease-out-expo);
   min-height: 56px; box-shadow: var(--shadow-xs);
 }
-.fin-contractor:hover { border-color: var(--border-hover); background: var(--bg-subtle); box-shadow: var(--shadow-s); }
 .fin-contractor:active { background: var(--bg-white); }
 .fin-contractor-avatar {
   width: clamp(36px,2.8vw,46px); height: clamp(36px,2.8vw,46px);
@@ -300,7 +289,6 @@
   background: var(--primary-bg); border-radius: var(--rs);
   cursor: pointer; transition: all .2s var(--ease-out-expo);
 }
-.fin-side-card:hover { background: var(--primary-light); }
 .fin-side-card-ico {
   width: clamp(28px,2.2vw,36px); height: clamp(28px,2.2vw,36px);
   display: flex; align-items: center; justify-content: center;

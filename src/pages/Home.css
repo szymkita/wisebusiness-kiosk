@@ -67,11 +67,9 @@
   outline: none;
   transition: color 0.25s;
   z-index: 1;
-  -webkit-tap-highlight-color: transparent;
   min-height: 48px;
 }
 
-.topbar-tab:hover { color: var(--text2); }
 .topbar-tab.on { color: var(--text); }
 
 .topbar-tab-bg {
@@ -160,17 +158,12 @@
   text-align: left;
   font-family: inherit;
   overflow: hidden;
-  -webkit-tap-highlight-color: transparent;
   box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.03);
-  transition: transform 0.35s var(--ease-spring), box-shadow 0.35s var(--ease-spring);
+  transition: transform 0.15s var(--ease-spring), box-shadow 0.15s;
 }
 
-.tile:hover {
-  transform: translateY(-3px) scale(1.01);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.04);
-}
 .tile:active {
-  transform: scale(0.98);
+  transform: scale(0.97);
 }
 
 /* Gradient wash */
@@ -179,10 +172,7 @@
   inset: 0;
   background: linear-gradient(150deg, var(--c-l) 0%, transparent 50%);
   pointer-events: none;
-  opacity: 0.8;
-  transition: opacity 0.3s;
 }
-.tile:hover .tile-gradient { opacity: 1; }
 
 /* Top row — icon left, arrow right */
 .tile-head {
@@ -203,9 +193,7 @@
   background: var(--c-m);
   color: var(--c);
   flex-shrink: 0;
-  transition: transform 0.3s var(--ease-spring);
 }
-.tile:hover .tile-icon { transform: scale(1.06); }
 
 .tile-arrow {
   width: clamp(28px, 2vw, 34px);
@@ -214,18 +202,9 @@
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-  background: rgba(0,0,0,0.04);
-  color: var(--text3);
-  flex-shrink: 0;
-  opacity: 0;
-  transform: translate(-4px, 4px);
-  transition: all 0.3s var(--ease-spring);
-}
-.tile:hover .tile-arrow {
-  opacity: 1;
-  transform: translate(0, 0);
   background: var(--c-l);
   color: var(--c);
+  flex-shrink: 0;
 }
 
 /* Text — below icon, pushed to bottom */
@@ -253,7 +232,7 @@
   font-weight: 400;
 }
 
-/* Demo badge — next to name */
+/* Demo badge */
 .tile-badge {
   position: absolute;
   bottom: clamp(16px, 1.8vh, 24px);
@@ -267,7 +246,4 @@
   background: var(--c-l);
   border-radius: 7px;
   z-index: 1;
-  opacity: 0.6;
-  transition: opacity 0.3s;
 }
-.tile:hover .tile-badge { opacity: 1; }
