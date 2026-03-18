@@ -23,7 +23,7 @@ const IDLE_TIMEOUT = 60_000;
 export function Home() {
   const [view, setView] = useState<'attract' | 'inspirator' | string>('attract');
   const navigate = useNavigate();
-  const idleTimer = useRef<ReturnType<typeof setTimeout>>();
+  const idleTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const resetIdle = useCallback(() => {
     clearTimeout(idleTimer.current);

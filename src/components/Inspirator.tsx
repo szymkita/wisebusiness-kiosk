@@ -65,7 +65,7 @@ const screenVariants = {
   exit: { opacity: 0, x: -80 },
 };
 
-const screenTransition = { duration: 0.45, ease: [0.16, 1, 0.3, 1] };
+const screenTransition = { duration: 0.45, ease: 'easeOut' as const };
 
 interface Props {
   onClose: () => void;
