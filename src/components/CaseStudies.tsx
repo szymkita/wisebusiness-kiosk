@@ -4,106 +4,106 @@ import './CaseStudies.css';
 
 interface CaseStudy {
   id: string;
-  client: string;
-  industry: string;
+  problem: string;
   icon: string;
   color: string;
-  title: string;
+  industry: string;
+  solution: string;
   desc: string;
-  metrics: { label: string; value: string }[];
+  results: { label: string; value: string }[];
   tags: string[];
 }
 
 const cases: CaseStudy[] = [
   {
-    id: 'fintech-dashboard',
-    client: 'Warsaw Tech',
-    industry: 'Finanse',
+    id: 'slow-reporting',
+    problem: 'Ręczne raportowanie finansowe zajmowało 3 dni',
     icon: 'dollar-sign',
     color: '#10b981',
-    title: 'System analityki finansowej z dashboardem real-time',
-    desc: 'Zaprojektowaliśmy i wdrożyliśmy platformę do monitorowania transakcji i raportowania w czasie rzeczywistym. System obsługuje 50k+ transakcji dziennie z pełną automatyzacją procesów KYC/AML.',
-    metrics: [
-      { label: 'Wzrost efektywności', value: '+340%' },
-      { label: 'Czas wdrożenia', value: '4 mies.' },
-      { label: 'Transakcji/dzień', value: '50k+' },
+    industry: 'Finanse',
+    solution: 'Dashboard analityczny z raportami real-time',
+    desc: 'Firma traciła 3 dni robocze co miesiąc na ręczne generowanie raportów. Wdrożyliśmy platformę z automatycznym zbieraniem danych, wizualizacją KPI i alertami. Raporty generują się w sekundach.',
+    results: [
+      { label: 'Czas raportowania', value: '3 dni → 10s' },
+      { label: 'Oszczędność rocznie', value: '180k zł' },
+      { label: 'Błędów w danych', value: '-95%' },
     ],
-    tags: ['React', 'Node.js', 'PostgreSQL', 'WebSocket'],
+    tags: ['React', 'Node.js', 'PostgreSQL'],
   },
   {
-    id: 'logistics-platform',
-    client: 'GreenEnergy',
-    industry: 'Logistyka',
+    id: 'fleet-chaos',
+    problem: 'Brak kontroli nad flotą 200 pojazdów',
     icon: 'truck',
     color: '#3b82f6',
-    title: 'Platforma zarządzania flotą i łańcuchem dostaw',
-    desc: 'Kompleksowy system do śledzenia floty 200+ pojazdów, optymalizacji tras i zarządzania magazynami. Integracja z GPS, IoT oraz systemami celno-spedycyjnymi.',
-    metrics: [
-      { label: 'Redukcja kosztów', value: '-28%' },
-      { label: 'Pojazdów w systemie', value: '200+' },
-      { label: 'Punktualność dostaw', value: '97%' },
+    industry: 'Logistyka',
+    solution: 'System śledzenia floty z optymalizacją tras',
+    desc: 'Dyspozytor zarządzał flotą przez telefon i arkusze kalkulacyjne. Pojazdy jeździły nieoptymalnymi trasami, a klienci nie dostawali informacji o dostawach. Zbudowaliśmy system GPS z live-trackingiem i automatycznym planowaniem.',
+    results: [
+      { label: 'Koszty paliwa', value: '-28%' },
+      { label: 'Terminowość', value: '72% → 97%' },
+      { label: 'Wdrożenie', value: '3 miesiące' },
     ],
     tags: ['React', 'Python', 'Redis', 'IoT'],
   },
   {
-    id: 'ecommerce-rebuild',
-    client: 'ModaPolska',
-    industry: 'E-commerce',
+    id: 'slow-shop',
+    problem: 'Sklep ładował się 8 sekund — klienci odchodzili',
     icon: 'shopping-cart',
     color: '#f59e0b',
-    title: 'Przebudowa platformy e-commerce z 10x wzrostem wydajności',
-    desc: 'Migracja monolitycznego sklepu do architektury mikroserwisowej. Nowy frontend, system rekomendacji AI i omnichannel (web, mobile, kioski). Obsługa 100k użytkowników jednocześnie.',
-    metrics: [
+    industry: 'E-commerce',
+    solution: 'Przebudowa na szybką architekturę mikroserwisową',
+    desc: 'Monolit na przestarzałym frameworku nie dawał rady. Każda zmiana trwała tygodnie, a wolne ładowanie zabijało konwersję. Przepisaliśmy frontend i backend od zera z myślą o wydajności i skalowalności.',
+    results: [
+      { label: 'Czas ładowania', value: '8s → 0.8s' },
       { label: 'Konwersja', value: '+65%' },
-      { label: 'Czas ładowania', value: '0.8s' },
-      { label: 'Przychód roczny', value: '+120%' },
+      { label: 'Przychód', value: '+120%' },
     ],
-    tags: ['Next.js', 'Go', 'Elasticsearch', 'AWS'],
+    tags: ['Next.js', 'Go', 'Elasticsearch'],
   },
   {
-    id: 'healthcare-app',
-    client: 'MediCare',
-    industry: 'Healthcare',
+    id: 'paper-hospital',
+    problem: 'Szpital tonął w papierowej dokumentacji',
     icon: 'activity',
     color: '#ef4444',
-    title: 'Telemedycyna i system zarządzania szpitalem',
-    desc: 'Platforma telemedyczna z wideokonferencjami, e-receptami i systemem zarządzania pacjentami. Integracja z NFZ i laboratoriami. RODO-compliant z pełnym audit trail.',
-    metrics: [
-      { label: 'Pacjentów/mies.', value: '12k+' },
-      { label: 'Lekarzy w systemie', value: '350' },
+    industry: 'Healthcare',
+    solution: 'Cyfrowy obieg dokumentów z telemedycyną',
+    desc: 'Kartoteki papierowe, ręczne umawianie wizyt, brak historii leczenia online. Wdrożyliśmy elektroniczną dokumentację medyczną, moduł teleporad wideo i system e-recept z integracją NFZ.',
+    results: [
+      { label: 'Czas rejestracji', value: '-70%' },
+      { label: 'Teleporady/mies.', value: '4 000+' },
       { label: 'Satysfakcja', value: '4.8/5' },
     ],
-    tags: ['React Native', 'Kotlin', 'FHIR', 'Azure'],
+    tags: ['React Native', 'Kotlin', 'FHIR'],
   },
   {
-    id: 'saas-erp',
-    client: 'CloudSoft',
-    industry: 'SaaS',
+    id: 'excel-erp',
+    problem: '15 działów pracowało na osobnych Excelach',
     icon: 'cloud',
     color: '#8b5cf6',
-    title: 'System ERP jako usługa dla sektora MŚP',
-    desc: 'Multi-tenant SaaS ERP z modułami: finanse, HR, magazyn, CRM. Architektura umożliwia obsługę 500+ firm z izolacją danych. API-first z 40+ integracjami.',
-    metrics: [
-      { label: 'Firm w systemie', value: '500+' },
-      { label: 'Uptime SLA', value: '99.95%' },
-      { label: 'Integracji API', value: '40+' },
+    industry: 'SaaS / ERP',
+    solution: 'Jeden system ERP łączący wszystkie procesy',
+    desc: 'Każdy dział miał własne arkusze — dane się rozsynchronizowały, nikt nie miał pełnego obrazu firmy. Zbudowaliśmy modułowy ERP z jednym źródłem prawdy: finanse, HR, magazyn i CRM w jednym miejscu.',
+    results: [
+      { label: 'Oszczędność czasu', value: '40h/tydzień' },
+      { label: 'Błędy danych', value: '-90%' },
+      { label: 'Uptime', value: '99.95%' },
     ],
-    tags: ['Vue.js', '.NET', 'Azure SQL', 'Docker'],
+    tags: ['Vue.js', '.NET', 'Azure SQL'],
   },
   {
-    id: 'iot-manufacturing',
-    client: 'ProdukcjaPL',
-    industry: 'Produkcja',
+    id: 'blind-factory',
+    problem: 'Nieplanowane przestoje kosztowały miliony',
     icon: 'cpu',
     color: '#06b6d4',
-    title: 'IoT monitoring linii produkcyjnej z predykcją awarii',
-    desc: 'System zbierania danych z 800+ czujników, dashboard OEE w real-time oraz model ML przewidujący awarie z 48h wyprzedzeniem. Redukcja przestojów o 60%.',
-    metrics: [
+    industry: 'Produkcja',
+    solution: 'IoT monitoring z predykcją awarii przez AI',
+    desc: 'Maszyny psuły się bez ostrzeżenia — każda godzina przestoju to 50k zł straty. Zainstalowaliśmy 800 czujników i model ML, który przewiduje awarie z 48h wyprzedzeniem.',
+    results: [
+      { label: 'Przestoje', value: '-60%' },
       { label: 'Czujników IoT', value: '800+' },
-      { label: 'Mniej przestojów', value: '-60%' },
-      { label: 'ROI', value: '14 mies.' },
+      { label: 'ROI', value: '14 miesięcy' },
     ],
-    tags: ['React', 'Python', 'TensorFlow', 'MQTT'],
+    tags: ['React', 'Python', 'TensorFlow'],
   },
 ];
 
@@ -117,32 +117,26 @@ export function CaseStudies() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.5, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}>
 
-          {/* Header — industry + client */}
           <div className="cs-top">
             <div className="cs-ico">
               <Icon name={c.icon} size={16} strokeWidth={1.8} />
             </div>
-            <div className="cs-meta">
-              <span className="cs-client">{c.client}</span>
-              <span className="cs-industry">{c.industry}</span>
-            </div>
+            <span className="cs-industry">{c.industry}</span>
           </div>
 
-          {/* Title + desc */}
-          <h3 className="cs-title">{c.title}</h3>
+          <h3 className="cs-problem">{c.problem}</h3>
+          <p className="cs-solution">{c.solution}</p>
           <p className="cs-desc">{c.desc}</p>
 
-          {/* Metrics */}
-          <div className="cs-metrics">
-            {c.metrics.map(m => (
-              <div className="cs-metric" key={m.label}>
-                <span className="cs-metric-val">{m.value}</span>
-                <span className="cs-metric-label">{m.label}</span>
+          <div className="cs-results">
+            {c.results.map(r => (
+              <div className="cs-result" key={r.label}>
+                <span className="cs-result-val">{r.value}</span>
+                <span className="cs-result-label">{r.label}</span>
               </div>
             ))}
           </div>
 
-          {/* Tags */}
           <div className="cs-tags">
             {c.tags.map(tag => (
               <span className="cs-tag" key={tag}>{tag}</span>
