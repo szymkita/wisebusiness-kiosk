@@ -6,6 +6,7 @@ import { Icon } from '../components/Icon';
 import { ContactView } from '../components/ContactView';
 import { CaseStudies } from '../components/CaseStudies';
 import { Inspirator } from '../components/Inspirator';
+import { InspirationMap } from '../components/InspirationMap';
 import { tabs } from '../data/tiles';
 import type { TileData } from '../data/tiles';
 import './Home.css';
@@ -14,6 +15,7 @@ const dockItems = [
   { id: 'home', label: 'Home', icon: 'home' },
   { id: 'industries', label: 'Branże', icon: 'grid', count: tabs[0]?.tiles.length },
   { id: 'software', label: 'Oprogramowanie', icon: 'code', count: tabs[1]?.tiles.length },
+  { id: 'inspiration', label: 'Mapa inspiracji', icon: 'target' },
   { id: 'cases', label: 'Case Studies', icon: 'trending-up', count: 6 },
   { id: 'contact', label: 'Kontakt', icon: 'map-pin' },
 ];
@@ -132,9 +134,16 @@ export function Home() {
         )}
       </AnimatePresence>
 
+      {/* Inspiration Map */}
+      <AnimatePresence>
+        {openPanel === 'inspiration' && (
+          <InspirationMap onClose={() => setView('attract')} />
+        )}
+      </AnimatePresence>
+
       {/* Content panels */}
       <AnimatePresence>
-        {openPanel && (
+        {openPanel && openPanel !== 'inspiration' && (
           <motion.div className="home-panel" key={openPanel}
             initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 30 }}

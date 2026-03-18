@@ -88,8 +88,7 @@ export function Inspirator({ onClose }: Props) {
   // 0=industry 1=process 2=problems 3=goal 4=size 5=loading 6=results 7=contact
   const [step, setStep] = useState(0);
   const [industry, setIndustry] = useState('');
-  const [process, setProcess] = useState('');
-  const [processDesc, setProcessDesc] = useState('');
+  const [selectedProcesses, setSelectedProcesses] = useState<typeof processes[0][]>([]);
   const [selectedProblems, setSelectedProblems] = useState<string[]>([]);
   const [goal, setGoal] = useState('');
   const [size, setSize] = useState('');
@@ -105,11 +104,14 @@ export function Inspirator({ onClose }: Props) {
 
   const pickIndustry = useCallback((name: string) => { setIndustry(name); go(1); }, [go]);
 
-  const pickProcess = useCallback((p: typeof processes[0]) => {
-    setProcess(p.name);
-    setProcessDesc(p.desc);
-    go(2);
-  }, [go]);
+  const MAX_PROCESSES = 3;
+  const toggleProcess = useCallback((p: typeof processes[0]) => {
+    setSelectedProcesses(prev =>
+      prev.some(x => x.id === p.id) ? prev.filter(x => x.id !== p.id)
+        : prev.length >= MAX_PROCESSES ? prev
+          : [...prev, p]
+    );
+  }, []);
 
   const toggleProblem = useCallback((p: string) => {
     setSelectedProblems(prev =>
@@ -121,10 +123,12 @@ export function Inspirator({ onClose }: Props) {
 
   const pickGoal = useCallback((label: string) => { setGoal(label); go(4); }, [go]);
 
+  const processContext = selectedProcesses.map(p => `${p.name}: ${p.desc}`).join('; ');
+
   const pickSize = useCallback((label: string) => {
     setSize(label);
     const context = [
-      `Proces do usprawnienia: ${process} (${processDesc})`,
+      `Procesy do usprawnienia: ${processContext}`,
       ...selectedProblems,
       `Cel: ${goal}`,
     ];
@@ -135,7 +139,7 @@ export function Inspirator({ onClose }: Props) {
       const wait = Math.max(0, LOADING_MIN_MS - (Date.now() - t0));
       setTimeout(() => { setResults(data); setPrevIdeas(data.ideas.map(i => i.title)); setStep(6); }, wait);
     });
-  }, [industry, process, processDesc, selectedProblems, goal, go]);
+  }, [industry, processContext, selectedProblems, goal, go]);
 
   useEffect(() => {
     if (step !== 5) return;
@@ -147,22 +151,22 @@ export function Inspirator({ onClose }: Props) {
   const moreIdeas = useCallback(async () => {
     setMoreLoading(true);
     try {
-      const ctx = [`Proces: ${process} (${processDesc})`, ...selectedProblems, `Cel: ${goal}`];
+      const ctx = [`Procesy: ${processContext}`, ...selectedProblems, `Cel: ${goal}`];
       const data = await generateIdeas(industry, ctx, size, prevIdeas);
       setResults(data);
       setPrevIdeas(prev => [...prev, ...data.ideas.map(i => i.title)]);
     } catch { /* keep current */ }
     setMoreLoading(false);
-  }, [industry, process, processDesc, selectedProblems, goal, size, prevIdeas]);
+  }, [industry, processContext, selectedProblems, goal, size, prevIdeas]);
 
   const submit = useCallback(() => {
     const session = {
       timestamp: new Date().toISOString(),
-      industry, process, problems: selectedProblems, goal, company_size: size,
+      industry, processes: selectedProcesses.map(p => p.name), problems: selectedProblems, goal, company_size: size,
       ai_diagnosis: results?.diagnosis.insight,
       ai_ideas: results?.ideas.map(i => i.title),
       email: email || undefined,
-      more_ideas: prevIdeas.length > 3,
+      more_ideas: prevIdeas.length > 5,
     };
     const sessions = JSON.parse(localStorage.getItem('inspirator_sessions') || '[]');
     sessions.push(session);
@@ -173,10 +177,10 @@ export function Inspirator({ onClose }: Props) {
     }).catch(() => {});
     setSent(true);
     setTimeout(() => onClose(), 8000);
-  }, [industry, process, selectedProblems, goal, size, results, email, prevIdeas, onClose]);
+  }, [industry, selectedProcesses, selectedProblems, goal, size, results, email, prevIdeas, onClose]);
 
   const restart = useCallback(() => {
-    setStep(0); setIndustry(''); setProcess(''); setProcessDesc('');
+    setStep(0); setIndustry(''); setSelectedProcesses([]);
     setSelectedProblems([]); setGoal(''); setSize('');
     setResults(null); setPrevIdeas([]); setLoadingIdx(0);
     setEmail(''); setSent(false);
@@ -224,21 +228,32 @@ export function Inspirator({ onClose }: Props) {
           </motion.div>
         )}
 
-        {/* 1 — Process */}
+        {/* 1 — Process (multi-select 1-3) */}
         {step === 1 && (
           <motion.div className="insp-body" key="s1" variants={variants} initial="enter" animate="center" exit="exit" transition={transition}>
-            <h1 className="insp-q">Który proces chcesz usprawnić?</h1>
-            <p className="insp-hint">Wybierz ten, który najbardziej wpływa na Wasz biznes</p>
+            <h1 className="insp-q">Które procesy chcesz usprawnić?</h1>
+            <p className="insp-hint">Wybierz 1–3 procesy, które najbardziej wpływają na Wasz biznes</p>
             <div className="insp-list">
-              {processes.map((p, i) => (
-                <motion.button key={p.id} className="insp-card-row"
-                  initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.25, delay: i * 0.035 }}
-                  onClick={() => pickProcess(p)}>
-                  <span className="insp-card-row-name">{p.name}</span>
-                  <span className="insp-card-row-desc">{p.desc}</span>
-                </motion.button>
-              ))}
+              {processes.map((p, i) => {
+                const on = selectedProcesses.some(x => x.id === p.id);
+                const off = !on && selectedProcesses.length >= MAX_PROCESSES;
+                return (
+                  <motion.button key={p.id} className={`insp-card-row ${on ? 'insp-card-row--on' : ''} ${off ? 'insp-card-row--off' : ''}`}
+                    initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.25, delay: i * 0.035 }}
+                    onClick={() => !off && toggleProcess(p)}>
+                    <div className="insp-card-row-left">
+                      <span className="insp-check-box">
+                        {on && <Icon name="check-circle" size={14} strokeWidth={2.5} />}
+                      </span>
+                      <div>
+                        <span className="insp-card-row-name">{p.name}</span>
+                        <span className="insp-card-row-desc">{p.desc}</span>
+                      </div>
+                    </div>
+                  </motion.button>
+                );
+              })}
             </div>
           </motion.div>
         )}
@@ -328,7 +343,9 @@ export function Inspirator({ onClose }: Props) {
               {/* Tags */}
               <div className="insp-tags">
                 <span className="insp-tag">{industry}</span>
-                <span className="insp-tag">{process}</span>
+                {selectedProcesses.map(p => (
+                  <span key={p.id} className="insp-tag">{p.name}</span>
+                ))}
                 <span className="insp-tag">{goal}</span>
               </div>
 
@@ -434,7 +451,18 @@ export function Inspirator({ onClose }: Props) {
 
       </AnimatePresence>
 
-      {/* Footer for step 2 only */}
+      {/* Footer for step 1 (processes) and step 2 (problems) */}
+      {step === 1 && (
+        <div className="insp-footer">
+          <span className="insp-counter">
+            <strong>{selectedProcesses.length}</strong> / {MAX_PROCESSES}
+          </span>
+          <button className="insp-btn" disabled={selectedProcesses.length < 1} onClick={() => setStep(2)}>
+            {selectedProcesses.length < 1 ? 'Wybierz min. 1' : 'Dalej'}
+            <Icon name="chevron-right" size={15} strokeWidth={2.5} />
+          </button>
+        </div>
+      )}
       {step === 2 && (
         <div className="insp-footer">
           <span className="insp-counter">

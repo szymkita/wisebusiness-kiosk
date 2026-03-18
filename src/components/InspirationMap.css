@@ -1,0 +1,369 @@
+/* ═══════════════════════════════════════
+   INSPIRATION MAP — Browse → Pick → Discover
+   ═══════════════════════════════════════ */
+
+.imap {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  background: #fafaf8;
+}
+
+/* ── Header ── */
+.imap-header {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.2vw, 20px);
+  padding: clamp(14px, 1.5vh, 22px) clamp(20px, 2.5vw, 36px);
+  flex-shrink: 0;
+}
+
+.imap-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px; height: 44px;
+  background: rgba(0,0,0,0.04);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  color: #1a1a1a;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.imap-back:active {
+  background: rgba(0,0,0,0.08);
+  transform: scale(0.95);
+}
+
+.imap-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.imap-title {
+  font-size: clamp(18px, 1.3vw, 24px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #1a1a1a;
+}
+
+.imap-breadcrumb {
+  font-size: clamp(11px, 0.7vw, 13px);
+  font-weight: 500;
+  color: #aaa;
+}
+
+/* ── Body ── */
+.imap-body {
+  flex: 1;
+  min-height: 0;
+  padding: 0 clamp(12px, 1.5vw, 24px) clamp(12px, 1.5vh, 20px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.imap-content {
+  height: 100%;
+}
+
+/* ═══ STEP 1: Industry grid ═══ */
+.imap-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: clamp(8px, 0.8vw, 14px);
+  height: 100%;
+}
+
+.imap-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(18px, 2vh, 28px) clamp(16px, 1.5vw, 24px);
+  background: #fff;
+  border-radius: var(--r);
+  border: 1px solid rgba(0,0,0,0.04);
+  cursor: pointer;
+  outline: none;
+  text-align: left;
+  font-family: inherit;
+  overflow: hidden;
+  transition: transform 0.12s ease, box-shadow 0.2s ease;
+}
+
+.imap-tile:active {
+  transform: scale(0.97);
+}
+
+.imap-tile-gradient {
+  position: absolute; inset: 0;
+  background: linear-gradient(150deg, var(--c-l) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.imap-tile-icon {
+  width: clamp(40px, 3vw, 52px);
+  height: clamp(40px, 3vw, 52px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: var(--c-m);
+  color: var(--c);
+  position: relative;
+  z-index: 1;
+}
+
+.imap-tile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  position: relative;
+  z-index: 1;
+}
+
+.imap-tile-name {
+  font-size: clamp(16px, 1.2vw, 22px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #1a1a1a;
+  line-height: 1.2;
+}
+
+.imap-tile-count {
+  font-size: clamp(10px, 0.65vw, 13px);
+  color: #aaa;
+  font-weight: 500;
+}
+
+.imap-tile-arrow {
+  position: absolute;
+  top: clamp(18px, 2vh, 28px);
+  right: clamp(16px, 1.5vw, 24px);
+  width: clamp(28px, 2vw, 34px);
+  height: clamp(28px, 2vw, 34px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: var(--c-l);
+  color: var(--c);
+  z-index: 1;
+}
+
+/* ═══ STEP 2: Department cards ═══ */
+.imap-dept-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(10px, 1vw, 16px);
+  max-width: 900px;
+  margin: 0 auto;
+  padding: clamp(16px, 2vh, 32px) 0;
+}
+
+.imap-dept {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 1.2vw, 20px);
+  padding: clamp(20px, 2.2vh, 30px) clamp(18px, 1.8vw, 28px);
+  background: #fff;
+  border-radius: var(--r);
+  border: 1px solid rgba(0,0,0,0.04);
+  cursor: pointer;
+  outline: none;
+  text-align: left;
+  font-family: inherit;
+  transition: transform 0.12s ease, box-shadow 0.2s ease;
+}
+
+.imap-dept:active {
+  transform: scale(0.97);
+}
+
+.imap-dept-icon {
+  width: clamp(44px, 3.2vw, 56px);
+  height: clamp(44px, 3.2vw, 56px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: var(--c-m);
+  color: var(--c);
+  flex-shrink: 0;
+}
+
+.imap-dept-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.imap-dept-name {
+  font-size: clamp(15px, 1.1vw, 20px);
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: #1a1a1a;
+  line-height: 1.2;
+}
+
+.imap-dept-count {
+  font-size: clamp(11px, 0.7vw, 13px);
+  color: #aaa;
+  font-weight: 500;
+}
+
+.imap-dept-arrow {
+  width: clamp(28px, 2vw, 34px);
+  height: clamp(28px, 2vw, 34px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  color: #ccc;
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+
+.imap-dept:active .imap-dept-arrow {
+  color: var(--c);
+}
+
+/* ═══ STEP 3: Idea cards ═══ */
+.imap-ideas {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 1.2vw, 18px);
+  max-width: 800px;
+  margin: 0 auto;
+  padding: clamp(8px, 1vh, 16px) 0;
+}
+
+.imap-idea {
+  background: #fff;
+  border-radius: var(--r);
+  border: 1px solid rgba(0,0,0,0.04);
+  padding: clamp(20px, 2.2vh, 28px) clamp(20px, 2vw, 28px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 1vh, 16px);
+}
+
+.imap-idea-header {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(12px, 1vw, 16px);
+}
+
+.imap-idea-num {
+  width: clamp(30px, 2.2vw, 38px);
+  height: clamp(30px, 2.2vw, 38px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: var(--c-l);
+  color: var(--c);
+  font-size: clamp(13px, 0.9vw, 16px);
+  font-weight: 900;
+  flex-shrink: 0;
+}
+
+.imap-idea-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+.imap-idea-title {
+  font-size: clamp(16px, 1.1vw, 20px);
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: #1a1a1a;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.imap-idea-badge {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 3px 10px;
+  border-radius: 7px;
+  font-size: clamp(9px, 0.6vw, 11px);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.imap-idea-desc {
+  font-size: clamp(13px, 0.85vw, 15px);
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.imap-idea-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: clamp(6px, 0.6vh, 10px);
+  border-top: 1px solid rgba(0,0,0,0.04);
+}
+
+.imap-idea-impact {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: clamp(12px, 0.78vw, 14px);
+  font-weight: 700;
+  color: var(--c);
+}
+
+/* ── Explore more ── */
+.imap-explore-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(12px, 1vw, 20px);
+  padding: clamp(20px, 2.5vh, 36px) 0;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.imap-explore-text {
+  font-size: clamp(13px, 0.85vw, 15px);
+  color: #999;
+  font-weight: 500;
+  margin: 0;
+}
+
+.imap-explore-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: rgba(0,0,0,0.04);
+  border: none;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: clamp(12px, 0.78vw, 14px);
+  font-weight: 700;
+  color: #1a1a1a;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.imap-explore-btn:active {
+  background: rgba(0,0,0,0.08);
+  transform: scale(0.97);
+}

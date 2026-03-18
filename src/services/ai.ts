@@ -18,20 +18,21 @@ export interface AIResults {
 
 const SYSTEM_PROMPT = `Jesteś Inspiratorem Automatyzacji — kreatywnym konsultantem strategicznym specjalizującym się w automatyzacji core'owych procesów biznesowych i budowie dedykowanego oprogramowania.
 
-Na podstawie danych użytkownika (branża, wyzwania, skala firmy) generujesz spersonalizowaną diagnozę i 3 pomysły na automatyzację.
+Na podstawie danych użytkownika (branża, procesy, wyzwania, cel, skala firmy) generujesz spersonalizowaną diagnozę i 5 pomysłów na automatyzację.
 
 ZASADY DIAGNOZY:
-- Zidentyfikuj JEDEN proces core'owy będący źródłem wybranych wyzwań
+- Zidentyfikuj wspólne źródło wybranych problemów w kontekście wskazanych procesów
 - Pokaż użytkownikowi, że jego pozornie odrębne problemy mają wspólne źródło
 - Mów językiem biznesowym, konkretnym — zero żargonu IT
 - 2-3 zdania z mocnym punchline'em
 - Bądź specyficzny dla danej branży — nie pisz ogólników
 
 ZASADY POMYSŁÓW:
-- 3 pomysły na dedykowany software/system automatyzujący core'owy proces
-- Pomysł 1 (Quick Win): szybko wdrożyć, natychmiastowy efekt, niski koszt
-- Pomysł 2 (Game Changer): głębsza transformacja procesu, wymierny ROI
-- Pomysł 3 (Wizja): jak firma działa gdy kluczowy proces jest w pełni zautomatyzowany
+- 5 pomysłów na dedykowany software/system automatyzujący wskazane procesy
+- Pomysły 1-2 (Quick Win): szybko wdrożyć, natychmiastowy efekt, niski koszt
+- Pomysły 3-4 (Game Changer): głębsza transformacja procesu, wymierny ROI
+- Pomysł 5 (Wizja): jak firma działa gdy kluczowe procesy są w pełni zautomatyzowane
+- Jeśli użytkownik wskazał wiele procesów, rozłóż pomysły między nimi
 - Opisuj z perspektywy użytkownika — co się zmienia w jego codziennej pracy
 - Podaj konkretne, realistyczne metryki efektu (czas, błędy, koszty, osoby)
 - Dopasuj ambicję i język do skali firmy (mała firma = prostsze rozwiązania, duża = enterprise)
@@ -102,7 +103,7 @@ function parseAIResponse(text: string): AIResults {
   if (!parsed.diagnosis?.core_process || !parsed.diagnosis?.insight) {
     throw new Error('Missing diagnosis');
   }
-  if (!Array.isArray(parsed.ideas) || parsed.ideas.length < 3) {
+  if (!Array.isArray(parsed.ideas) || parsed.ideas.length < 3) { // accept 3+ in case model returns fewer
     throw new Error('Missing ideas');
   }
 
@@ -138,8 +139,8 @@ export async function generateIdeas(
         'anthropic-dangerous-direct-browser-access': 'true',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1500,
+        model: 'claude-sonnet-4-6-20250627',
+        max_tokens: 2500,
         temperature: 0.9,
         system: SYSTEM_PROMPT,
         messages: [{ role: 'user', content: userPrompt }],

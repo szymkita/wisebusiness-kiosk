@@ -134,6 +134,22 @@
 }
 .insp-card-row:active { transform: scale(0.98); border-color: #10b981; }
 
+.insp-card-row--on { background: rgba(16,185,129,0.04); border-color: #10b981; }
+.insp-card-row--off { opacity: 0.2; cursor: default; }
+.insp-card-row:not(.insp-card-row--off):active { transform: scale(0.98); border-color: #10b981; }
+
+.insp-card-row-left {
+  display: flex; align-items: center; gap: clamp(10px, 0.8vw, 14px);
+}
+
+.insp-card-row-left > div {
+  display: flex; flex-direction: column; gap: 2px;
+}
+
+.insp-card-row--on .insp-check-box {
+  background: #10b981; border-color: #10b981; color: #fff;
+}
+
 .insp-card-row-name {
   font-size: clamp(15px, 1vw, 18px);
   font-weight: 750; color: #1a1a1a;
