@@ -21,19 +21,28 @@ const industries = [
   { id: 'inna', name: 'Inna', icon: 'grid' },
 ];
 
-const symptoms = [
-  'Klienci pytają o status i nikt nie wie',
-  'Nowy pracownik potrzebuje miesiąca żeby się wdrożyć',
-  'Każdy dział ma swoją prawdę w swoim Excelu',
-  'Wdrożenie klienta to za każdym razem improwizacja',
-  'Szef pyta o raport i zaczyna się panika',
-  'Tracimy klientów bo jesteśmy za wolni',
-  'Jedna osoba odchodzi i zabiera wiedzę ze sobą',
-  'Robimy te same rzeczy ręcznie każdego dnia',
-  'Nie wiemy ile naprawdę zarabiamy na projekcie',
-  'Reklamacje i błędy wynikają z ludzkich pomyłek',
-  'Każda oferta wygląda inaczej bo każdy robi po swojemu',
-  'Nie ogarniamy terminów i rzeczy się gubią',
+interface Challenge {
+  text: string;
+  category: string;
+}
+
+const challenges: Challenge[] = [
+  // Chaos informacyjny
+  { text: 'Dane w Excelach — każdy dział ma swoją wersję prawdy', category: 'Chaos informacyjny' },
+  { text: 'Szef pyta o raport i zaczyna się godzina zbierania danych', category: 'Chaos informacyjny' },
+  { text: 'Nie wiemy ile naprawdę zarabiamy na poszczególnych klientach', category: 'Chaos informacyjny' },
+  // Powtarzalna praca
+  { text: 'Te same czynności robimy ręcznie każdego dnia', category: 'Powtarzalna praca' },
+  { text: 'Przygotowanie oferty to za każdym razem zaczynanie od zera', category: 'Powtarzalna praca' },
+  { text: 'Obsługa jednego klienta wymaga klikania w 4 różne systemy', category: 'Powtarzalna praca' },
+  // Problemy z ludźmi i wiedzą
+  { text: 'Nowy pracownik potrzebuje miesiąca, żeby ogarnąć jak tu co działa', category: 'Ludzie i wiedza' },
+  { text: 'Jak ktoś idzie na urlop lub odchodzi — nikt nie wie co robić', category: 'Ludzie i wiedza' },
+  { text: 'Każda osoba robi to samo inaczej — brak jednego sposobu', category: 'Ludzie i wiedza' },
+  // Relacje z klientami
+  { text: 'Klienci pytają o status i nikt nie potrafi szybko odpowiedzieć', category: 'Klienci' },
+  { text: 'Tracimy klientów bo jesteśmy za wolni albo zapominamy', category: 'Klienci' },
+  { text: 'Błędy i pomyłki wychodzą dopiero gdy klient się skarży', category: 'Klienci' },
 ];
 
 const sizes = [
@@ -74,7 +83,7 @@ interface Props {
 export function Inspirator({ onClose }: Props) {
   const [step, setStep] = useState(0); // 0=industry, 1=symptoms, 2=size, 3=loading, 4=results, 5=contact
   const [industry, setIndustry] = useState('');
-  const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
+  const [selectedChallenges, setSelectedChallenges] = useState<string[]>([]);
   const [size, setSize] = useState('');
   const [results, setResults] = useState<AIResults | null>(null);
   const [previousIdeas, setPreviousIdeas] = useState<string[]>([]);
@@ -90,9 +99,9 @@ export function Inspirator({ onClose }: Props) {
     setTimeout(() => setStep(1), 400);
   }, []);
 
-  // Toggle symptom
-  const toggleSymptom = useCallback((s: string) => {
-    setSelectedSymptoms(prev => {
+  // Toggle challenge
+  const toggleChallenge = useCallback((s: string) => {
+    setSelectedChallenges(prev => {
       if (prev.includes(s)) return prev.filter(x => x !== s);
       if (prev.length >= MAX_SYMPTOMS) return prev;
       return [...prev, s];
@@ -105,7 +114,7 @@ export function Inspirator({ onClose }: Props) {
 
     // Start AI call immediately
     const startTime = Date.now();
-    aiPromise.current = generateIdeas(industry, selectedSymptoms, sizeLabel);
+    aiPromise.current = generateIdeas(industry, selectedChallenges, sizeLabel);
 
     setTimeout(() => setStep(3), 400);
 
@@ -119,7 +128,7 @@ export function Inspirator({ onClose }: Props) {
         setStep(4);
       }, remaining);
     });
-  }, [industry, selectedSymptoms]);
+  }, [industry, selectedChallenges]);
 
   // Loading messages rotation
   useEffect(() => {
@@ -135,21 +144,21 @@ export function Inspirator({ onClose }: Props) {
   const requestMoreIdeas = useCallback(async () => {
     setMoreLoading(true);
     try {
-      const data = await generateIdeas(industry, selectedSymptoms, size, previousIdeas);
+      const data = await generateIdeas(industry, selectedChallenges, size, previousIdeas);
       setResults(data);
       setPreviousIdeas(prev => [...prev, ...data.ideas.map(i => i.title)]);
     } catch {
       // keep current results
     }
     setMoreLoading(false);
-  }, [industry, selectedSymptoms, size, previousIdeas]);
+  }, [industry, selectedChallenges, size, previousIdeas]);
 
   // Send email / save session
   const sendEmail = useCallback(() => {
     const sessionData = {
       timestamp: new Date().toISOString(),
       industry,
-      symptoms: selectedSymptoms,
+      symptoms: selectedChallenges,
       company_size: size,
       ai_diagnosis: results?.diagnosis.insight,
       ai_ideas: results?.ideas.map(i => i.title),
@@ -171,13 +180,13 @@ export function Inspirator({ onClose }: Props) {
 
     setSent(true);
     setTimeout(() => onClose(), 8000);
-  }, [industry, selectedSymptoms, size, results, email, previousIdeas, onClose]);
+  }, [industry, selectedChallenges, size, results, email, previousIdeas, onClose]);
 
   // Restart
   const restart = useCallback(() => {
     setStep(0);
     setIndustry('');
-    setSelectedSymptoms([]);
+    setSelectedChallenges([]);
     setSize('');
     setResults(null);
     setPreviousIdeas([]);
@@ -247,32 +256,39 @@ export function Inspirator({ onClose }: Props) {
           </motion.div>
         )}
 
-        {/* ── STEP 1: Symptoms ── */}
+        {/* ── STEP 1: Challenges ── */}
         {step === 1 && (
-          <motion.div className="insp-screen" key="symptoms"
+          <motion.div className="insp-screen" key="challenges"
             variants={screenVariants} initial="enter" animate="center" exit="exit"
             transition={screenTransition}>
-            <h1 className="insp-title">Co najbardziej Cię boli?</h1>
-            <p className="insp-subtitle">Wybierz 2–3 rzeczy, które najbardziej Ci przeszkadzają</p>
-            <div className="insp-symptom-grid">
-              {symptoms.map((s, i) => {
-                const isSelected = selectedSymptoms.includes(s);
-                const isDisabled = !isSelected && selectedSymptoms.length >= MAX_SYMPTOMS;
-                return (
-                  <motion.button
-                    key={s}
-                    className={`insp-symptom-tile ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}`}
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.35, delay: i * 0.03, ease: [0.16, 1, 0.3, 1] }}
-                    onClick={() => !isDisabled && toggleSymptom(s)}>
-                    <div className="insp-symptom-check">
-                      {isSelected && <Icon name="check-circle" size={16} strokeWidth={2.5} />}
-                    </div>
-                    {s}
-                  </motion.button>
-                );
-              })}
+            <h1 className="insp-title">Z czym się mierzycie?</h1>
+            <p className="insp-subtitle">Wybierz 2–3 wyzwania, które najbardziej Was spowalniają</p>
+            <div className="insp-challenges">
+              {['Chaos informacyjny', 'Powtarzalna praca', 'Ludzie i wiedza', 'Klienci'].map(cat => (
+                <div key={cat} className="insp-challenge-group">
+                  <span className="insp-challenge-cat">{cat}</span>
+                  <div className="insp-challenge-list">
+                    {challenges.filter(c => c.category === cat).map((c, i) => {
+                      const isSelected = selectedChallenges.includes(c.text);
+                      const isDisabled = !isSelected && selectedChallenges.length >= MAX_SYMPTOMS;
+                      return (
+                        <motion.button
+                          key={c.text}
+                          className={`insp-symptom-tile ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}`}
+                          initial={{ opacity: 0, y: 12 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.3, delay: i * 0.04 }}
+                          onClick={() => !isDisabled && toggleChallenge(c.text)}>
+                          <div className="insp-symptom-check">
+                            {isSelected && <Icon name="check-circle" size={16} strokeWidth={2.5} />}
+                          </div>
+                          {c.text}
+                        </motion.button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
             </div>
           </motion.div>
         )}
@@ -475,14 +491,14 @@ export function Inspirator({ onClose }: Props) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.3 }}>
           <span className="insp-counter">
-            Wybrano: <strong>{selectedSymptoms.length}</strong> / {MAX_SYMPTOMS}
+            Wybrano: <strong>{selectedChallenges.length}</strong> / {MAX_SYMPTOMS}
           </span>
           <button
             className="insp-next-btn"
-            disabled={selectedSymptoms.length < 2}
+            disabled={selectedChallenges.length < 2}
             onClick={() => setStep(2)}>
-            {selectedSymptoms.length < 2
-              ? `Wybierz jeszcze ${2 - selectedSymptoms.length}`
+            {selectedChallenges.length < 2
+              ? `Wybierz jeszcze ${2 - selectedChallenges.length}`
               : 'Dalej'}
             <Icon name="chevron-right" size={18} strokeWidth={2.5} />
           </button>
