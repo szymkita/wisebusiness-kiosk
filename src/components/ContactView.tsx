@@ -41,6 +41,13 @@ export function ContactView() {
 
   const send = () => {
     setSent(true);
+
+    fetch('https://hook.eu1.make.com/w6v0rygk3qgwy0lmqc3na4jr79vtvkqi', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ phone: typed }),
+    }).catch(() => {});
+
     setTimeout(() => {
       setSent(false);
       setTyped('+48');
