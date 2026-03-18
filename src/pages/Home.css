@@ -1,141 +1,263 @@
 /* ═══════════════════════════════════════
-   HOME — Full-bleed colorful tile layout
+   HOME — Attract + Dock — Light Scandi
    ═══════════════════════════════════════ */
 
 .home {
   width: 100vw; height: 100dvh;
   display: flex; flex-direction: column;
-  background: linear-gradient(145deg, #eef1f8 0%, #f4f0ed 40%, #f0eff6 100%);
+  background: #fafaf8;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── Subtle background texture ── */
+.home-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
   overflow: hidden;
 }
 
-/* ── Top Bar — single compact row ── */
-.topbar {
+.home-bg-shape {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.45;
+}
+
+.home-bg-shape--1 {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.07), transparent 70%);
+  top: -15%; right: -10%;
+}
+
+.home-bg-shape--2 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.05), transparent 70%);
+  bottom: -10%; left: -8%;
+}
+
+/* ── Header ── */
+.home-header {
   display: flex;
   align-items: center;
-  gap: clamp(10px, 1.2vw, 22px);
-  padding: clamp(10px, 1.2vh, 16px) clamp(16px, 2vw, 32px);
+  justify-content: space-between;
+  padding: clamp(16px, 2vh, 28px) clamp(24px, 3vw, 44px);
+  position: relative;
+  z-index: 10;
   flex-shrink: 0;
 }
 
-.topbar-logo {
-  width: clamp(100px, 9vw, 170px);
+.home-logo {
+  width: clamp(110px, 10vw, 170px);
   height: auto;
-  flex-shrink: 0;
 }
 
-.topbar-sep {
-  width: 1px;
-  height: clamp(16px, 1.6vw, 24px);
-  background: rgba(0,0,0,0.1);
-  flex-shrink: 0;
-}
 
-.topbar-tagline {
-  font-size: clamp(11px, 0.82vw, 15px);
-  font-weight: 500;
-  color: var(--text2);
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-/* Tabs — large touch targets */
-.topbar-tabs {
+/* ── Hero ── */
+.hero {
+  flex: 1;
+  min-height: 0;
   display: flex;
-  gap: 3px;
-  padding: 4px;
-  background: rgba(0,0,0,0.05);
-  border-radius: 16px;
-  margin-left: auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 5;
+  padding: 0 clamp(28px, 5vw, 80px);
+  gap: clamp(16px, 2.5vh, 32px);
+}
+
+.hero-eyebrow {
+  font-size: clamp(11px, 0.7vw, 13px);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #10b981;
+}
+
+.hero-title {
+  text-align: center;
+  font-size: clamp(38px, 4.5vw, 72px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  color: #1a1a1a;
+  max-width: 850px;
+}
+
+.hero-title-accent {
+  color: #10b981;
+}
+
+.hero-sub {
+  text-align: center;
+  font-size: clamp(14px, 1vw, 18px);
+  font-weight: 450;
+  color: #888;
+  max-width: 420px;
+  line-height: 1.55;
+}
+
+/* CTA */
+.hero-cta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: clamp(16px, 2vh, 24px) clamp(32px, 3.5vw, 52px);
+  background: #1a1a1a;
+  color: #fff;
+  font-size: clamp(16px, 1.1vw, 20px);
+  font-weight: 700;
+  font-family: inherit;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  min-height: 58px;
+  transition: transform 0.12s ease, opacity 0.12s;
+}
+
+.hero-cta:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+
+.hero-cta-icon {
+  width: 28px; height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.15);
+  border-radius: 8px;
+}
+
+.hero-hint {
+  font-size: clamp(11px, 0.7vw, 13px);
+  font-weight: 500;
+  color: #bbb;
+}
+
+/* ── Bottom Dock ── */
+.dock {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(8px, 1vh, 14px) clamp(20px, 3vw, 40px) clamp(14px, 1.8vh, 22px);
   flex-shrink: 0;
 }
 
-.topbar-tab {
+.dock-bar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 5px;
+  background: rgba(0,0,0,0.04);
+  border-radius: 18px;
+}
+
+.dock-item {
   position: relative;
   display: flex;
   align-items: center;
   gap: clamp(6px, 0.5vw, 10px);
-  padding: clamp(10px, 1.2vh, 16px) clamp(16px, 1.6vw, 28px);
-  font-size: clamp(13px, 0.9vw, 17px);
+  padding: clamp(12px, 1.3vh, 17px) clamp(16px, 1.8vw, 28px);
+  font-size: clamp(13px, 0.82vw, 15px);
   font-weight: 600;
   font-family: inherit;
-  color: var(--text3);
+  color: #999;
   background: transparent;
   border: none;
-  border-radius: 13px;
+  border-radius: 14px;
   cursor: pointer;
   outline: none;
-  transition: color 0.25s;
+  transition: color 0.2s ease;
   z-index: 1;
   min-height: 48px;
+  white-space: nowrap;
 }
 
-.topbar-tab.on { color: var(--text); }
+.dock-item:active { transform: scale(0.97); }
 
-.topbar-tab-bg {
+.dock-item.active { color: #1a1a1a; }
+
+.dock-item-bg {
   position: absolute;
   inset: 0;
   background: #fff;
-  border-radius: 13px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-radius: 14px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
   z-index: -1;
 }
 
-.topbar-tab-count {
-  position: relative; z-index: 1;
-  min-width: 1.5em; height: 1.5em;
+.dock-item-count {
+  min-width: 1.3em; height: 1.3em;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 7px;
-  font-size: 0.8em;
+  border-radius: 5px;
+  font-size: 0.75em;
   font-weight: 800;
   background: rgba(0,0,0,0.05);
-  color: var(--text3);
-  transition: all 0.25s;
+  color: #aaa;
+  transition: all 0.2s;
 }
-.topbar-tab.on .topbar-tab-count {
-  background: var(--primary);
+
+.dock-item.active .dock-item-count {
+  background: #10b981;
   color: #fff;
 }
 
-/* Site pill */
-.topbar-site {
+/* ── Content panels (light overlay) ── */
+.home-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  background: #fafaf8;
+}
+
+.home-panel-header {
   display: flex;
   align-items: center;
-  gap: clamp(6px, 0.5vw, 10px);
-  padding: clamp(10px, 1.1vh, 15px) clamp(14px, 1.4vw, 22px);
-  background: rgba(16,185,129,0.08);
-  border-radius: 13px;
-  font-size: clamp(12px, 0.8vw, 15px);
-  font-weight: 700;
-  color: var(--primary-dark);
+  gap: clamp(12px, 1.2vw, 20px);
+  padding: clamp(14px, 1.5vh, 22px) clamp(20px, 2.5vw, 36px);
   flex-shrink: 0;
-  min-height: 48px;
 }
 
-.topbar-site-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--primary);
-  animation: blink 2s ease-in-out infinite;
-}
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+.home-panel-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px; height: 44px;
+  background: rgba(0,0,0,0.04);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  color: #1a1a1a;
 }
 
-/* ── Main Content ── */
-.content {
+.home-panel-back:active {
+  background: rgba(0,0,0,0.08);
+  transform: scale(0.95);
+}
+
+.home-panel-title {
+  font-size: clamp(18px, 1.3vw, 24px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #1a1a1a;
+}
+
+.home-panel-body {
   flex: 1;
   min-height: 0;
   padding: 0 clamp(12px, 1.5vw, 24px) clamp(12px, 1.5vh, 20px);
 }
 
-.contact-wrap { height: 100%; }
-.cases-wrap { height: 100%; }
-
-/* ── Grid ── */
+/* ── Grid for tile panels ── */
 .grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -144,7 +266,6 @@
   height: 100%;
 }
 
-/* ── Tile ── */
 .tile {
   position: relative;
   display: flex;
@@ -152,35 +273,28 @@
   padding: clamp(16px, 1.8vh, 24px) clamp(14px, 1.4vw, 24px);
   background: #fff;
   border-radius: var(--r);
-  border: none;
+  border: 1px solid rgba(0,0,0,0.04);
   cursor: pointer;
   outline: none;
   text-align: left;
   font-family: inherit;
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.03);
-  transition: transform 0.15s var(--ease-spring), box-shadow 0.15s;
+  transition: transform 0.12s ease;
 }
 
-.tile:active {
-  transform: scale(0.97);
-}
+.tile:active { transform: scale(0.97); }
 
-/* Gradient wash */
 .tile-gradient {
-  position: absolute;
-  inset: 0;
+  position: absolute; inset: 0;
   background: linear-gradient(150deg, var(--c-l) 0%, transparent 50%);
   pointer-events: none;
 }
 
-/* Top row — icon left, arrow right */
 .tile-head {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  position: relative;
-  z-index: 1;
+  position: relative; z-index: 1;
 }
 
 .tile-icon {
@@ -207,13 +321,11 @@
   flex-shrink: 0;
 }
 
-/* Text — below icon, pushed to bottom */
 .tile-info {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  position: relative;
-  z-index: 1;
+  position: relative; z-index: 1;
   margin-top: auto;
 }
 
@@ -221,18 +333,17 @@
   font-size: clamp(15px, 1.1vw, 22px);
   font-weight: 800;
   letter-spacing: -0.02em;
-  color: var(--text);
+  color: #1a1a1a;
   line-height: 1.2;
 }
 
 .tile-desc {
   font-size: clamp(10px, 0.7vw, 14px);
-  color: var(--text2);
+  color: #888;
   line-height: 1.4;
   font-weight: 400;
 }
 
-/* Demo badge */
 .tile-badge {
   position: absolute;
   bottom: clamp(16px, 1.8vh, 24px);

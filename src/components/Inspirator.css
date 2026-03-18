@@ -1,0 +1,699 @@
+/* ═══════════════════════════════════════
+   INSPIRATOR — Light Scandinavian
+   ═══════════════════════════════════════ */
+
+.insp {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  background: #fafaf8;
+  overflow: hidden;
+}
+
+/* ── Header ── */
+.insp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(14px, 1.5vh, 22px) clamp(24px, 2.5vw, 40px);
+  flex-shrink: 0;
+}
+
+.insp-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px; height: 44px;
+  background: rgba(0,0,0,0.04);
+  border: none;
+  border-radius: 12px;
+  color: #999;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+
+.insp-close:active {
+  background: rgba(0,0,0,0.08);
+  transform: scale(0.93);
+}
+
+.insp-progress {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.insp-progress-dot {
+  width: 28px; height: 3px;
+  border-radius: 2px;
+  background: rgba(0,0,0,0.06);
+  transition: all 0.4s ease;
+}
+
+.insp-progress-dot.done {
+  background: #10b981;
+}
+
+.insp-progress-dot.active {
+  background: rgba(16, 185, 129, 0.35);
+  width: 40px;
+}
+
+.insp-step-label {
+  font-size: clamp(11px, 0.7vw, 13px);
+  font-weight: 600;
+  color: #bbb;
+  margin-left: 10px;
+}
+
+/* ── Screen container ── */
+.insp-screen {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0 clamp(24px, 3vw, 52px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.insp-screen::-webkit-scrollbar { width: 3px; }
+.insp-screen::-webkit-scrollbar-track { background: transparent; }
+.insp-screen::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.08); border-radius: 2px; }
+
+/* ── Titles ── */
+.insp-title {
+  font-size: clamp(24px, 2.2vw, 38px);
+  font-weight: 800;
+  color: #1a1a1a;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: clamp(6px, 0.8vh, 12px);
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.insp-subtitle {
+  font-size: clamp(13px, 0.9vw, 16px);
+  font-weight: 450;
+  color: #999;
+  text-align: center;
+  margin-bottom: clamp(20px, 2.5vh, 32px);
+  flex-shrink: 0;
+}
+
+/* ═══ Industry Grid ═══ */
+.insp-industry-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(8px, 0.8vw, 12px);
+  max-width: 720px;
+  margin: 0 auto;
+  width: 100%;
+  padding-bottom: clamp(16px, 2vh, 28px);
+}
+
+.insp-industry-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 0.8vh, 12px);
+  padding: clamp(16px, 1.8vh, 24px) clamp(10px, 1vw, 16px);
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.05);
+  border-radius: 14px;
+  cursor: pointer;
+  font-family: inherit;
+  color: #1a1a1a;
+  min-height: 84px;
+  transition: all 0.15s ease;
+}
+
+.insp-industry-tile:active {
+  transform: scale(0.96);
+  border-color: #10b981;
+  background: rgba(16, 185, 129, 0.03);
+}
+
+.insp-industry-icon {
+  width: clamp(40px, 3vw, 50px);
+  height: clamp(40px, 3vw, 50px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.03);
+  color: #666;
+}
+
+.insp-industry-name {
+  font-size: clamp(12px, 0.8vw, 15px);
+  font-weight: 650;
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* ═══ Symptoms ═══ */
+.insp-symptom-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(6px, 0.6vw, 10px);
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+  padding-bottom: clamp(16px, 2vh, 28px);
+}
+
+.insp-symptom-tile {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 0.8vw, 14px);
+  padding: clamp(14px, 1.5vh, 20px) clamp(14px, 1.2vw, 20px);
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.05);
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  color: #555;
+  font-size: clamp(12px, 0.8vw, 15px);
+  font-weight: 550;
+  line-height: 1.35;
+  text-align: left;
+  transition: all 0.2s ease;
+  min-height: 72px;
+}
+
+.insp-symptom-tile.selected {
+  background: rgba(16, 185, 129, 0.04);
+  border-color: #10b981;
+  color: #1a1a1a;
+}
+
+.insp-symptom-tile.disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.insp-symptom-tile:not(.disabled):active {
+  transform: scale(0.98);
+}
+
+.insp-symptom-check {
+  width: 24px; height: 24px;
+  border-radius: 7px;
+  border: 2px solid rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.insp-symptom-tile.selected .insp-symptom-check {
+  background: #10b981;
+  border-color: #10b981;
+  color: #fff;
+}
+
+/* ── Footer ── */
+.insp-footer {
+  flex-shrink: 0;
+  padding: clamp(10px, 1.2vh, 16px) clamp(24px, 3vw, 52px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.insp-counter {
+  font-size: clamp(12px, 0.8vw, 14px);
+  font-weight: 600;
+  color: #bbb;
+}
+
+.insp-counter strong {
+  color: #10b981;
+}
+
+.insp-next-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: clamp(14px, 1.5vh, 20px) clamp(28px, 2.5vw, 40px);
+  background: #1a1a1a;
+  color: #fff;
+  font-size: clamp(14px, 0.9vw, 17px);
+  font-weight: 700;
+  font-family: inherit;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  min-height: 50px;
+  transition: all 0.15s;
+}
+
+.insp-next-btn:active { transform: scale(0.97); }
+
+.insp-next-btn:disabled {
+  background: rgba(0,0,0,0.06);
+  color: #ccc;
+  cursor: default;
+}
+
+.insp-next-btn:disabled:active { transform: none; }
+
+/* ═══ Size ═══ */
+.insp-size-list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1vh, 14px);
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.insp-size-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: clamp(20px, 2.2vh, 32px) clamp(24px, 2.5vw, 36px);
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.05);
+  border-radius: 14px;
+  cursor: pointer;
+  font-family: inherit;
+  color: #1a1a1a;
+  text-align: left;
+  min-height: 84px;
+  transition: all 0.15s ease;
+}
+
+.insp-size-tile:active {
+  transform: scale(0.98);
+  border-color: #10b981;
+}
+
+.insp-size-title {
+  font-size: clamp(18px, 1.4vw, 24px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.insp-size-sub {
+  font-size: clamp(12px, 0.8vw, 15px);
+  font-weight: 450;
+  color: #999;
+}
+
+/* ═══ Loading ═══ */
+.insp-loading {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(24px, 3vh, 40px);
+}
+
+.insp-loading-anim {
+  width: clamp(64px, 6vw, 90px);
+  height: clamp(64px, 6vw, 90px);
+  position: relative;
+}
+
+.insp-loading-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(0,0,0,0.04);
+  border-top-color: #10b981;
+  animation: insp-spin 1.2s linear infinite;
+}
+
+.insp-loading-ring:nth-child(2) {
+  inset: 10px;
+  border-top-color: rgba(0,0,0,0.12);
+  animation-direction: reverse;
+  animation-duration: 1.8s;
+}
+
+.insp-loading-center {
+  position: absolute;
+  inset: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #10b981;
+}
+
+@keyframes insp-spin {
+  to { transform: rotate(360deg); }
+}
+
+.insp-loading-text {
+  font-size: clamp(15px, 1vw, 19px);
+  font-weight: 550;
+  color: #888;
+  text-align: center;
+}
+
+/* ═══ Results ═══ */
+.insp-results {
+  max-width: 760px;
+  margin: 0 auto;
+  width: 100%;
+  padding-bottom: clamp(24px, 3vh, 40px);
+}
+
+/* Diagnosis */
+.insp-diagnosis {
+  padding: clamp(20px, 2.2vh, 28px) clamp(20px, 2.2vw, 32px);
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.05);
+  border-radius: 16px;
+  margin-bottom: clamp(20px, 2.5vh, 32px);
+}
+
+.insp-diagnosis-label {
+  font-size: clamp(10px, 0.65vw, 12px);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #10b981;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.insp-diagnosis-process {
+  font-size: clamp(20px, 1.6vw, 28px);
+  font-weight: 800;
+  color: #1a1a1a;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+
+.insp-diagnosis-insight {
+  font-size: clamp(13px, 0.9vw, 16px);
+  font-weight: 450;
+  color: #777;
+  line-height: 1.55;
+}
+
+/* Ideas */
+.insp-ideas-label {
+  font-size: clamp(15px, 1.1vw, 20px);
+  font-weight: 800;
+  color: #1a1a1a;
+  margin-bottom: clamp(10px, 1.2vh, 16px);
+}
+
+.insp-ideas-list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 1vh, 14px);
+}
+
+.insp-idea-card {
+  padding: clamp(18px, 2vh, 26px) clamp(18px, 2vw, 26px);
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.05);
+  border-radius: 14px;
+}
+
+.insp-idea-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.insp-idea-title {
+  font-size: clamp(15px, 1.1vw, 20px);
+  font-weight: 750;
+  color: #1a1a1a;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+.insp-idea-badge {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: clamp(9px, 0.6vw, 11px);
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.insp-idea-badge--easy {
+  background: rgba(16, 185, 129, 0.08);
+  color: #059669;
+}
+
+.insp-idea-badge--medium {
+  background: rgba(245, 158, 11, 0.08);
+  color: #b45309;
+}
+
+.insp-idea-badge--advanced {
+  background: rgba(139, 92, 246, 0.08);
+  color: #7c3aed;
+}
+
+.insp-idea-desc {
+  font-size: clamp(12px, 0.85vw, 15px);
+  font-weight: 450;
+  color: #777;
+  line-height: 1.55;
+  margin-bottom: clamp(10px, 1vh, 16px);
+}
+
+.insp-idea-transform {
+  display: flex;
+  gap: clamp(6px, 0.6vw, 10px);
+  align-items: stretch;
+}
+
+.insp-idea-before,
+.insp-idea-after {
+  flex: 1;
+  padding: clamp(10px, 1vh, 14px) clamp(12px, 1vw, 16px);
+  border-radius: 10px;
+  font-size: clamp(11px, 0.72vw, 13px);
+  font-weight: 550;
+  line-height: 1.4;
+}
+
+.insp-idea-before {
+  background: rgba(239, 68, 68, 0.04);
+  border: 1px solid rgba(239, 68, 68, 0.08);
+  color: #b91c1c;
+}
+
+.insp-idea-after {
+  background: rgba(16, 185, 129, 0.04);
+  border: 1px solid rgba(16, 185, 129, 0.08);
+  color: #059669;
+}
+
+.insp-idea-impact {
+  margin-top: clamp(8px, 0.8vh, 12px);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  background: rgba(0,0,0,0.03);
+  border-radius: 6px;
+  font-size: clamp(11px, 0.75vw, 14px);
+  font-weight: 700;
+  color: #555;
+}
+
+/* Results CTA */
+.insp-results-cta {
+  margin-top: clamp(20px, 2.5vh, 32px);
+  padding: clamp(20px, 2.2vh, 28px);
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.05);
+  border-radius: 14px;
+  text-align: center;
+}
+
+.insp-results-cta-text {
+  font-size: clamp(13px, 0.9vw, 16px);
+  font-weight: 450;
+  color: #777;
+  line-height: 1.55;
+  margin-bottom: clamp(14px, 1.5vh, 20px);
+}
+
+.insp-results-cta-text em {
+  font-style: normal;
+  color: #10b981;
+  font-weight: 700;
+}
+
+.insp-results-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.insp-btn-primary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: clamp(14px, 1.5vh, 20px) clamp(24px, 2.2vw, 36px);
+  background: #1a1a1a;
+  color: #fff;
+  font-size: clamp(14px, 0.9vw, 17px);
+  font-weight: 700;
+  font-family: inherit;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  min-height: 50px;
+  transition: all 0.15s;
+}
+
+.insp-btn-primary:active { transform: scale(0.97); }
+
+.insp-btn-primary:disabled {
+  background: rgba(0,0,0,0.06);
+  color: #ccc;
+  cursor: default;
+}
+
+.insp-btn-secondary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: clamp(14px, 1.5vh, 20px) clamp(24px, 2.2vw, 36px);
+  background: rgba(0,0,0,0.04);
+  border: none;
+  color: #666;
+  font-size: clamp(14px, 0.9vw, 17px);
+  font-weight: 700;
+  font-family: inherit;
+  border-radius: 12px;
+  cursor: pointer;
+  min-height: 50px;
+  transition: all 0.15s;
+}
+
+.insp-btn-secondary:active { transform: scale(0.97); }
+
+.insp-btn-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: clamp(12px, 1.3vh, 18px);
+  margin-top: clamp(8px, 0.8vh, 12px);
+  background: transparent;
+  border: 1px dashed rgba(0,0,0,0.1);
+  color: #999;
+  font-size: clamp(13px, 0.85vw, 15px);
+  font-weight: 600;
+  font-family: inherit;
+  border-radius: 12px;
+  cursor: pointer;
+  min-height: 48px;
+  transition: all 0.15s;
+}
+
+.insp-btn-more:active {
+  transform: scale(0.99);
+  background: rgba(0,0,0,0.02);
+}
+
+.insp-btn-more:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* ═══ Contact ═══ */
+.insp-contact {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(16px, 2vh, 28px);
+  max-width: 440px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.insp-email-input {
+  width: 100%;
+  padding: clamp(16px, 1.8vh, 22px) clamp(18px, 2vw, 26px);
+  background: #fff;
+  border: 2px solid rgba(0,0,0,0.06);
+  border-radius: 14px;
+  color: #1a1a1a;
+  font-size: clamp(16px, 1.2vw, 22px);
+  font-weight: 600;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.25s;
+  text-align: center;
+}
+
+.insp-email-input::placeholder { color: #ccc; }
+.insp-email-input:focus { border-color: #10b981; }
+
+.insp-contact-note {
+  font-size: clamp(11px, 0.75vw, 14px);
+  font-weight: 450;
+  color: #aaa;
+  text-align: center;
+  line-height: 1.5;
+  max-width: 360px;
+}
+
+/* Thank you */
+.insp-thankyou {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(14px, 1.8vh, 24px);
+  text-align: center;
+}
+
+.insp-thankyou-icon {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #10b981;
+}
+
+.insp-thankyou-title {
+  font-size: clamp(26px, 2.2vw, 38px);
+  font-weight: 800;
+  color: #1a1a1a;
+}
+
+.insp-thankyou-text {
+  font-size: clamp(13px, 0.9vw, 16px);
+  font-weight: 450;
+  color: #888;
+  line-height: 1.55;
+  max-width: 380px;
+}

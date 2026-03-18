@@ -1,129 +1,189 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Logo } from '../components/Logo';
 import { Icon } from '../components/Icon';
 import { ContactView } from '../components/ContactView';
 import { CaseStudies } from '../components/CaseStudies';
+import { Inspirator } from '../components/Inspirator';
 import { tabs } from '../data/tiles';
 import type { TileData } from '../data/tiles';
 import './Home.css';
 
-const allTabs = [
-  ...tabs.map(t => ({ id: t.id, label: t.label, icon: t.icon })),
-  { id: 'cases', label: 'Case Studies', icon: 'trending-up' },
+const dockItems = [
+  { id: 'home', label: 'Home', icon: 'home' },
+  { id: 'industries', label: 'Branże', icon: 'grid', count: tabs[0]?.tiles.length },
+  { id: 'software', label: 'Oprogramowanie', icon: 'code', count: tabs[1]?.tiles.length },
+  { id: 'cases', label: 'Case Studies', icon: 'trending-up', count: 6 },
   { id: 'contact', label: 'Kontakt', icon: 'map-pin' },
 ];
 
+const IDLE_TIMEOUT = 60_000;
+
 export function Home() {
-  const [activeTab, setActiveTab] = useState(0);
+  const [view, setView] = useState<'attract' | 'inspirator' | string>('attract');
   const navigate = useNavigate();
+  const idleTimer = useRef<ReturnType<typeof setTimeout>>();
 
-  const onTile = (t: TileData) => {
-    // Industries tab → go to industry detail page
-    if (currentTabId === 'industries') {
-      navigate(`/industry/${t.id}`);
-    } else if (t.demoId) {
-      navigate(`/demo/${t.demoId}`);
-    }
-  };
+  const resetIdle = useCallback(() => {
+    clearTimeout(idleTimer.current);
+    idleTimer.current = setTimeout(() => setView('attract'), IDLE_TIMEOUT);
+  }, []);
 
-  const currentTabId = allTabs[activeTab]?.id;
-  const isContact = currentTabId === 'contact';
-  const isCases = currentTabId === 'cases';
-  const tileTab = !isContact && !isCases ? tabs[activeTab] : null;
+  useEffect(() => {
+    const handler = () => resetIdle();
+    window.addEventListener('touchstart', handler, { passive: true });
+    window.addEventListener('mousedown', handler, { passive: true });
+    resetIdle();
+    return () => {
+      window.removeEventListener('touchstart', handler);
+      window.removeEventListener('mousedown', handler);
+      clearTimeout(idleTimer.current);
+    };
+  }, [resetIdle]);
+
+  const onTile = useCallback((t: TileData, panelId: string) => {
+    if (panelId === 'industries') navigate(`/industry/${t.id}`);
+    else if (t.demoId) navigate(`/demo/${t.demoId}`);
+  }, [navigate]);
+
+  const openPanel = typeof view === 'string' && view !== 'attract' && view !== 'inspirator'
+    ? view : null;
+  const tileTab = openPanel ? tabs.find(t => t.id === openPanel) : null;
 
   return (
     <div className="home">
-      {/* Top bar — compact single row */}
-      <header className="topbar">
-        <Logo className="topbar-logo" />
-        <span className="topbar-sep" />
-        <span className="topbar-tagline">
-          Pomagamy firmom pracować mądrzej
-        </span>
+      {/* Subtle background shapes */}
+      <div className="home-bg">
+        <div className="home-bg-shape home-bg-shape--1" />
+        <div className="home-bg-shape home-bg-shape--2" />
+      </div>
 
-        <nav className="topbar-tabs">
-          {allTabs.map((t, i) => (
-            <button key={t.id} className={`topbar-tab ${i === activeTab ? 'on' : ''}`}
-              onClick={() => setActiveTab(i)}>
-              <Icon name={t.icon} size={13} strokeWidth={2} />
-              <span>{t.label}</span>
-              {t.id !== 'contact' && t.id !== 'cases' && (
-                <span className="topbar-tab-count">{tabs.find(x => x.id === t.id)?.tiles.length}</span>
+      {/* Header */}
+      <header className="home-header">
+        <Logo className="home-logo" />
+      </header>
+
+      {/* Hero */}
+      <div className="hero">
+        <motion.span className="hero-eyebrow"
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}>
+          Automatyzacja procesów
+        </motion.span>
+
+        <motion.h1 className="hero-title"
+          initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}>
+          Odkryj, co automatyzacja może{' '}
+          <span className="hero-title-accent">zmienić w Twojej firmie</span>
+        </motion.h1>
+
+        <motion.p className="hero-sub"
+          initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.45 }}>
+          Odpowiedz na 3 pytania — AI przygotuje spersonalizowane pomysły na automatyzację dla Twojej firmy
+        </motion.p>
+
+        <motion.button className="hero-cta"
+          initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+          onClick={() => setView('inspirator')}>
+          <span className="hero-cta-icon">
+            <Icon name="zap" size={15} strokeWidth={2.2} />
+          </span>
+          Zaczynamy
+        </motion.button>
+
+        <motion.span className="hero-hint"
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.9 }}>
+          Zajmie to 30 sekund
+        </motion.span>
+      </div>
+
+      {/* Bottom dock */}
+      <nav className="dock">
+        <motion.div className="dock-bar"
+          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.7 }}>
+          {dockItems.map(item => (
+            <button key={item.id}
+              className={`dock-item ${item.id === 'home' ? (view === 'attract' ? 'active' : '') : openPanel === item.id ? 'active' : ''}`}
+              onClick={() => setView(item.id === 'home' ? 'attract' : item.id)}>
+              <Icon name={item.icon} size={15} strokeWidth={2} />
+              <span>{item.label}</span>
+              {item.count != null && (
+                <span className="dock-item-count">{item.count}</span>
               )}
-              {t.id === 'cases' && (
-                <span className="topbar-tab-count">6</span>
-              )}
-              {i === activeTab && (
-                <motion.div className="topbar-tab-bg" layoutId="tab-bg"
+              {openPanel === item.id && (
+                <motion.div className="dock-item-bg" layoutId="dock-bg"
                   transition={{ type: 'spring', stiffness: 400, damping: 35 }} />
               )}
             </button>
           ))}
-        </nav>
+        </motion.div>
+      </nav>
 
-        <div className="topbar-site">
-          <span className="topbar-site-dot" />
-          www.letsautomate.pl
-        </div>
-      </header>
+      {/* Inspirator flow */}
+      <AnimatePresence>
+        {view === 'inspirator' && (
+          <Inspirator onClose={() => setView('attract')} />
+        )}
+      </AnimatePresence>
 
-      {/* Main content — fills everything below */}
-      <main className="content">
-        <AnimatePresence mode="wait">
-          {isContact ? (
-            <motion.div key="contact" className="contact-wrap"
-              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }}
-              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}>
-              <ContactView />
-            </motion.div>
-          ) : isCases ? (
-            <motion.div key="cases" className="cases-wrap"
-              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }}
-              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}>
-              <CaseStudies />
-            </motion.div>
-          ) : tileTab ? (
-            <motion.div className="grid" key={tileTab.id}
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}>
-              {tileTab.tiles.map((t, i) => (
-                <motion.button className={`tile ${t.demoId ? 'tile--demo' : ''}`} key={t.id}
-                  style={{
-                    '--c': t.color,
-                    '--c-l': `${t.color}18`,
-                    '--c-m': `${t.color}30`,
-                  } as React.CSSProperties}
-                  initial={{ opacity: 0, y: 24, scale: 0.96 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ duration: 0.5, delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
-                  onClick={() => onTile(t)}>
-                  <div className="tile-gradient" />
-
-                  <div className="tile-head">
-                    <div className="tile-icon">
-                      <Icon name={t.icon} size={18} strokeWidth={1.8} />
-                    </div>
-                    {t.demoId && (
-                      <span className="tile-arrow">
-                        <Icon name="arrow-up-right" size={14} strokeWidth={2.5} />
-                      </span>
-                    )}
+      {/* Content panels */}
+      <AnimatePresence>
+        {openPanel && (
+          <motion.div className="home-panel" key={openPanel}
+            initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 30 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}>
+            <div className="home-panel-header">
+              <button className="home-panel-back" onClick={() => setView('attract')}>
+                <Icon name="arrow-left" size={18} strokeWidth={2} />
+              </button>
+              <span className="home-panel-title">
+                {dockItems.find(d => d.id === openPanel)?.label}
+              </span>
+            </div>
+            <div className="home-panel-body">
+              {openPanel === 'contact' ? <ContactView />
+                : openPanel === 'cases' ? <CaseStudies />
+                : tileTab ? (
+                  <div className="grid">
+                    {tileTab.tiles.map((t, i) => (
+                      <motion.button className={`tile ${t.demoId ? 'tile--demo' : ''}`}
+                        key={t.id}
+                        style={{ '--c': t.color, '--c-l': `${t.color}18`, '--c-m': `${t.color}30` } as React.CSSProperties}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: i * 0.04, ease: [0.16, 1, 0.3, 1] }}
+                        onClick={() => onTile(t, openPanel)}>
+                        <div className="tile-gradient" />
+                        <div className="tile-head">
+                          <div className="tile-icon">
+                            <Icon name={t.icon} size={18} strokeWidth={1.8} />
+                          </div>
+                          {t.demoId && (
+                            <span className="tile-arrow">
+                              <Icon name="arrow-up-right" size={14} strokeWidth={2.5} />
+                            </span>
+                          )}
+                        </div>
+                        <div className="tile-info">
+                          <span className="tile-name">{t.name}</span>
+                          <span className="tile-desc">{t.desc}</span>
+                        </div>
+                        {t.demoId && <span className="tile-badge">Demo</span>}
+                      </motion.button>
+                    ))}
                   </div>
-
-                  <div className="tile-info">
-                    <span className="tile-name">{t.name}</span>
-                    <span className="tile-desc">{t.desc}</span>
-                  </div>
-
-                  {t.demoId && <span className="tile-badge">Demo</span>}
-                </motion.button>
-              ))}
-            </motion.div>
-          ) : null}
-        </AnimatePresence>
-      </main>
+                ) : null}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
