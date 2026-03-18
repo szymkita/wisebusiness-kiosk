@@ -5,7 +5,8 @@ import { Icon } from './Icon';
 import { Logo } from './Logo';
 import './ContactView.css';
 
-const SMS_URI = 'sms:+48515522824?body=Dzień dobry, proszę o kontakt w sprawie oprogramowania.';
+const PHONE_DISPLAY = '571 399 932';
+const SMS_URI = 'sms:+48571399932?body=Dzień dobry, proszę o kontakt w sprawie oprogramowania.';
 const CONSULT_URL = 'https://letsautomate.pl/darmowa-konsultacja';
 
 const keys = ['1','2','3','4','5','6','7','8','9','+','0','del'];
@@ -98,15 +99,9 @@ export function ContactView() {
           </div>
         </div>
 
-        <div className="cv-info-items">
-          <div className="cv-info-item">
-            <Icon name="globe" size={14} />
-            <span>www.letsautomate.pl</span>
-          </div>
-          <div className="cv-info-item">
-            <Icon name="map-pin" size={14} />
-            <span>Polska</span>
-          </div>
+        <div className="cv-our-phone">
+          <span className="cv-our-phone-hint">lub zapisz nasz numer, aby zadzwonić w dogodnym momencie</span>
+          <span className="cv-our-phone-number">{PHONE_DISPLAY}</span>
         </div>
       </div>
 

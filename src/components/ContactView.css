@@ -89,19 +89,30 @@
   max-width: clamp(100px, 10vw, 170px);
 }
 
-.cv-info-items {
+/* Our phone number */
+.cv-our-phone {
   position: relative; z-index: 1;
   display: flex;
-  gap: clamp(8px, 1vw, 18px);
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: clamp(4px, 0.4vh, 8px);
 }
 
-.cv-info-item {
-  display: flex;
-  align-items: center;
-  gap: clamp(4px, 0.3vw, 8px);
-  font-size: clamp(10px, 0.7vw, 14px);
-  font-weight: 600;
-  opacity: 0.8;
+.cv-our-phone-hint {
+  font-size: clamp(9px, 0.6vw, 13px);
+  font-weight: 500;
+  opacity: 0.65;
+  line-height: 1.4;
+  max-width: 26vw;
+}
+
+.cv-our-phone-number {
+  font-size: clamp(20px, 1.8vw, 36px);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.95;
 }
 
 /* ── Right — Dialer ── */
