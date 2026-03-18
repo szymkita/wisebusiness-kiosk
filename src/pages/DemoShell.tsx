@@ -32,7 +32,7 @@ export function DemoShell() {
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}>
       <div className="ds-hdr">
-        <button className="ds-back" onClick={() => navigate('/')}>
+        <button className="ds-back" onClick={() => navigate(-1)}>
           <Icon name="arrow-left" size={16} strokeWidth={2} /> <span>Powrót</span>
         </button>
         <div className="ds-center"><Logo className="ds-logo" /></div>

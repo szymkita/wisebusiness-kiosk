@@ -19,7 +19,14 @@ export function Home() {
   const [activeTab, setActiveTab] = useState(0);
   const navigate = useNavigate();
 
-  const onTile = (t: TileData) => { if (t.demoId) navigate(`/demo/${t.demoId}`); };
+  const onTile = (t: TileData) => {
+    // Industries tab → go to industry detail page
+    if (currentTabId === 'industries') {
+      navigate(`/industry/${t.id}`);
+    } else if (t.demoId) {
+      navigate(`/demo/${t.demoId}`);
+    }
+  };
 
   const currentTabId = allTabs[activeTab]?.id;
   const isContact = currentTabId === 'contact';
