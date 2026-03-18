@@ -43,12 +43,20 @@
   opacity: 0.9;
 }
 
-/* Two QR codes side by side */
+/* Two QR codes with divider */
 .cv-qr-pair {
   position: relative; z-index: 1;
   display: flex;
-  gap: clamp(10px, 1.2vw, 20px);
+  gap: clamp(14px, 1.8vw, 30px);
   justify-content: center;
+  align-items: flex-start;
+}
+
+.cv-qr-divider {
+  width: 1px;
+  align-self: stretch;
+  background: linear-gradient(180deg, transparent, rgba(255,255,255,0.25), transparent);
+  flex-shrink: 0;
 }
 
 .cv-qr-item {
@@ -143,36 +151,6 @@
   margin-bottom: clamp(10px, 1.2vh, 18px);
 }
 
-/* Controls (backspace / clear) */
-.cv-phone-controls {
-  display: flex;
-  gap: clamp(6px, 0.5vw, 10px);
-  margin-bottom: clamp(10px, 1.2vh, 18px);
-}
-
-.cv-phone-ctrl {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: clamp(5px, 0.5vh, 8px) clamp(10px, 0.8vw, 16px);
-  background: var(--bg);
-  border: 1px solid rgba(0,0,0,0.06);
-  border-radius: 10px;
-  font-family: inherit;
-  font-size: clamp(10px, 0.65vw, 13px);
-  font-weight: 600;
-  color: var(--text2);
-  cursor: pointer;
-  transition: all 0.15s;
-  min-height: 36px;
-}
-.cv-phone-ctrl:hover {
-  background: rgba(0,0,0,0.04);
-}
-.cv-phone-ctrl--clear {
-  color: var(--text3);
-}
-
 /* Dialer grid — functional buttons */
 .cv-dialer {
   display: grid;
@@ -206,8 +184,58 @@
   background: rgba(16,185,129,0.12);
 }
 
+.cv-dial-key--del {
+  background: rgba(239,68,68,0.04);
+  color: var(--text3);
+}
+.cv-dial-key--del:hover {
+  background: rgba(239,68,68,0.08);
+  border-color: rgba(239,68,68,0.15);
+  color: #ef4444;
+}
+
+.cv-dial-key--plus {
+  background: rgba(16,185,129,0.04);
+}
+.cv-dial-key--plus:hover {
+  background: rgba(16,185,129,0.08);
+}
+
 .cv-dial-digit {
   font-size: clamp(16px, 1.2vw, 24px);
   font-weight: 700;
   color: var(--text);
+}
+
+/* Send button */
+.cv-send-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(6px, 0.5vw, 10px);
+  width: 100%;
+  max-width: clamp(220px, 20vw, 360px);
+  padding: clamp(14px, 1.5vh, 20px);
+  margin-top: clamp(8px, 1vh, 14px);
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  font-family: inherit;
+  font-size: clamp(14px, 1vw, 20px);
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.25s var(--ease-out-expo);
+  box-shadow: 0 4px 14px rgba(16,185,129,0.3);
+  min-height: 56px;
+}
+
+.cv-send-btn:hover {
+  background: var(--green-dark);
+  box-shadow: 0 6px 24px rgba(16,185,129,0.4);
+  transform: translateY(-2px);
+}
+
+.cv-send-btn:active {
+  transform: scale(0.97);
 }

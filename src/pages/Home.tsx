@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Logo } from '../components/Logo';
@@ -18,27 +18,6 @@ const allTabs = [
 export function Home() {
   const [activeTab, setActiveTab] = useState(0);
   const navigate = useNavigate();
-  const idleRef = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const autoRef = useRef<ReturnType<typeof setInterval>>(undefined);
-
-  const tileTabCount = tabs.length;
-
-  const startAuto = useCallback(() => {
-    autoRef.current = setInterval(() => setActiveTab(p => (p + 1) % tileTabCount), 15000);
-  }, [tileTabCount]);
-
-  const resetIdle = useCallback(() => {
-    clearTimeout(idleRef.current);
-    clearInterval(autoRef.current);
-    idleRef.current = setTimeout(startAuto, 30000);
-  }, [startAuto]);
-
-  useEffect(() => {
-    startAuto();
-    const h = () => resetIdle();
-    document.addEventListener('pointerdown', h);
-    return () => { clearInterval(autoRef.current); clearTimeout(idleRef.current); document.removeEventListener('pointerdown', h); };
-  }, [startAuto, resetIdle]);
 
   const onTile = (t: TileData) => { if (t.demoId) navigate(`/demo/${t.demoId}`); };
 
@@ -60,7 +39,7 @@ export function Home() {
         <nav className="topbar-tabs">
           {allTabs.map((t, i) => (
             <button key={t.id} className={`topbar-tab ${i === activeTab ? 'on' : ''}`}
-              onClick={() => { setActiveTab(i); resetIdle(); }}>
+              onClick={() => setActiveTab(i)}>
               <Icon name={t.icon} size={13} strokeWidth={2} />
               <span>{t.label}</span>
               {t.id !== 'contact' && t.id !== 'cases' && (

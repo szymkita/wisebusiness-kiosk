@@ -4,26 +4,33 @@ import { Icon } from './Icon';
 import { Logo } from './Logo';
 import './ContactView.css';
 
-const TARGET_PHONE = '+48 515 522 824';
 const SMS_URI = 'sms:+48515522824?body=Dzień dobry, proszę o kontakt w sprawie oprogramowania.';
 const CONSULT_URL = 'https://letsautomate.pl/darmowa-konsultacja';
 
-const keys = ['1','2','3','4','5','6','7','8','9','*','0','#'];
+const keys = ['1','2','3','4','5','6','7','8','9','+','0','del'];
+
+function formatPhone(raw: string): string {
+  const clean = raw.replace(/[^0-9+]/g, '');
+  if (!clean) return '';
+  // Try formatting as +48 XXX XXX XXX
+  const m = clean.match(/^(\+?\d{0,2})(\d{0,3})(\d{0,3})(\d{0,3})(.*)$/);
+  if (!m) return clean;
+  return [m[1], m[2], m[3], m[4], m[5]].filter(Boolean).join(' ');
+}
 
 export function ContactView() {
-  const [typed, setTyped] = useState('');
+  const [typed, setTyped] = useState('+48');
 
   const press = (d: string) => {
+    if (d === 'del') {
+      setTyped(prev => prev.slice(0, -1));
+      return;
+    }
     setTyped(prev => prev + d);
   };
 
-  const clear = () => setTyped('');
-
-  const backspace = () => setTyped(prev => prev.slice(0, -1));
-
-  const formatted = typed
-    ? typed.replace(/(\d{2})(\d{3})(\d{3})(\d{3})/, '$1 $2 $3 $4').replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3')
-    : TARGET_PHONE;
+  const display = formatPhone(typed) || '+48';
+  const hasNumber = typed.replace(/[^0-9]/g, '').length >= 9;
 
   return (
     <div className="cv">
@@ -54,6 +61,8 @@ export function ContactView() {
             </span>
           </div>
 
+          <div className="cv-qr-divider" />
+
           <div className="cv-qr-item">
             <div className="cv-qr-frame">
               <QRCodeSVG
@@ -67,7 +76,7 @@ export function ContactView() {
             </div>
             <span className="cv-qr-label">
               <Icon name="globe" size={12} strokeWidth={2} />
-              Darmowa konsultacja online
+              Umów darmową konsultację
             </span>
           </div>
         </div>
@@ -88,32 +97,36 @@ export function ContactView() {
       <div className="cv-phone-col">
         <div className="cv-phone-header">
           <Icon name="zap" size={18} strokeWidth={2} />
-          <h2 className="cv-phone-title">Zadzwoń do nas</h2>
+          <h2 className="cv-phone-title">Zostaw numer — oddzwonimy</h2>
         </div>
 
-        <div className={`cv-phone-number ${typed ? 'cv-phone-number--typed' : ''}`}>
-          {formatted}
+        <div className={`cv-phone-number ${typed.length > 3 ? 'cv-phone-number--typed' : ''}`}>
+          {display}
         </div>
-        {typed ? (
-          <div className="cv-phone-controls">
-            <button className="cv-phone-ctrl" onClick={backspace}>
-              <Icon name="arrow-left" size={14} strokeWidth={2} /> Cofnij
-            </button>
-            <button className="cv-phone-ctrl cv-phone-ctrl--clear" onClick={clear}>
-              Wyczyść
-            </button>
-          </div>
-        ) : (
-          <p className="cv-phone-sub">Wpisz numer lub zeskanuj QR kod</p>
-        )}
+
+        <p className="cv-phone-sub">Wpisz swój numer telefonu</p>
 
         <div className="cv-dialer">
           {keys.map(d => (
-            <button className="cv-dial-key" key={d} onClick={() => press(d)}>
-              <span className="cv-dial-digit">{d}</span>
+            <button
+              className={`cv-dial-key ${d === 'del' ? 'cv-dial-key--del' : ''} ${d === '+' ? 'cv-dial-key--plus' : ''}`}
+              key={d}
+              onClick={() => press(d)}>
+              {d === 'del' ? (
+                <Icon name="arrow-left" size={18} strokeWidth={2} />
+              ) : (
+                <span className="cv-dial-digit">{d}</span>
+              )}
             </button>
           ))}
         </div>
+
+        {hasNumber && (
+          <button className="cv-send-btn">
+            <Icon name="zap" size={18} strokeWidth={2} />
+            Wyślij — oddzwonimy!
+          </button>
+        )}
       </div>
     </div>
   );
