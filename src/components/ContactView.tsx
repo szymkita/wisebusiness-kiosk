@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Icon } from './Icon';
 import { Logo } from './Logo';
 import './ContactView.css';
@@ -12,16 +13,24 @@ const keys = ['1','2','3','4','5','6','7','8','9','+','0','del'];
 function formatPhone(raw: string): string {
   const clean = raw.replace(/[^0-9+]/g, '');
   if (!clean) return '';
-  // Try formatting as +48 XXX XXX XXX
   const m = clean.match(/^(\+?\d{0,2})(\d{0,3})(\d{0,3})(\d{0,3})(.*)$/);
   if (!m) return clean;
   return [m[1], m[2], m[3], m[4], m[5]].filter(Boolean).join(' ');
 }
 
+function countDigits(raw: string): number {
+  // Count only the digits AFTER the +48 prefix
+  const clean = raw.replace(/[^0-9+]/g, '');
+  const withoutPrefix = clean.replace(/^\+48/, '');
+  return withoutPrefix.replace(/[^0-9]/g, '').length;
+}
+
 export function ContactView() {
   const [typed, setTyped] = useState('+48');
+  const [sent, setSent] = useState(false);
 
   const press = (d: string) => {
+    if (sent) return;
     if (d === 'del') {
       setTyped(prev => prev.slice(0, -1));
       return;
@@ -29,8 +38,16 @@ export function ContactView() {
     setTyped(prev => prev + d);
   };
 
+  const send = () => {
+    setSent(true);
+    setTimeout(() => {
+      setSent(false);
+      setTyped('+48');
+    }, 5000);
+  };
+
   const display = formatPhone(typed) || '+48';
-  const hasNumber = typed.replace(/[^0-9]/g, '').length >= 9;
+  const isReady = countDigits(typed) >= 9;
 
   return (
     <div className="cv">
@@ -76,7 +93,7 @@ export function ContactView() {
             </div>
             <span className="cv-qr-label">
               <Icon name="globe" size={12} strokeWidth={2} />
-              Umów darmową konsultację
+              Przejdź do letsautomate.pl
             </span>
           </div>
         </div>
@@ -93,40 +110,64 @@ export function ContactView() {
         </div>
       </div>
 
-      {/* Right — dialer */}
+      {/* Right — dialer or thank you */}
       <div className="cv-phone-col">
-        <div className="cv-phone-header">
-          <Icon name="zap" size={18} strokeWidth={2} />
-          <h2 className="cv-phone-title">Zostaw numer — oddzwonimy</h2>
-        </div>
+        <AnimatePresence mode="wait">
+          {sent ? (
+            <motion.div className="cv-thank" key="thank"
+              initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.3 }}>
+              <div className="cv-thank-ico">
+                <Icon name="check-circle" size={44} strokeWidth={1.5} />
+              </div>
+              <h2 className="cv-thank-title">Dziękujemy!</h2>
+              <p className="cv-thank-text">
+                Zapisaliśmy Twój numer.<br />
+                Oddzwonimy najszybciej jak to możliwe.
+              </p>
+              <div className="cv-thank-number">{display}</div>
+            </motion.div>
+          ) : (
+            <motion.div className="cv-dialer-wrap" key="dialer"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
+              <div className="cv-phone-header">
+                <Icon name="zap" size={18} strokeWidth={2} />
+                <h2 className="cv-phone-title">Zostaw numer — oddzwonimy</h2>
+              </div>
 
-        <div className={`cv-phone-number ${typed.length > 3 ? 'cv-phone-number--typed' : ''}`}>
-          {display}
-        </div>
+              <div className={`cv-phone-number ${typed.length > 3 ? 'cv-phone-number--typed' : ''}`}>
+                {display}
+              </div>
 
-        <p className="cv-phone-sub">Wpisz swój numer telefonu</p>
+              <p className="cv-phone-sub">Wpisz swój numer telefonu</p>
 
-        <div className="cv-dialer">
-          {keys.map(d => (
-            <button
-              className={`cv-dial-key ${d === 'del' ? 'cv-dial-key--del' : ''} ${d === '+' ? 'cv-dial-key--plus' : ''}`}
-              key={d}
-              onClick={() => press(d)}>
-              {d === 'del' ? (
-                <Icon name="arrow-left" size={18} strokeWidth={2} />
-              ) : (
-                <span className="cv-dial-digit">{d}</span>
+              <div className="cv-dialer">
+                {keys.map(d => (
+                  <button
+                    className={`cv-dial-key ${d === 'del' ? 'cv-dial-key--del' : ''} ${d === '+' ? 'cv-dial-key--plus' : ''}`}
+                    key={d}
+                    onClick={() => press(d)}>
+                    {d === 'del' ? (
+                      <Icon name="arrow-left" size={18} strokeWidth={2} />
+                    ) : (
+                      <span className="cv-dial-digit">{d}</span>
+                    )}
+                  </button>
+                ))}
+              </div>
+
+              {isReady && (
+                <motion.button className="cv-send-btn" onClick={send}
+                  initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}>
+                  <Icon name="zap" size={18} strokeWidth={2} />
+                  Wyślij — oddzwonimy!
+                </motion.button>
               )}
-            </button>
-          ))}
-        </div>
-
-        {hasNumber && (
-          <button className="cv-send-btn">
-            <Icon name="zap" size={18} strokeWidth={2} />
-            Wyślij — oddzwonimy!
-          </button>
-        )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
