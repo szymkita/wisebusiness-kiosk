@@ -60,21 +60,27 @@ FORMAT: Odpowiedz WYŁĄCZNIE poprawnym JSON-em, bez dodatkowego tekstu, bez mar
 }`;
 
 function buildUserPrompt(industry: string, context: string[], size: string, excludeIdeas?: string[]): string {
-  // context contains: [activity, ...workflow issues, "Priorytet: X"]
-  const activity = context[0];
-  const issues = context.slice(1, -1);
-  const priority = context[context.length - 1];
+  // context: ["Proces do usprawnienia: X (desc)", ...problems, "Cel: X"]
+  const processLine = context[0];
+  const problemLines = context.slice(1, -1);
+  const goalLine = context[context.length - 1];
 
-  let prompt = `Wygeneruj spersonalizowaną inspirację automatyzacyjną.
+  let prompt = `Wygeneruj spersonalizowaną diagnozę i pomysły na automatyzację.
 
 BRANŻA: ${industry}
-CORE DZIAŁALNOŚCI: ${activity}
-REALIA CODZIENNEJ PRACY:
-${issues.map(s => `- ${s}`).join('\n')}
-${priority}
+${processLine}
+PROBLEMY W TYM PROCESIE:
+${problemLines.map(s => `- ${s}`).join('\n')}
+${goalLine}
 SKALA FIRMY: ${size}
 
-Pomysły MUSZĄ być specyficzne dla branży "${industry}" i bezpośrednio adresować opisaną działalność i realia. Priorytet użytkownika powinien być widoczny w rozwiązaniach. Nie pisz ogólników — bądź boleśnie konkretny.`;
+WAŻNE:
+- Diagnoza i pomysły MUSZĄ dotyczyć konkretnego procesu, który użytkownik wybrał
+- Pomysły muszą bezpośrednio adresować wskazane problemy
+- Cel użytkownika powinien być widoczny w każdym pomyśle
+- Bądź specyficzny dla branży "${industry}" — używaj przykładów, nazw, sytuacji typowych dla tej branży
+- NIE pisz ogólników. Każde zdanie powinno być tak konkretne, żeby czytelnik pomyślał "to o mojej firmie"
+- Metryki efektu muszą być realistyczne dla firmy ${size}`;
 
   if (excludeIdeas && excludeIdeas.length > 0) {
     prompt += `
