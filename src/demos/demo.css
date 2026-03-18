@@ -3,7 +3,7 @@
 /* Sidebar */
 .da-side {
   width: 14vw; min-width: 180px;
-  background: var(--bg-card); border-right: 1.5px solid var(--border);
+  background: var(--bg-white); border-right: 1px solid var(--border);
   padding: 1.5vh 0; display:flex; flex-direction:column; flex-shrink:0;
 }
 .da-stit {
@@ -15,10 +15,10 @@
   display:flex; align-items:center; gap:.5vw;
   padding: .7vh 1.2vw; font-size: clamp(11px,.72vw,14px); font-weight:500;
   color:var(--text2); cursor:pointer; border:none; background:none;
-  width:100%; text-align:left; font-family:inherit; transition:all .15s;
+  width:100%; text-align:left; font-family:inherit; transition:all .2s var(--ease-out-expo);
 }
-.da-nav:hover { background:var(--bg); color:var(--text); }
-.da-nav.on { background:var(--green-light); color:var(--accent); border-right:2px solid var(--green); }
+.da-nav:hover { background:var(--bg-subtle); color:var(--text); }
+.da-nav.on { background:var(--primary-bg); color:var(--primary-dark); border-right:2px solid var(--primary); }
 
 /* Main */
 .da-main { flex:1; padding: 2vh 2vw; overflow-y:auto; }
@@ -29,27 +29,29 @@
 /* Stat cards */
 .da-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:min(1vh,12px); margin-bottom:1.8vh; }
 .da-stat {
-  background:var(--bg-card); border:1.5px solid var(--border); border-radius:var(--rs);
-  padding: 1.2vh 1vw; box-shadow:var(--shadow-s);
+  background:var(--bg-card); border:1px solid var(--border); border-radius:var(--rs);
+  padding: 1.2vh 1vw;
+  box-shadow: var(--shadow-xs);
 }
 .da-stat-l { font-size:clamp(9px,.55vw,12px); color:var(--text3); font-weight:600; text-transform:uppercase; letter-spacing:.04em; margin-bottom:.4vh; }
 .da-stat-v { font-size:clamp(16px,1.3vw,26px); font-weight:800; letter-spacing:-.03em; font-variant-numeric:tabular-nums; }
 .da-stat-c { font-size:clamp(9px,.55vw,12px); font-weight:700; margin-top:2px; }
-.da-stat-c.pos { color:var(--accent); }
-.da-stat-c.neg { color:#dc2626; }
+.da-stat-c.pos { color:var(--primary); }
+.da-stat-c.neg { color:#ef4444; }
 
 /* Chart */
 .da-chart {
-  background:var(--bg-card); border:1.5px solid var(--border); border-radius:var(--rs);
-  padding: 1.2vh 1.2vw; box-shadow:var(--shadow-s);
+  background:var(--bg-card); border:1px solid var(--border); border-radius:var(--rs);
+  padding: 1.2vh 1.2vw;
+  box-shadow: var(--shadow-xs);
 }
 .da-cht { font-size:clamp(11px,.75vw,15px); font-weight:700; margin-bottom:1vh; }
 .da-bars { display:flex; align-items:flex-end; gap:min(.4vw,6px); height:min(16vh,180px); }
 .da-bar {
-  flex:1; border-radius:3px 3px 0 0; min-height:6px; position:relative;
+  flex:1; border-radius:4px 4px 0 0; min-height:6px; position:relative;
   transition:all .2s; cursor:default;
 }
-.da-bar:hover { filter:brightness(1.1); transform:scaleY(1.03); transform-origin:bottom; }
+.da-bar:hover { filter:brightness(1.05); transform:scaleY(1.03); transform-origin:bottom; }
 .da-bar span {
   position:absolute; bottom:-2.2vh; left:50%; transform:translateX(-50%);
   font-size:clamp(7px,.5vw,10px); color:var(--text3); white-space:nowrap; font-weight:500;
@@ -57,29 +59,30 @@
 
 /* Table */
 .da-tbl {
-  width:100%; background:var(--bg-card); border:1.5px solid var(--border);
-  border-radius:var(--rs); overflow:hidden; box-shadow:var(--shadow-s);
+  width:100%; background:var(--bg-card); border:1px solid var(--border);
+  border-radius:var(--rs); overflow:hidden;
+  box-shadow: var(--shadow-xs);
 }
 .da-tbl table { width:100%; border-collapse:collapse; }
 .da-tbl th {
   text-align:left; padding:.8vh 1vw;
   font-size:clamp(8px,.52vw,11px); font-weight:700; color:var(--text3);
   text-transform:uppercase; letter-spacing:.06em;
-  background:var(--bg); border-bottom:1.5px solid var(--border);
+  background:var(--bg-subtle); border-bottom:1px solid var(--border);
 }
 .da-tbl td {
   padding:.8vh 1vw; font-size:clamp(10px,.7vw,13px);
   border-bottom:1px solid var(--border); color:var(--text);
 }
 .da-tbl tr:last-child td { border-bottom:none; }
-.da-tbl tr:hover td { background:var(--bg); }
+.da-tbl tr:hover td { background:var(--bg-subtle); }
 
 /* Badges */
 .badge { display:inline-flex; padding:2px 8px; border-radius:100px; font-size:clamp(8px,.52vw,11px); font-weight:700; }
-.badge.ok { background:rgba(0,205,119,.1); color:#059652; }
-.badge.warn { background:rgba(245,158,11,.1); color:#b45309; }
+.badge.ok { background:rgba(16,185,129,.1); color:#059669; }
+.badge.warn { background:rgba(245,158,11,.1); color:#d97706; }
 .badge.err { background:rgba(239,68,68,.1); color:#dc2626; }
-.badge.info { background:rgba(59,130,246,.1); color:#1d4ed8; }
+.badge.info { background:rgba(59,130,246,.1); color:#2563eb; }
 
 /* Cols */
 .da-cols { display:grid; grid-template-columns:1fr 1fr; gap:min(1.2vw,16px); }
@@ -89,18 +92,18 @@
   display:inline-flex; align-items:center; gap:.3vw;
   padding: .6vh 1vw; border-radius:100px; border:none;
   font-size:clamp(10px,.68vw,13px); font-weight:700; font-family:inherit;
-  cursor:pointer; transition:all .2s;
+  cursor:pointer; transition:all .25s var(--ease-out-expo);
 }
-.da-btn.pri { background:var(--green); color:#fff; }
-.da-btn.pri:hover { background:var(--green-dark); }
-.da-btn.sec { background:var(--bg); color:var(--text); border:1.5px solid var(--border); }
-.da-btn.sec:hover { border-color:var(--border-hover); }
+.da-btn.pri { background:var(--primary); color:#fff; }
+.da-btn.pri:hover { background:var(--primary-dark); box-shadow: var(--shadow-primary); }
+.da-btn.sec { background:var(--bg-white); color:var(--text); border:1px solid var(--border); }
+.da-btn.sec:hover { border-color:var(--border-hover); background:var(--bg-subtle); }
 
 /* Accounts row */
 .da-accounts { display:grid; grid-template-columns:repeat(4,1fr); gap:min(1vh,12px); margin-bottom:1.8vh; }
 .da-account {
-  background:var(--bg-card); border:1.5px solid var(--border); border-radius:var(--rs);
-  padding: 1vh 1vw; box-shadow:var(--shadow-s);
+  background:var(--bg-card); border:1px solid var(--border); border-radius:var(--rs);
+  padding: 1vh 1vw; box-shadow: var(--shadow-xs);
 }
 .da-account-name { font-size:clamp(9px,.58vw,12px); color:var(--text3); font-weight:600; margin-bottom:.3vh; }
 .da-account-bal { font-size:clamp(13px,1vw,20px); font-weight:800; letter-spacing:-.02em; font-variant-numeric:tabular-nums; }
@@ -113,7 +116,7 @@
 
 /* Progress bar */
 .da-progress {
-  width:100%; height:min(.6vh,6px); background:var(--bg);
+  width:100%; height:min(.6vh,6px); background:var(--bg-muted);
   border-radius:100px; overflow:hidden;
 }
 .da-progress-fill {
@@ -125,15 +128,15 @@
   display:flex; align-items:center; gap:.5vw;
   padding: .6vh 1.2vw; font-size:clamp(10px,.65vw,13px); font-weight:600;
   color:var(--text2); cursor:pointer; border:none; background:none;
-  width:100%; text-align:left; font-family:inherit; transition:all .15s;
+  width:100%; text-align:left; font-family:inherit; transition:all .2s var(--ease-out-expo);
 }
-.da-qa:hover { background:var(--bg); color:var(--accent); }
+.da-qa:hover { background:var(--bg-subtle); color:var(--primary-dark); }
 
 /* Vitals */
 .da-vitals { display:grid; grid-template-columns:repeat(3,1fr); gap:min(1vh,10px); margin-bottom:1.8vh; }
 .da-vital {
-  background:var(--bg-card); border:1.5px solid var(--border); border-radius:var(--rs);
-  padding: 1vh 1vw; box-shadow:var(--shadow-s); text-align:center;
+  background:var(--bg-card); border:1px solid var(--border); border-radius:var(--rs);
+  padding: 1vh 1vw; text-align:center; box-shadow: var(--shadow-xs);
 }
 .da-vital-label { font-size:clamp(8px,.5vw,10px); color:var(--text3); font-weight:600; text-transform:uppercase; letter-spacing:.04em; }
 .da-vital-val { font-size:clamp(18px,1.5vw,30px); font-weight:800; margin:.3vh 0; font-variant-numeric:tabular-nums; }
@@ -141,14 +144,14 @@
 
 /* Patient card */
 .da-patient {
-  background:var(--bg-card); border:1.5px solid var(--border); border-radius:var(--rs);
-  padding: 1.2vh 1.2vw; box-shadow:var(--shadow-s); margin-bottom:1.8vh;
-  display:flex; align-items:center; gap:1.2vw;
+  background:var(--bg-card); border:1px solid var(--border); border-radius:var(--rs);
+  padding: 1.2vh 1.2vw; margin-bottom:1.8vh;
+  display:flex; align-items:center; gap:1.2vw; box-shadow: var(--shadow-xs);
 }
 .da-patient-avatar {
   width:clamp(40px,3.5vw,56px); height:clamp(40px,3.5vw,56px);
-  border-radius:50%; background:var(--green-light); display:flex;
-  align-items:center; justify-content:center; color:var(--accent);
+  border-radius:50%; background:var(--primary-light); display:flex;
+  align-items:center; justify-content:center; color:var(--primary-dark);
   font-weight:800; font-size:clamp(14px,1.2vw,22px); flex-shrink:0;
 }
 .da-patient-info { flex:1; }
@@ -157,15 +160,15 @@
 
 /* Map placeholder */
 .da-map {
-  background:var(--bg-card); border:1.5px solid var(--border); border-radius:var(--rs);
-  padding: 1.2vh 1.2vw; box-shadow:var(--shadow-s); margin-bottom:1.8vh; overflow:hidden;
+  background:var(--bg-card); border:1px solid var(--border); border-radius:var(--rs);
+  padding: 1.2vh 1.2vw; margin-bottom:1.8vh; overflow:hidden; box-shadow: var(--shadow-xs);
 }
 .da-map svg { width:100%; height:min(20vh,220px); }
 
 /* Bestsellers */
 .da-best {
-  background:var(--bg-card); border:1.5px solid var(--border); border-radius:var(--rs);
-  padding: 1.2vh 1.2vw; box-shadow:var(--shadow-s);
+  background:var(--bg-card); border:1px solid var(--border); border-radius:var(--rs);
+  padding: 1.2vh 1.2vw; box-shadow: var(--shadow-xs);
 }
 .da-best-item {
   display:flex; align-items:center; gap:.8vw;
@@ -175,7 +178,7 @@
 .da-best-rank {
   width:clamp(20px,1.5vw,28px); height:clamp(20px,1.5vw,28px);
   display:flex; align-items:center; justify-content:center;
-  border-radius:50%; background:var(--bg); font-size:clamp(9px,.55vw,12px);
+  border-radius:50%; background:var(--bg-subtle); font-size:clamp(9px,.55vw,12px);
   font-weight:800; color:var(--text2); flex-shrink:0;
 }
 .da-best-info { flex:1; }
@@ -188,9 +191,7 @@
 .da-section-title { font-size:clamp(11px,.75vw,15px); font-weight:700; margin-bottom:1vh; }
 
 /* Notification dot */
-.da-notif {
-  position:relative;
-}
+.da-notif { position:relative; }
 .da-notif::after {
   content:''; position:absolute; top:0; right:0;
   width:clamp(6px,.4vw,8px); height:clamp(6px,.4vw,8px);

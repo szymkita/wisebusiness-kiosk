@@ -19,7 +19,6 @@ export function Home() {
   const idleRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const autoRef = useRef<ReturnType<typeof setInterval>>(undefined);
 
-  // Auto-switch only between tile tabs (not contact)
   const tileTabCount = tabs.length;
 
   const startAuto = useCallback(() => {
@@ -46,57 +45,89 @@ export function Home() {
 
   return (
     <div className="home">
-      <div className="orb orb1" /><div className="orb orb2" /><div className="orb orb3" />
+      {/* Decorative background */}
+      <div className="mesh">
+        <div className="mesh-orb mesh-orb--1" />
+        <div className="mesh-orb mesh-orb--2" />
+        <div className="mesh-orb mesh-orb--3" />
+        <div className="mesh-orb mesh-orb--4" />
+        <div className="mesh-grid" />
+      </div>
 
       <header className="hdr">
-        <Logo className="hdr-logo" />
-        <span className="hdr-tag">Tworzymy oprogramowanie dla biznesu</span>
+        <div className="hdr-left">
+          <Logo className="hdr-logo" />
+          <div className="hdr-divider" />
+          <span className="hdr-tag">
+            <span className="hdr-tag-accent">Tworzymy</span> oprogramowanie dla biznesu
+          </span>
+        </div>
+        <div className="hdr-pill">
+          <span className="hdr-pill-dot" />
+          <span className="hdr-pill-text">www.letsautomate.pl</span>
+        </div>
       </header>
 
       <nav className="tabs">
-        {allTabs.map((t, i) => (
-          <button key={t.id} className={`tab ${i === activeTab ? 'on' : ''}`}
-            onClick={() => { setActiveTab(i); resetIdle(); }}>
-            <Icon name={t.icon} size={15} strokeWidth={2} />
-            {t.label}
-            {t.id !== 'contact' && (
-              <span className="tab-n">{tabs.find(x => x.id === t.id)?.tiles.length}</span>
-            )}
-          </button>
-        ))}
+        <div className="tabs-track">
+          {allTabs.map((t, i) => (
+            <button key={t.id} className={`tab ${i === activeTab ? 'on' : ''}`}
+              onClick={() => { setActiveTab(i); resetIdle(); }}>
+              <Icon name={t.icon} size={14} strokeWidth={2} />
+              <span className="tab-label">{t.label}</span>
+              {t.id !== 'contact' && (
+                <span className="tab-n">{tabs.find(x => x.id === t.id)?.tiles.length}</span>
+              )}
+              {i === activeTab && (
+                <motion.div className="tab-indicator" layoutId="tab-indicator"
+                  transition={{ type: 'spring', stiffness: 400, damping: 35 }} />
+              )}
+            </button>
+          ))}
+        </div>
       </nav>
 
       <main className="tiles">
         <AnimatePresence mode="wait">
           {isContact ? (
             <motion.div key="contact" className="contact-wrap"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}>
+              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}>
               <ContactView />
             </motion.div>
           ) : tileTab ? (
             <motion.div className="grid" key={tileTab.id}
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}>
+              transition={{ duration: 0.3 }}>
               {tileTab.tiles.map((t, i) => (
-                <motion.button className="tile" key={t.id}
-                  style={{ '--c': t.color, '--cbg': `${t.color}10`, '--cbrd': `${t.color}30` } as React.CSSProperties}
-                  initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: i * 0.04 }}
+                <motion.button className={`tile ${t.demoId ? 'tile--has-demo' : ''}`} key={t.id}
+                  style={{ '--c': t.color, '--cbg': `${t.color}10`, '--cbrd': `${t.color}30`, '--cglow': `${t.color}0a` } as React.CSSProperties}
+                  initial={{ opacity: 0, y: 20, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.5, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
                   onClick={() => onTile(t)}>
-                  <div className="tile-ico"><Icon name={t.icon} size={22} strokeWidth={1.6} /></div>
+                  <div className="tile-glow" />
+                  <div className="tile-top">
+                    <div className="tile-ico">
+                      <Icon name={t.icon} size={20} strokeWidth={1.6} />
+                    </div>
+                    {t.demoId && (
+                      <span className="tile-go">
+                        <Icon name="arrow-up-right" size={12} strokeWidth={2.5} />
+                      </span>
+                    )}
+                  </div>
                   <div className="tile-body">
                     <span className="tile-name">{t.name}</span>
                     <span className="tile-desc">{t.desc}</span>
                   </div>
-                  {t.demoId && <span className="tile-go"><Icon name="arrow-up-right" size={13} strokeWidth={2.5} /></span>}
+                  {t.demoId && <span className="tile-demo-badge">Demo</span>}
                 </motion.button>
               ))}
             </motion.div>
           ) : null}
         </AnimatePresence>
       </main>
-
     </div>
   );
 }

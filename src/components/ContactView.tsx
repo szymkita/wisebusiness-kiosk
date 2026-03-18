@@ -24,12 +24,13 @@ export function ContactView() {
       {/* Left — QR + info */}
       <div className="cv-left">
         <div className="cv-qr-card">
+          <div className="cv-qr-glow" />
           <div className="cv-qr-frame">
             <QRCodeSVG
               value="https://www.letsautomate.pl"
               size={220}
               bgColor="transparent"
-              fgColor="#0a0a0a"
+              fgColor="#0f172a"
               level="M"
               style={{ width: '100%', height: '100%' }}
             />
@@ -40,15 +41,17 @@ export function ContactView() {
 
         <div className="cv-info">
           <div className="cv-info-row">
-            <div className="cv-info-ico"><Icon name="globe" size={18} /></div>
+            <div className="cv-info-ico">
+              <Icon name="globe" size={16} />
+            </div>
             <div>
               <div className="cv-info-label">Strona WWW</div>
               <div className="cv-info-val">www.letsautomate.pl</div>
             </div>
           </div>
           <div className="cv-info-row">
-            <div className="cv-info-ico" style={{ background: 'rgba(59,130,246,0.1)', color: '#3b82f6' }}>
-              <Icon name="map-pin" size={18} />
+            <div className="cv-info-ico cv-info-ico--blue">
+              <Icon name="map-pin" size={16} />
             </div>
             <div>
               <div className="cv-info-label">Siedziba</div>
@@ -65,8 +68,10 @@ export function ContactView() {
       {/* Right — form */}
       <div className="cv-right">
         <div className="cv-form-card">
-          <h2 className="cv-form-title">Zostaw kontakt</h2>
-          <p className="cv-form-sub">Odezwiemy się do Ciebie w ciągu 24 godzin</p>
+          <div className="cv-form-header">
+            <h2 className="cv-form-title">Zostaw kontakt</h2>
+            <p className="cv-form-sub">Odezwiemy się do Ciebie w ciągu 24 godzin</p>
+          </div>
 
           <AnimatePresence mode="wait">
             {sent ? (
@@ -74,7 +79,7 @@ export function ContactView() {
                 key="ok" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
                 <div className="cv-success-ico">
-                  <Icon name="check-circle" size={40} strokeWidth={1.5} />
+                  <Icon name="check-circle" size={36} strokeWidth={1.5} />
                 </div>
                 <h3>Dziękujemy!</h3>
                 <p>Wiadomość została wysłana.<br />Skontaktujemy się wkrótce.</p>
@@ -109,7 +114,8 @@ export function ContactView() {
                 </div>
 
                 <button type="submit" className="cv-submit">
-                  <Icon name="zap" size={16} strokeWidth={2} />
+                  <span className="cv-submit-glow" />
+                  <Icon name="zap" size={15} strokeWidth={2} />
                   Wyślij wiadomość
                 </button>
               </motion.form>

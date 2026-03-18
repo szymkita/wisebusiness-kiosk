@@ -20,7 +20,7 @@ export const tabs: TabData[] = [
     label: 'Branże',
     icon: 'grid',
     tiles: [
-      { id: 'finance', name: 'Finanse', desc: 'Bankowość, ubezpieczenia, fintech', icon: 'dollar-sign', color: '#00CD77', demoId: 'finance' },
+      { id: 'finance', name: 'Finanse', desc: 'Bankowość, ubezpieczenia, fintech', icon: 'dollar-sign', color: '#10b981', demoId: 'finance' },
       { id: 'logistics', name: 'Logistyka', desc: 'Transport, łańcuch dostaw, magazyny', icon: 'truck', color: '#3b82f6', demoId: 'logistics' },
       { id: 'ecommerce', name: 'E-commerce', desc: 'Sklepy online, marketplace, omnichannel', icon: 'shopping-cart', color: '#f59e0b', demoId: 'ecommerce' },
       { id: 'healthcare', name: 'Healthcare', desc: 'Medycyna, telemedycyna, pharma', icon: 'activity', color: '#ef4444', demoId: 'healthcare' },
@@ -38,7 +38,7 @@ export const tabs: TabData[] = [
       { id: 'webapp', name: 'Aplikacje webowe', desc: 'SPA, PWA, dashboardy, portale', icon: 'globe', color: '#3b82f6' },
       { id: 'mobile', name: 'Aplikacje mobilne', desc: 'iOS, Android, cross-platform', icon: 'smartphone', color: '#8b5cf6' },
       { id: 'saas', name: 'Platformy SaaS', desc: 'Multi-tenant, subskrypcje, API', icon: 'cloud', color: '#06b6d4' },
-      { id: 'erp', name: 'Systemy ERP', desc: 'Zarządzanie zasobami, procesy biznesowe', icon: 'monitor', color: '#00CD77' },
+      { id: 'erp', name: 'Systemy ERP', desc: 'Zarządzanie zasobami, procesy biznesowe', icon: 'monitor', color: '#10b981' },
       { id: 'crm', name: 'Systemy CRM', desc: 'Relacje z klientami, sprzedaż, marketing', icon: 'users', color: '#f59e0b' },
       { id: 'ecommerce-platform', name: 'Platformy e-commerce', desc: 'Sklepy, marketplace, integracje', icon: 'trending-up', color: '#ec4899' },
       { id: 'iot', name: 'IoT', desc: 'Czujniki, monitoring, smart devices', icon: 'user', color: '#ef4444' },
