@@ -50,7 +50,7 @@ export function Home() {
         <Logo className="topbar-logo" />
         <span className="topbar-sep" />
         <span className="topbar-tagline">
-          Tworzymy oprogramowanie dla biznesu
+          Pomagamy firmom pracować mądrzej
         </span>
 
         <nav className="topbar-tabs">
@@ -106,15 +106,16 @@ export function Home() {
                     <div className="tile-icon">
                       <Icon name={t.icon} size={18} strokeWidth={1.8} />
                     </div>
-                    <div className="tile-info">
-                      <span className="tile-name">{t.name}</span>
-                      <span className="tile-desc">{t.desc}</span>
-                    </div>
                     {t.demoId && (
                       <span className="tile-arrow">
                         <Icon name="arrow-up-right" size={14} strokeWidth={2.5} />
                       </span>
                     )}
+                  </div>
+
+                  <div className="tile-info">
+                    <span className="tile-name">{t.name}</span>
+                    <span className="tile-desc">{t.desc}</span>
                   </div>
 
                   {t.demoId && <span className="tile-badge">Demo</span>}
