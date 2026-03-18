@@ -5,32 +5,32 @@
 }
 .ds-hdr {
   display: flex; align-items: center;
-  padding: clamp(10px, 1.2vh, 16px) clamp(20px, 2vw, 32px); gap: clamp(10px, 1vw, 18px);
-  border-bottom: 1px solid var(--border);
-  background: var(--surface); flex-shrink: 0;
+  padding: clamp(8px, 1vh, 14px) clamp(14px, 1.5vw, 24px); gap: clamp(10px, 1vw, 18px);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  background: #fff; flex-shrink: 0;
 }
 .ds-back {
-  display: flex; align-items: center; gap: 6px;
-  padding: clamp(8px, 0.8vh, 12px) clamp(14px, 1.2vw, 20px);
-  border: 1px solid var(--border);
-  border-radius: 8px; background: var(--surface);
-  color: var(--text2); font-size: clamp(11px,.72vw,14px); font-weight: 500;
-  font-family: inherit; cursor: pointer; transition: transform .1s; min-height: 40px;
+  display: flex; align-items: center; gap: clamp(4px, 0.3vw, 7px);
+  padding: clamp(6px, 0.6vh, 10px) clamp(12px, 1vw, 18px);
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 10px; background: #fff;
+  color: var(--text2); font-size: clamp(11px,.72vw,14px); font-weight: 600;
+  font-family: inherit; cursor: pointer; transition: all .2s;
 }
-.ds-back:active { transform: scale(0.96); }
 .ds-center { flex:1; display:flex; justify-content:center; }
-.ds-logo { width: clamp(70px,6vw,110px); opacity: .05; }
-.ds-title { display:flex; align-items:center; gap: 8px; }
+.ds-logo { width: clamp(80px,7vw,130px); opacity: .06; }
+.ds-title { display:flex; align-items:center; gap: clamp(5px, 0.4vw, 8px); }
 .ds-tico {
-  width: 28px; height: 28px;
+  width: clamp(24px,1.8vw,32px); height: clamp(24px,1.8vw,32px);
   display:flex; align-items:center; justify-content:center;
   border-radius: 8px;
-  background: var(--surface-alt); color: var(--text2);
+  background: color-mix(in srgb, var(--dc) 10%, transparent);
+  color: var(--dc);
 }
-.ds-tname { font-size: clamp(12px,.82vw,16px); font-weight:600; }
+.ds-tname { font-size: clamp(12px,.82vw,16px); font-weight:700; letter-spacing:-.02em; }
 .ds-badge {
-  padding: 2px 8px; border-radius: 6px;
-  background: var(--accent-bg); color: var(--accent);
-  font-size: clamp(8px,.55vw,11px); font-weight:700; letter-spacing:.08em;
+  padding: 2px 8px; border-radius:8px;
+  background: rgba(16,185,129,0.08); color: var(--green-dark);
+  font-size: clamp(8px,.55vw,11px); font-weight:800; letter-spacing:.1em;
 }
 .ds-body { flex:1; overflow:hidden; }
