@@ -310,45 +310,68 @@
   line-height: 1.6; margin-bottom: clamp(16px, 2vh, 24px);
 }
 
-.res-contact-form {
-  display: flex; flex-direction: column;
-  align-items: center; gap: 8px;
+.res-contact-done {
+  display: flex; align-items: center; justify-content: center;
+  gap: 12px; padding: 20px;
+  background: rgba(16,185,129,0.06); border-radius: 12px;
+  color: #059669; font-size: 14px; font-weight: 550; line-height: 1.4;
+  text-align: left;
 }
 
-.res-contact-label {
+/* Dialer */
+.res-dialer {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 10px;
+  max-width: 320px; margin: 0 auto;
+}
+
+.res-dialer-label {
   font-size: 12px; font-weight: 650; color: #aaa;
 }
 
-.res-contact-row {
-  display: flex; gap: 8px;
-  width: 100%; max-width: 400px;
+.res-dialer-display {
+  font-size: clamp(22px, 1.8vw, 30px);
+  font-weight: 800; color: #ccc;
+  letter-spacing: 0.02em;
+  min-height: 36px;
+  transition: color 0.15s;
 }
 
-.res-contact-input {
-  flex: 1; padding: 14px 16px;
-  background: #fafaf8; border: 1.5px solid rgba(0,0,0,0.06);
-  border-radius: 10px; color: #1a1a1a;
-  font-size: 16px; font-weight: 600; font-family: inherit; outline: none;
-}
-.res-contact-input:focus { border-color: #10b981; }
-.res-contact-input::placeholder { color: #ddd; }
+.res-dialer-display--on { color: #1a1a1a; }
 
-.res-contact-btn {
-  padding: 14px 24px;
-  background: #10b981; color: #fff;
-  font-size: 14px; font-weight: 700; font-family: inherit;
-  border: none; border-radius: 10px; cursor: pointer;
-  white-space: nowrap; min-height: 48px;
+.res-dialer-keys {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  width: 100%;
 }
-.res-contact-btn:active { transform: scale(0.97); }
-.res-contact-btn:disabled { background: rgba(0,0,0,0.06); color: #ccc; cursor: default; }
 
-.res-contact-done {
+.res-dial-key {
   display: flex; align-items: center; justify-content: center;
-  gap: 8px; padding: 16px;
-  background: rgba(16,185,129,0.06); border-radius: 10px;
-  color: #059669; font-size: 14px; font-weight: 650;
+  height: 52px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.05);
+  border-radius: 10px;
+  font-size: 20px; font-weight: 700; color: #1a1a1a;
+  font-family: inherit; cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
+.res-dial-key:active { background: rgba(0,0,0,0.04); transform: scale(0.95); }
+.res-dial-key--del { color: #aaa; }
+
+.res-dial-send {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; width: 100%;
+  padding: 14px;
+  background: #10b981; color: #fff;
+  font-size: 15px; font-weight: 700; font-family: inherit;
+  border: none; border-radius: 10px;
+  cursor: pointer; min-height: 50px;
+  transition: opacity 0.15s;
+}
+.res-dial-send:active { transform: scale(0.97); }
+.res-dial-send--off { opacity: 0.3; cursor: default; }
 
 .res-restart {
   display: flex; justify-content: center;

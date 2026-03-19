@@ -2,25 +2,17 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Icon } from './Icon';
 import { generateIdeas } from '../services/ai';
+import { inspirationIndustries } from '../data/inspirationMap';
 import type { AIResults } from '../services/ai';
 import './Inspirator.css';
 
 /* ═══ DATA ═══ */
 
-const industries = [
-  { id: 'produkcja', name: 'Produkcja', icon: 'layers' },
-  { id: 'ecommerce', name: 'E-commerce', icon: 'shopping-cart' },
-  { id: 'b2b', name: 'Usługi B2B', icon: 'briefcase' },
-  { id: 'logistyka', name: 'Logistyka', icon: 'truck' },
-  { id: 'finanse', name: 'Finanse', icon: 'dollar-sign' },
-  { id: 'hr', name: 'HR / Rekrutacja', icon: 'users' },
-  { id: 'budownictwo', name: 'Budownictwo', icon: 'target' },
-  { id: 'zdrowie', name: 'Medycyna', icon: 'activity' },
-  { id: 'edukacja', name: 'Edukacja', icon: 'book-open' },
-  { id: 'it', name: 'IT / Software', icon: 'code' },
-  { id: 'nieruchomosci', name: 'Nieruchomości', icon: 'home' },
-  { id: 'inna', name: 'Inna branża', icon: 'grid' },
-];
+const industries = inspirationIndustries.map(ind => ({
+  id: ind.id,
+  name: ind.name,
+  icon: ind.icon,
+}));
 
 const processes = [
   { id: 'sales', name: 'Sprzedaż', desc: 'Od pierwszego kontaktu do zamknięcia dealu' },
@@ -146,8 +138,23 @@ export function Inspirator({ onClose }: Props) {
   const [loadingIdx, setLoadingIdx] = useState(0);
   const [moreLoading, setMoreLoading] = useState(false);
   const [contactSent, setContactSent] = useState(false);
-  const [phone, setPhone] = useState('+48');
+  const [typed, setTyped] = useState('+48');
   const aiRef = useRef<Promise<AIResults> | null>(null);
+
+  const dialKeys = ['1','2','3','4','5','6','7','8','9','+','0','del'];
+  const pressKey = useCallback((d: string) => {
+    if (contactSent) return;
+    if (d === 'del') { setTyped(prev => prev.slice(0, -1)); return; }
+    setTyped(prev => prev + d);
+  }, [contactSent]);
+  const formatPhone = (raw: string) => {
+    const c = raw.replace(/[^0-9+]/g, '');
+    if (!c) return '';
+    const m = c.match(/^(\+?\d{0,2})(\d{0,3})(\d{0,3})(\d{0,3})(.*)$/);
+    if (!m) return c;
+    return [m[1], m[2], m[3], m[4], m[5]].filter(Boolean).join(' ');
+  };
+  const phoneDigits = typed.replace(/^\+48/, '').replace(/[^0-9]/g, '').length;
 
   const go = useCallback((s: number) => setTimeout(() => setStep(s), 250), []);
   const pickIndustry = useCallback((n: string) => { setIndustry(n); go(1); }, [go]);
@@ -194,13 +201,12 @@ export function Inspirator({ onClose }: Props) {
   }, [industry, processCtx, selectedProblems, selectedCosts, size, prevIdeas]);
 
   const sendContact = useCallback(() => {
-    const clean = phone.replace(/[^0-9+]/g, '');
-    if (clean.length < 11) return;
+    if (phoneDigits < 9) return;
     const session = {
       timestamp: new Date().toISOString(), industry,
       processes: selectedProcesses.map(p => p.name), problems: selectedProblems,
       costs: selectedCosts, company_size: size, ai_diagnosis: results?.diagnosis.insight,
-      ai_ideas: results?.ideas.map(i => i.title), phone: clean,
+      ai_ideas: results?.ideas.map(i => i.title), phone: typed,
     };
     const sessions = JSON.parse(localStorage.getItem('inspirator_sessions') || '[]');
     sessions.push(session);
@@ -210,13 +216,13 @@ export function Inspirator({ onClose }: Props) {
       body: JSON.stringify(session),
     }).catch(() => {});
     setContactSent(true);
-  }, [industry, selectedProcesses, selectedProblems, selectedCosts, size, results, phone]);
+  }, [industry, selectedProcesses, selectedProblems, selectedCosts, size, results, typed, phoneDigits]);
 
   const restart = useCallback(() => {
     setStep(0); setIndustry(''); setSelectedProcesses([]);
     setSelectedProblems([]); setSelectedCosts([]); setSize('');
     setResults(null); setPrevIdeas([]); setLoadingIdx(0);
-    setPhone('+48'); setContactSent(false);
+    setTyped('+48'); setContactSent(false);
   }, []);
 
   const stepNames = ['Branża', 'Proces', 'Problemy', 'Koszt', 'Skala', 'Analiza', 'Wyniki', 'Udostępnij'];
@@ -430,7 +436,7 @@ export function Inspirator({ onClose }: Props) {
                 </button>
               </div>
 
-              {/* Contact CTA */}
+              {/* Contact dialer */}
               <div className="res-contact">
                 <h2 className="res-contact-title">Porozmawiajmy, co możemy z tym zrobić</h2>
                 <p className="res-contact-text">
@@ -439,19 +445,30 @@ export function Inspirator({ onClose }: Props) {
                 {contactSent ? (
                   <div className="res-contact-done">
                     <Icon name="check-circle" size={20} strokeWidth={2} />
-                    <span>Dziękujemy! Oddzwonimy najszybciej jak to możliwe.</span>
+                    <div>
+                      <strong>Dziękujemy!</strong><br />
+                      Oddzwonimy najszybciej jak to możliwe.
+                    </div>
                   </div>
                 ) : (
-                  <div className="res-contact-form">
-                    <span className="res-contact-label">Zostaw numer — oddzwonimy</span>
-                    <div className="res-contact-row">
-                      <input type="tel" className="res-contact-input" value={phone}
-                        onChange={e => setPhone(e.target.value)} placeholder="+48 numer telefonu" />
-                      <button className="res-contact-btn" onClick={sendContact}
-                        disabled={phone.replace(/[^0-9]/g, '').length < 11}>
-                        Oddzwońcie do mnie
-                      </button>
+                  <div className="res-dialer">
+                    <span className="res-dialer-label">Zostaw numer — oddzwonimy</span>
+                    <div className={`res-dialer-display ${typed.length > 3 ? 'res-dialer-display--on' : ''}`}>
+                      {formatPhone(typed) || '+48'}
                     </div>
+                    <div className="res-dialer-keys">
+                      {dialKeys.map(d => (
+                        <button key={d} className={`res-dial-key ${d === 'del' ? 'res-dial-key--del' : ''}`}
+                          onClick={() => pressKey(d)}>
+                          {d === 'del' ? <Icon name="arrow-left" size={16} strokeWidth={2} /> : d}
+                        </button>
+                      ))}
+                    </div>
+                    <button className={`res-dial-send ${phoneDigits >= 9 ? '' : 'res-dial-send--off'}`}
+                      onClick={phoneDigits >= 9 ? sendContact : undefined}>
+                      <Icon name="zap" size={16} strokeWidth={2} />
+                      Wyślij — oddzwonimy!
+                    </button>
                   </div>
                 )}
               </div>
