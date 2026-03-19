@@ -1079,41 +1079,59 @@ const mockupMap: Record<string, { component: React.FC; caption: string }> = {
 const demoIds = Object.keys(mockupMap);
 
 export function SoftwarePanel() {
-  const [activeMockup, setActiveMockup] = useState('client-portal');
+  const [activeMockup, setActiveMockup] = useState(demoIds[0]);
+  const [hoveredDot, setHoveredDot] = useState<string | null>(null);
 
-  const handleCardClick = (demoId?: string) => {
+  const handleCardClick = (e: React.MouseEvent, demoId?: string) => {
+    e.stopPropagation();
     if (!demoId) return;
     setActiveMockup(demoId);
   };
 
-  const { component: ActiveMockup, caption } = mockupMap[activeMockup];
+  // Safety fallback for stale state (e.g. after HMR)
+  const entry = mockupMap[activeMockup] || mockupMap[demoIds[0]];
+  const { component: ActiveMockup, caption } = entry;
+  const activeColor = softwareTiles.find(t => t.demoId === activeMockup)?.color || '#10b981';
+  const activeIdx = demoIds.indexOf(activeMockup);
 
   return (
     <div className="sw-panel">
+      {/* Decorative background elements */}
+      <div className="sw-bg-accent" style={{ '--accent': activeColor } as React.CSSProperties} />
+
       {/* Left — categories */}
       <div className="sw-left">
         <motion.div className="sw-header"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-          transition={{ duration: 0.25 }}>
-          <span className="sw-eyebrow">Co budujemy</span>
-          <h2 className="sw-title">Systemy, które<br />napędzają firmy</h2>
-          <p className="sw-subtitle">Budujemy dedykowane systemy — od CRM-ów po dashboardy. Kliknij kategorię, żeby zobaczyć jak to wygląda w praktyce.</p>
+          initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: 'easeOut' }}>
+          <div className="sw-eyebrow">
+            <span className="sw-eyebrow-dot" />
+            Co budujemy
+            <span className="sw-eyebrow-count">{softwareTiles.length}</span>
+          </div>
+          <h2 className="sw-title">Z Excela do<br /><span className="sw-title-accent" style={{ '--accent': activeColor } as React.CSSProperties}>przewagi konkurencyjnej</span></h2>
+          <p className="sw-subtitle">Przenosimy firmy z arkuszy, maili i chaosu do dedykowanych systemów, które dają realną przewagę nad konkurencją. Kliknij kategorię, żeby zobaczyć jak to wygląda.</p>
+          <div className="sw-header-line" style={{ '--accent': activeColor } as React.CSSProperties} />
         </motion.div>
 
         <div className="sw-grid">
           {softwareTiles.map((t, i) => {
             const MiniPreview = miniPreviewMap[t.demoId || ''];
+            const isActive = t.demoId === activeMockup;
             return (
               <motion.div
-                className={`sw-card ${t.demoId === activeMockup ? 'sw-card-active' : ''}`}
+                className={`sw-card ${isActive ? 'sw-card-active' : ''}`}
                 key={t.id}
                 style={{ '--c': t.color, '--c-l': `${t.color}14`, '--c-m': `${t.color}28` } as React.CSSProperties}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.2, delay: i * 0.02 }}
-                onClick={() => handleCardClick(t.demoId)}>
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: i * 0.04, ease: 'easeOut' }}
+                whileHover={{ y: -2, transition: { duration: 0.15 } }}
+                whileTap={{ scale: 0.97 }}
+                onClick={(e) => handleCardClick(e, t.demoId)}>
                 <div className="sw-card-preview">
                   {MiniPreview && <MiniPreview color={t.color} />}
+                  {isActive && <div className="sw-card-shimmer" />}
                 </div>
                 <div className="sw-card-bottom">
                   <div className="sw-card-icon">
@@ -1123,6 +1141,7 @@ export function SoftwarePanel() {
                     <span className="sw-card-name">{t.name}</span>
                     <span className="sw-card-desc">{t.desc}</span>
                   </div>
+                  {isActive && <span className="sw-card-active-indicator" />}
                 </div>
               </motion.div>
             );
@@ -1132,32 +1151,64 @@ export function SoftwarePanel() {
 
       {/* Right — dynamic mockup */}
       <motion.div className="sw-right"
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-        transition={{ duration: 0.3, delay: 0.1 }}>
+        initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.4, delay: 0.1, ease: 'easeOut' }}>
+
+        {/* Mockup label bar */}
+        <div className="sw-mockup-bar">
+          <div className="sw-mockup-live">
+            <span className="sw-mockup-live-dot" />
+            LIVE PREVIEW
+          </div>
+          <div className="sw-mockup-counter">
+            {String(activeIdx + 1).padStart(2, '0')} / {String(demoIds.length).padStart(2, '0')}
+          </div>
+        </div>
+
         <AnimatePresence mode="wait">
           <motion.div
             className="sw-mockup"
             key={activeMockup}
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.25 }}>
+            style={{ '--mockup-accent': activeColor } as React.CSSProperties}
+            initial={{ opacity: 0, y: 8, scale: 0.99 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -8, scale: 0.99 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}>
             <ActiveMockup />
           </motion.div>
         </AnimatePresence>
 
         <div className="sw-mockup-caption">{caption}</div>
 
-        {/* Mockup indicator dots */}
+        {/* Mockup indicator dots — enhanced */}
         <div className="sw-mockup-dots">
-          {demoIds.map(id => (
-            <button
-              key={id}
-              className={`sw-mockup-dot ${id === activeMockup ? 'active' : ''}`}
-              onClick={() => handleCardClick(id)}
-              aria-label={`Pokaż ${mockupMap[id].caption}`}
-            />
-          ))}
+          {demoIds.map((id, idx) => {
+            const tileColor = softwareTiles[idx]?.color || '#10b981';
+            return (
+              <div key={id} className="sw-mockup-dot-wrap"
+                onMouseEnter={() => setHoveredDot(id)}
+                onMouseLeave={() => setHoveredDot(null)}>
+                <button
+                  className={`sw-mockup-dot ${id === activeMockup ? 'active' : ''}`}
+                  style={{ '--dot-c': tileColor } as React.CSSProperties}
+                  onClick={(e) => handleCardClick(e, id)}
+                  aria-label={`Pokaż ${mockupMap[id].caption}`}
+                />
+                <AnimatePresence>
+                  {hoveredDot === id && id !== activeMockup && (
+                    <motion.span
+                      className="sw-dot-tooltip"
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 4 }}
+                      transition={{ duration: 0.15 }}>
+                      {softwareTiles[idx]?.name}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
         </div>
       </motion.div>
     </div>

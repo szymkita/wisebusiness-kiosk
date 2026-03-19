@@ -8,7 +8,24 @@
   gap: clamp(20px, 2.5vw, 40px);
   height: 100%;
   overflow: hidden;
+  position: relative;
 }
+
+/* Subtle background accent glow that follows the active color */
+.sw-bg-accent {
+  position: absolute;
+  top: -40%;
+  right: -10%;
+  width: 60%;
+  height: 80%;
+  background: radial-gradient(ellipse at center, var(--accent), transparent 70%);
+  opacity: 0.03;
+  pointer-events: none;
+  transition: opacity 0.6s;
+  z-index: 0;
+}
+
+.sw-panel > * { position: relative; z-index: 1; }
 
 /* ── Left column ── */
 .sw-left {
@@ -31,6 +48,33 @@
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: #10b981;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sw-eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  animation: eyebrowPulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes eyebrowPulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+  50% { opacity: 0.7; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0); }
+}
+
+.sw-eyebrow-count {
+  font-size: 9px;
+  font-weight: 800;
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.08);
+  padding: 1px 6px;
+  border-radius: 6px;
+  margin-left: 2px;
 }
 
 .sw-title {
@@ -41,11 +85,33 @@
   color: #1a1a1a;
 }
 
+.sw-title-accent {
+  background: linear-gradient(135deg, var(--accent, #10b981), color-mix(in srgb, var(--accent, #10b981) 60%, #3b82f6));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: background 0.4s ease;
+}
+
 .sw-subtitle {
   font-size: clamp(12px, 0.8vw, 14px);
   color: #888;
   line-height: 1.55;
-  max-width: 400px;
+  max-width: 420px;
+}
+
+/* Gradient accent line below header */
+.sw-header-line {
+  height: 2px;
+  width: 60px;
+  border-radius: 1px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  margin-top: 4px;
+  transition: width 0.4s ease, background 0.4s ease;
+}
+
+.sw-header:hover .sw-header-line {
+  width: 100px;
 }
 
 /* ── Cards grid — 2×4 with previews ── */
@@ -62,20 +128,55 @@
   background: #fff;
   border-radius: 12px;
   border: 1px solid rgba(0,0,0,0.04);
-  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+  transition: border-color 0.25s, box-shadow 0.25s;
   cursor: pointer;
   overflow: hidden;
+  position: relative;
 }
 
 .sw-card:hover {
   border-color: var(--c-m);
-  box-shadow: 0 2px 12px var(--c-l);
+  box-shadow: 0 4px 20px var(--c-l), 0 1px 3px rgba(0,0,0,0.04);
 }
 
 .sw-card-active {
   border-color: var(--c-m) !important;
-  box-shadow: 0 2px 16px var(--c-l), inset 0 0 0 1px var(--c-m) !important;
-  transform: scale(1.01);
+  box-shadow: 0 4px 24px var(--c-l), inset 0 0 0 1px var(--c-m) !important;
+}
+
+/* Shimmer effect on active card preview */
+.sw-card-shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255,255,255,0.5) 50%,
+    transparent 60%
+  );
+  animation: cardShimmer 2.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes cardShimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+/* Active indicator dot in card bottom */
+.sw-card-active-indicator {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--c);
+  flex-shrink: 0;
+  margin-left: auto;
+  animation: indicatorPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes indicatorPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
 }
 
 /* Card preview area — mini illustration */
@@ -89,6 +190,11 @@
   overflow: hidden;
   position: relative;
   border-bottom: 1px solid rgba(0,0,0,0.02);
+  transition: background 0.3s ease;
+}
+
+.sw-card:hover .sw-card-preview {
+  background: color-mix(in srgb, var(--c-l) 80%, var(--c-m));
 }
 
 .sw-card-svg {
@@ -155,11 +261,61 @@
   box-shadow:
     0 1px 2px rgba(0,0,0,0.04),
     0 4px 16px rgba(0,0,0,0.06),
-    0 12px 40px rgba(0,0,0,0.08);
+    0 12px 40px rgba(0,0,0,0.08),
+    0 0 0 1px rgba(0,0,0,0.04);
   border: 1px solid rgba(0,0,0,0.06);
   display: flex;
   flex-direction: column;
   background: #fafaf8;
+  transition: box-shadow 0.4s ease;
+}
+
+.sw-mockup:hover {
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.04),
+    0 6px 24px rgba(0,0,0,0.08),
+    0 16px 48px rgba(0,0,0,0.1),
+    0 0 0 1px rgba(0,0,0,0.04);
+}
+
+/* Mockup top bar with live badge and counter */
+.sw-mockup-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2px;
+  margin-bottom: 4px;
+}
+
+.sw-mockup-live {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #10b981;
+}
+
+.sw-mockup-live-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #10b981;
+  animation: livePulse 1.5s ease-in-out infinite;
+}
+
+@keyframes livePulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+  50% { opacity: 0.6; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0); }
+}
+
+.sw-mockup-counter {
+  font-size: 9px;
+  font-weight: 700;
+  color: #ccc;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.05em;
 }
 
 .sw-mockup-caption {
@@ -174,6 +330,14 @@
   display: flex;
   justify-content: center;
   gap: 6px;
+  padding-top: 2px;
+}
+
+.sw-mockup-dot-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .sw-mockup-dot {
@@ -184,17 +348,37 @@
   border: none;
   padding: 0;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.25s ease;
 }
 
 .sw-mockup-dot.active {
-  background: #10b981;
-  width: 18px;
+  background: var(--dot-c, #10b981);
+  width: 20px;
   border-radius: 3px;
+  box-shadow: 0 0 8px color-mix(in srgb, var(--dot-c, #10b981) 30%, transparent);
 }
 
 .sw-mockup-dot:hover:not(.active) {
-  background: #bbb;
+  background: var(--dot-c, #bbb);
+  opacity: 0.5;
+  transform: scale(1.3);
+}
+
+.sw-dot-tooltip {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 8px;
+  font-weight: 600;
+  color: #666;
+  background: #fff;
+  padding: 3px 8px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 10;
 }
 
 /* ── Window chrome ── */
