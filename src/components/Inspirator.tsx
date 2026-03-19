@@ -50,17 +50,19 @@ const problems = [
   'Klienci nie znają statusu — muszą dzwonić żeby się czegokolwiek dowiedzieć',
 ];
 
-const goals = [
-  { id: 'speed', label: 'Przyspieszyć', desc: 'Ten sam proces, ale 3–5× szybciej' },
-  { id: 'errors', label: 'Wyeliminować błędy', desc: 'Zero pomyłek, zero reklamacji z tego powodu' },
-  { id: 'scale', label: 'Rosnąć bez chaosu', desc: '2× więcej klientów bez 2× więcej ludzi' },
-  { id: 'visibility', label: 'Mieć kontrolę', desc: 'Widzieć co się dzieje w firmie na żywo' },
+const outcomes = [
+  { id: 'scale', label: 'Robimy więcej, nie zatrudniając więcej ludzi' },
+  { id: 'quality', label: 'Klienci przestają narzekać — szybciej i bezbłędnie' },
+  { id: 'onboarding', label: 'Nowa osoba ogarnia w dni zamiast tygodni' },
+  { id: 'control', label: 'Szef widzi wszystko na żywo — koniec raportów na kolanie' },
+  { id: 'stability', label: 'Przestajemy gasić pożary — system pilnuje za nas' },
+  { id: 'speed', label: 'To co trwało tygodnie — zajmuje godziny' },
 ];
 
 const sizes = [
-  { id: 'small', label: 'Do 20 osób' },
-  { id: 'medium', label: '20–100 osób' },
-  { id: 'large', label: '100+ osób' },
+  { id: 'small', label: 'Do 20 osób', desc: 'Mały zespół, szybkie decyzje' },
+  { id: 'medium', label: '20–100 osób', desc: 'Rosnąca firma, rośnie złożoność' },
+  { id: 'large', label: '100+ osób', desc: 'Duża organizacja, duże procesy' },
 ];
 
 const loadingMessages = [
@@ -94,7 +96,7 @@ export function Inspirator({ onClose }: Props) {
   const [industry, setIndustry] = useState('');
   const [selectedProcesses, setSelectedProcesses] = useState<typeof processes[0][]>([]);
   const [selectedProblems, setSelectedProblems] = useState<string[]>([]);
-  const [goal, setGoal] = useState('');
+  const [outcome, setOutcome] = useState('');
   const [size, setSize] = useState('');
   const [results, setResults] = useState<AIResults | null>(null);
   const [prevIdeas, setPrevIdeas] = useState<string[]>([]);
@@ -119,7 +121,7 @@ export function Inspirator({ onClose }: Props) {
     );
   }, []);
 
-  const pickGoal = useCallback((label: string) => { setGoal(label); go(4); }, [go]);
+  const pickOutcome = useCallback((label: string) => { setOutcome(label); go(4); }, [go]);
 
   const processContext = selectedProcesses.map(p => `${p.name}: ${p.desc}`).join('; ');
 
@@ -128,7 +130,7 @@ export function Inspirator({ onClose }: Props) {
     const context = [
       `Procesy do usprawnienia: ${processContext}`,
       ...selectedProblems,
-      `Cel: ${goal}`,
+      `Oczekiwany efekt: ${outcome}`,
     ];
     const t0 = Date.now();
     aiRef.current = generateIdeas(industry, context, label);
@@ -137,7 +139,7 @@ export function Inspirator({ onClose }: Props) {
       const wait = Math.max(0, LOADING_MIN_MS - (Date.now() - t0));
       setTimeout(() => { setResults(data); setPrevIdeas(data.ideas.map(i => i.title)); setStep(6); }, wait);
     });
-  }, [industry, processContext, selectedProblems, goal, go]);
+  }, [industry, processContext, selectedProblems, outcome, go]);
 
   useEffect(() => {
     if (step !== 5) return;
@@ -149,18 +151,18 @@ export function Inspirator({ onClose }: Props) {
   const moreIdeas = useCallback(async () => {
     setMoreLoading(true);
     try {
-      const ctx = [`Procesy: ${processContext}`, ...selectedProblems, `Cel: ${goal}`];
+      const ctx = [`Procesy: ${processContext}`, ...selectedProblems, `Oczekiwany efekt: ${outcome}`];
       const data = await generateIdeas(industry, ctx, size, prevIdeas);
       setResults(data);
       setPrevIdeas(prev => [...prev, ...data.ideas.map(i => i.title)]);
     } catch { /* keep current */ }
     setMoreLoading(false);
-  }, [industry, processContext, selectedProblems, goal, size, prevIdeas]);
+  }, [industry, processContext, selectedProblems, outcome, size, prevIdeas]);
 
   const shareUrl = useMemo(() => {
     if (!results) return '';
-    return encodeResults({ industry, processes: selectedProcesses.map(p => p.name), goal, size, results });
-  }, [results, industry, selectedProcesses, goal, size]);
+    return encodeResults({ industry, processes: selectedProcesses.map(p => p.name), outcome, size, results });
+  }, [results, industry, selectedProcesses, outcome, size]);
 
   const sendSms = useCallback(() => {
     const cleanPhone = phone.replace(/[^0-9+]/g, '');
@@ -168,7 +170,7 @@ export function Inspirator({ onClose }: Props) {
     const session = {
       timestamp: new Date().toISOString(),
       industry, processes: selectedProcesses.map(p => p.name),
-      problems: selectedProblems, goal, company_size: size,
+      problems: selectedProblems, outcome, company_size: size,
       ai_diagnosis: results?.diagnosis.insight,
       ai_ideas: results?.ideas.map(i => i.title),
       phone: cleanPhone, share_url: shareUrl,
@@ -182,11 +184,11 @@ export function Inspirator({ onClose }: Props) {
     }).catch(() => {});
     setSmsSent(true);
     setTimeout(() => onClose(), 8000);
-  }, [industry, selectedProcesses, selectedProblems, goal, size, results, phone, shareUrl, onClose]);
+  }, [industry, selectedProcesses, selectedProblems, outcome, size, results, phone, shareUrl, onClose]);
 
   const restart = useCallback(() => {
     setStep(0); setIndustry(''); setSelectedProcesses([]);
-    setSelectedProblems([]); setGoal(''); setSize('');
+    setSelectedProblems([]); setOutcome(''); setSize('');
     setResults(null); setPrevIdeas([]); setLoadingIdx(0);
     setPhone('+48'); setSmsSent(false);
   }, []);
@@ -281,16 +283,16 @@ export function Inspirator({ onClose }: Props) {
           </motion.div>
         )}
 
-        {/* 3 — Cel */}
+        {/* 3 — Oczekiwany efekt */}
         {step === 3 && (
           <motion.div className="insp-body" key="s3" {...screenFade}>
-            <div className="insp-screen-inner insp-screen-inner--narrow">
-              <h1 className="insp-q">Gdybyś mógł zmienić jedną rzecz — co by to było?</h1>
+            <div className="insp-screen-inner">
+              <h1 className="insp-q">Wyobraź sobie, że te procesy działają idealnie. Co się zmienia?</h1>
+              <p className="insp-hint">Wybierz to, co byłoby dla Ciebie największą zmianą</p>
               <div className="insp-options">
-                {goals.map(g => (
-                  <button key={g.id} className="insp-option insp-option--big" onClick={() => pickGoal(g.label)}>
-                    <span className="insp-option-name">{g.label}</span>
-                    <span className="insp-option-desc">{g.desc}</span>
+                {outcomes.map(o => (
+                  <button key={o.id} className="insp-option" onClick={() => pickOutcome(o.label)}>
+                    <span className="insp-option-name">{o.label}</span>
                   </button>
                 ))}
               </div>
@@ -300,14 +302,18 @@ export function Inspirator({ onClose }: Props) {
 
         {/* 4 — Skala */}
         {step === 4 && (
-          <motion.div className="insp-body insp-body--center" key="s4" {...screenFade}>
-            <h1 className="insp-q">Ile osób pracuje w firmie?</h1>
-            <div className="insp-sizes">
-              {sizes.map(s => (
-                <button key={s.id} className="insp-size-pill" onClick={() => pickSize(s.label)}>
-                  {s.label}
-                </button>
-              ))}
+          <motion.div className="insp-body" key="s4" {...screenFade}>
+            <div className="insp-screen-inner insp-screen-inner--narrow">
+              <h1 className="insp-q">Ostatnie pytanie — jak duża jest Twoja firma?</h1>
+              <p className="insp-hint">Dopasujemy ambicję pomysłów do Waszej skali</p>
+              <div className="insp-options">
+                {sizes.map(s => (
+                  <button key={s.id} className="insp-option" onClick={() => pickSize(s.label)}>
+                    <span className="insp-option-name">{s.label}</span>
+                    <span className="insp-option-desc">{s.desc}</span>
+                  </button>
+                ))}
+              </div>
             </div>
           </motion.div>
         )}
@@ -336,7 +342,7 @@ export function Inspirator({ onClose }: Props) {
               <div className="insp-tags">
                 <span className="insp-tag">{industry}</span>
                 {selectedProcesses.map(p => <span key={p.id} className="insp-tag">{p.name}</span>)}
-                <span className="insp-tag">{goal}</span>
+                <span className="insp-tag">{outcome}</span>
               </div>
 
               <div className="insp-diag">
@@ -400,7 +406,7 @@ export function Inspirator({ onClose }: Props) {
           let qrUrl = shareUrl;
           if (!qrUrl && results) {
             try {
-              qrUrl = encodeResults({ industry, processes: selectedProcesses.map(p => p.name), goal, size, results });
+              qrUrl = encodeResults({ industry, processes: selectedProcesses.map(p => p.name), outcome, size, results });
             } catch (e) {
               console.error('QR encode failed:', e);
             }

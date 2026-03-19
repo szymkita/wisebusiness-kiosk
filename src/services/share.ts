@@ -3,7 +3,7 @@ import type { AIResults } from './ai';
 export interface SharedData {
   industry: string;
   processes: string[];
-  goal: string;
+  outcome: string;
   size: string;
   results: AIResults;
 }

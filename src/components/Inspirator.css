@@ -155,12 +155,6 @@
   font-weight: 550; color: #555; line-height: 1.35;
 }
 
-.insp-option--big {
-  flex-direction: column; align-items: flex-start;
-  gap: 2px;
-  padding: clamp(16px, 1.8vh, 24px) clamp(18px, 1.8vw, 28px);
-  min-height: 68px;
-}
 
 .insp-option-check {
   width: 22px; height: 22px;
@@ -189,24 +183,6 @@
   font-weight: 450; color: #999;
 }
 
-/* ── Size pills ── */
-.insp-sizes {
-  display: flex; flex-direction: column;
-  gap: clamp(6px, 0.6vh, 10px);
-  max-width: 340px; width: 100%;
-}
-
-.insp-size-pill {
-  padding: clamp(16px, 1.8vh, 24px) clamp(20px, 2vw, 32px);
-  background: #fff;
-  border: 1px solid rgba(0,0,0,0.05);
-  border-radius: 12px;
-  cursor: pointer; font-family: inherit;
-  font-size: clamp(16px, 1.1vw, 20px);
-  font-weight: 750; color: #1a1a1a;
-  text-align: center; min-height: 56px;
-}
-.insp-size-pill:active { transform: scale(0.97); border-color: #10b981; }
 
 /* ═══ Loading ═══ */
 .insp-loader { width: 56px; height: 56px; position: relative; }

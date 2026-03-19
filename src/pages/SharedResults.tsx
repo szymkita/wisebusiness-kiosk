@@ -25,7 +25,7 @@ export function SharedResults() {
     );
   }
 
-  const { industry, processes, goal, size, results } = data;
+  const { industry, processes, outcome, size, results } = data;
 
   return (
     <div className="sr">
@@ -38,7 +38,7 @@ export function SharedResults() {
         <div className="sr-tags">
           <span className="sr-tag">{industry}</span>
           {processes.map(p => <span key={p} className="sr-tag">{p}</span>)}
-          <span className="sr-tag">{goal}</span>
+          <span className="sr-tag">{outcome}</span>
           <span className="sr-tag">{size}</span>
         </div>
 
