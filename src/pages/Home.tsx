@@ -185,7 +185,7 @@ export function Home() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
                   transition={{ duration: 0.2, ease: 'easeOut' }}>
-                  {openPanel === 'contact' ? <ContactView />
+                  {openPanel === 'contact' ? <ContactView onNavigateHome={() => setView('attract')} />
                     : openPanel === 'demo' ? <DemoPanel navigate={navigate} />
                     : openPanel === 'inspiration' ? <InspirationMap />
                     : openPanel === 'software' ? <SoftwarePanel />

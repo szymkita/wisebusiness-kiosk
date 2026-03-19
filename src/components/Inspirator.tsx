@@ -303,7 +303,8 @@ export function Inspirator({ onClose, onNavigate }: Props) {
       body: JSON.stringify(session),
     }).catch(() => {});
     setContactSent(true);
-  }, [industry, selectedProcesses, selectedProblems, selectedCosts, size, results, typed, phoneDigits]);
+    setTimeout(() => { onNavigate?.('attract'); }, 15000);
+  }, [industry, selectedProcesses, selectedProblems, selectedCosts, size, results, typed, phoneDigits, onNavigate]);
 
   const restart = useCallback(() => {
     setStep(0); setIndustryId(''); setIndustry(''); setSelectedProcesses([]);

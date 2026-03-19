@@ -25,7 +25,7 @@ function countDigits(raw: string): number {
   return withoutPrefix.replace(/[^0-9]/g, '').length;
 }
 
-export function ContactView() {
+export function ContactView({ onNavigateHome }: { onNavigateHome?: () => void }) {
   const [typed, setTyped] = useState('+48');
   const [sent, setSent] = useState(false);
 
@@ -51,6 +51,7 @@ export function ContactView() {
       setSent(false);
       setTyped('+48');
     }, 5000);
+    setTimeout(() => { onNavigateHome?.(); }, 15000);
   };
 
   const display = formatPhone(typed) || '+48';
