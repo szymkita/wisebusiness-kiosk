@@ -246,9 +246,10 @@
 }
 
 .dock-item--contact.active {
-  color: #fff !important;
+  color: #1a1a1a !important;
+  background: transparent;
   animation: none;
-  box-shadow: 0 2px 16px rgba(16, 185, 129, 0.4);
+  box-shadow: none;
 }
 
 @keyframes contactPulse {
