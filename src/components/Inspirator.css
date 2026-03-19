@@ -270,6 +270,42 @@
   font-weight: 700; color: #555;
 }
 
+/* Share inline */
+.res-share {
+  padding: clamp(20px, 2.2vh, 28px) clamp(20px, 2vw, 28px);
+  background: #fff; border: 1px solid rgba(0,0,0,0.05);
+  border-radius: 16px; margin-bottom: clamp(10px, 1vh, 14px);
+}
+
+.res-share-row {
+  display: flex; gap: clamp(16px, 1.5vw, 24px); align-items: flex-start;
+  margin-top: clamp(10px, 1.2vh, 16px);
+}
+
+.res-share-qr {
+  width: 140px; height: 140px; flex-shrink: 0;
+  padding: 10px; background: #fff;
+  border: 1px solid rgba(0,0,0,0.06); border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.res-share-info { flex: 1; display: flex; flex-direction: column; gap: 12px; }
+
+.res-share-text { font-size: 13px; font-weight: 500; color: #888; line-height: 1.5; }
+
+.res-share-sms { display: flex; flex-direction: column; gap: 6px; }
+.res-share-sms-label { font-size: 11px; font-weight: 600; color: #bbb; }
+.res-share-sms-row { display: flex; gap: 6px; }
+
+.res-share-input {
+  flex: 1; padding: 10px 14px;
+  background: #fafaf8; border: 1.5px solid rgba(0,0,0,0.06);
+  border-radius: 8px; color: #1a1a1a;
+  font-size: 14px; font-weight: 600; font-family: inherit; outline: none;
+}
+.res-share-input:focus { border-color: #10b981; }
+.res-share-input::placeholder { color: #ddd; }
+
 /* More button */
 .res-more {
   display: flex; align-items: center; justify-content: center;

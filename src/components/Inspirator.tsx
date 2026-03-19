@@ -82,50 +82,6 @@ const LOADING_MIN_MS = 7000;
 
 const fade = { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: 0.25 } };
 
-/* Extracted ShareScreen — simple, no AnimatePresence issues */
-function ShareScreen({ shareUrl, phone, setPhone, smsSent, onSendSms, onRestart }: {
-  shareUrl: string;
-  phone: string;
-  setPhone: (v: string) => void;
-  smsSent: boolean;
-  onSendSms: () => void;
-  onRestart: () => void;
-}) {
-  if (smsSent) {
-    return (
-      <>
-        <div className="insp-done-icon"><Icon name="check-circle" size={28} strokeWidth={1.8} /></div>
-        <h1 className="insp-q">Wysłano!</h1>
-        <p className="insp-note">Link leci na Twój telefon. Wpadnij do nas na stanowisku!</p>
-      </>
-    );
-  }
-
-  return (
-    <>
-      <h1 className="insp-q">Zabierz pomysły ze sobą</h1>
-      <p className="insp-hint">Zeskanuj kod QR telefonem</p>
-      <div className="insp-qr-frame">
-        {shareUrl
-          ? <QRCodeSVG value={shareUrl} size={180} bgColor="#ffffff" fgColor="#1a1a1a" level="L" />
-          : <span style={{ color: '#ccc', fontSize: 12 }}>Generuję kod...</span>
-        }
-      </div>
-      <span className="insp-qr-caption">Otwórz aparat i zeskanuj kod</span>
-      <div className="insp-divider"><span>lub wyślij SMS-em</span></div>
-      <div className="insp-sms-row">
-        <input type="tel" className="insp-input insp-input--phone"
-          value={phone} onChange={e => setPhone(e.target.value)} placeholder="+48 123 456 789" />
-        <button className="insp-btn" onClick={onSendSms}
-          disabled={phone.replace(/[^0-9]/g, '').length < 11}>
-          <Icon name="send" size={14} strokeWidth={2} /> Wyślij
-        </button>
-      </div>
-      <button className="insp-btn insp-btn--ghost" onClick={onRestart}>Zacznij od nowa</button>
-    </>
-  );
-}
-
 interface Props { onClose: () => void; }
 
 export function Inspirator({ onClose }: Props) {
@@ -425,13 +381,37 @@ export function Inspirator({ onClose }: Props) {
                 </button>
               </div>
 
-              {/* Bottom CTA */}
+              {/* Share — QR inline */}
+              <div className="res-share">
+                <h2 className="res-section-title">Zabierz pomysły ze sobą</h2>
+                <div className="res-share-row">
+                  <div className="res-share-qr">
+                    {shareUrl ? (
+                      <QRCodeSVG value={shareUrl} size={140} bgColor="#ffffff" fgColor="#1a1a1a" level="L" />
+                    ) : (
+                      <span style={{ color: '#ccc', fontSize: 12 }}>Generuję...</span>
+                    )}
+                  </div>
+                  <div className="res-share-info">
+                    <p className="res-share-text">Zeskanuj kod QR telefonem — otworzysz stronę z Twoimi pomysłami</p>
+                    <div className="res-share-sms">
+                      <span className="res-share-sms-label">lub wyślij link SMS-em</span>
+                      <div className="res-share-sms-row">
+                        <input type="tel" className="res-share-input" value={phone}
+                          onChange={e => setPhone(e.target.value)} placeholder="+48 numer" />
+                        <button className="insp-btn" onClick={sendSms}
+                          disabled={smsSent || phone.replace(/[^0-9]/g, '').length < 11}>
+                          {smsSent ? 'Wysłano!' : 'Wyślij'}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom */}
               <div className="res-bottom">
                 <p className="res-bottom-text">{results.cta}</p>
-                <button className="res-bottom-btn" onClick={() => setStep(7)}>
-                  <Icon name="download" size={15} strokeWidth={2} />
-                  Zabierz pomysły ze sobą
-                </button>
                 <button className="res-bottom-link" onClick={restart}>
                   <Icon name="refresh-cw" size={13} strokeWidth={2} />
                   Zacznij od nowa
@@ -439,20 +419,6 @@ export function Inspirator({ onClose }: Props) {
               </div>
 
             </div>
-          </motion.div>
-        )}
-
-        {/* 7 — Share */}
-        {step === 7 && (
-          <motion.div className="insp-body insp-body--mid" key="s7" {...fade}>
-            <ShareScreen
-              shareUrl={shareUrl}
-              phone={phone}
-              setPhone={setPhone}
-              smsSent={smsSent}
-              onSendSms={sendSms}
-              onRestart={restart}
-            />
           </motion.div>
         )}
 
