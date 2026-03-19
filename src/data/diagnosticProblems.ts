@@ -209,12 +209,12 @@ const problems: Record<string, string[]> = {
     'Nowy projekt wchodzi — nie wiemy czy mamy ludzi',
     'Kluczowa osoba na urlopie — nikt nie wie kto przejmuje jej zadania',
   ],
-  'agencies::Śledzenie czasu pracy (timetracking)': [
-    'Ludzie wpisują czas na koniec tygodnia — z pamięci, niedokładnie',
-    'Nie wiemy ile godzin zjadł projekt dopóki nie jest za późno',
-    'Timetracking w jednym narzędziu, zarządzanie projektami w drugim',
-    'Klient pyta ile godzin poszło — musimy zbierać dane ręcznie',
-    'Brak danych do realnej wyceny następnego projektu',
+  'agencies::Briefing, zbieranie wymagań i scope projektu': [
+    'Klient nie wie czego chce — brief zmienia się 5 razy w trakcie projektu',
+    'Wymagania spisane w mailu — brak jednego dokumentu z aktualnym scope',
+    'Scope creep nie jest śledzony — robimy rzeczy poza umową za darmo',
+    'Brak procesu akceptacji zmian — klient dodaje „drobne" rzeczy non-stop',
+    'Brief od klienta to 3 zdania — resztę domyślamy się sami',
   ],
   'agencies::Rozliczenia z klientem i rentowność projektu': [
     'Fakturujemy ręcznie — opóźnienia i błędy w kwotach',
@@ -441,12 +441,12 @@ const problems: Record<string, string[]> = {
     'Nowy projekt wchodzi — panika i przerzucanie ludzi',
     'Kompetencje zespołu w głowie team leada — nowy PM nie wie kto umie co',
   ],
-  'it::Śledzenie czasu pracy i rozliczenia': [
-    'Ludzie wpisują timetracking na koniec tygodnia — niedokładnie',
-    'Nie wiemy ile godzin zjadł projekt — dopóki nie jest za późno',
+  'it::Rozliczenia T&M i kontrola budżetu projektu': [
+    'Nie wiemy czy projekt na fixed price jest rentowny — dopóki go nie zamkniemy',
     'Klient na T&M pyta o raport godzin — zbieramy dane z 3 miejsc',
-    'Koszty wewnętrzne nie są przypisane do projektu',
-    'Rozliczenie miesiąca trwa 2 dni bo dane są w wielu narzędziach',
+    'Koszty wewnętrzne (ludzie, narzędzia, infra) nie są przypisane do projektu',
+    'Rozliczenie miesiąca trwa 2 dni bo dane rozsiane po wielu narzędziach',
+    'Projekt przekroczył budżet o 40% — dowiedzieliśmy się po fakcie',
   ],
   'it::Onboarding nowych programistów': [
     'Nowy developer potrzebuje 2 tygodni żeby dostać wszystkie dostępy',

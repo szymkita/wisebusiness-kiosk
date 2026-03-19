@@ -52,7 +52,7 @@ const processesByIndustry: Record<string, string[]> = {
     'Wyceny, ofertowanie i umowy',
     'Zarządzanie projektami i zadaniami',
     'Alokacja zespołu i obłożenie',
-    'Śledzenie czasu pracy (timetracking)',
+    'Briefing, zbieranie wymagań i scope projektu',
     'Rozliczenia z klientem i rentowność projektu',
     'Onboarding nowego klienta',
     'Raportowanie postępów do klienta',
@@ -92,7 +92,7 @@ const processesByIndustry: Record<string, string[]> = {
     'Wyceny projektów i estymacje',
     'Zarządzanie projektami i sprintami',
     'Alokacja developerów i obłożenie zespołu',
-    'Śledzenie czasu pracy i rozliczenia',
+    'Rozliczenia T&M i kontrola budżetu projektu',
     'Onboarding nowych programistów',
     'Obsługa support / SLA / tickety',
     'Raportowanie do klienta i demo',
@@ -133,6 +133,29 @@ function getProcessesForIndustry(industryId: string): string[] {
   return processesByIndustry[industryId] || [];
 }
 
+/* ── Dynamic step-2 question per industry ── */
+const step2Questions: Record<string, string> = {
+  production: 'Gdzie w produkcji tracisz czas i pieniądze?',
+  transport: 'Co spowalnia Twój transport i logistykę?',
+  ecommerce: 'Co hamuje Twój e-commerce?',
+  agencies: 'Co blokuje realizację projektów dla klientów?',
+  finance: 'Co spowalnia Twoje finanse i księgowość?',
+  construction: 'Co hamuje Twoje inwestycje budowlane?',
+  gastro: 'Co nie działa w Twojej gastronomii?',
+  it: 'Co spowalnia Twój software house?',
+  healthcare: 'Co blokuje działanie Twojej placówki?',
+  hr: 'Co nie działa w Twoim HR i rekrutacji?',
+  education: 'Co hamuje Twoją działalność szkoleniową?',
+};
+
+function getStep2Hint(selectedProcesses: string[]): string {
+  if (selectedProcesses.length === 0) return 'Zaznacz wszystko, co pasuje — im więcej, tym lepsza diagnoza';
+  const names = selectedProcesses.length <= 2
+    ? selectedProcesses.map(p => `„${p}"`).join(' i ')
+    : `${selectedProcesses.slice(0, 2).map(p => `„${p}"`).join(', ')} i ${selectedProcesses.length - 2} ${selectedProcesses.length - 2 === 1 ? 'inny obszar' : 'inne obszary'}`;
+  return `Wybrałeś: ${names}. Zaznacz konkretne problemy — im więcej, tym celniejsza diagnoza.`;
+}
+
 
 const costs = [
   { id: 'clients', label: 'Tracimy klientów', desc: 'Odchodzą do szybszej konkurencji' },
@@ -166,9 +189,17 @@ const LOADING_MIN_MS = 7000;
 
 const fade = { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: 0.25 } };
 
-interface Props { onClose: () => void; }
+const navItems = [
+  { id: 'home', label: 'Home', icon: 'home' },
+  { id: 'inspiration', label: 'Inspiracje', icon: 'target' },
+  { id: 'software', label: 'Co budujemy', icon: 'code' },
+  { id: 'demo', label: 'Demo', icon: 'monitor' },
+  { id: 'contact', label: 'Kontakt', icon: 'map-pin' },
+];
 
-export function Inspirator({ onClose }: Props) {
+interface Props { onClose: () => void; onNavigate?: (sectionId: string) => void; }
+
+export function Inspirator({ onClose, onNavigate }: Props) {
   const [step, setStep] = useState(0);
   const [industryId, setIndustryId] = useState('');
   const [industry, setIndustry] = useState('');
@@ -334,8 +365,9 @@ export function Inspirator({ onClose }: Props) {
         {step === 2 && (
           <motion.div className="insp-body" key="s2" {...fade}>
             <div className="insp-inner">
-              <h1 className="insp-q">Co konkretnie nie działa?</h1>
-              <p className="insp-hint">Zaznacz wszystko, co pasuje — im więcej, tym lepsza diagnoza</p>
+              <span className="insp-ctx">{industry}</span>
+              <h1 className="insp-q">{step2Questions[industryId] || 'Co konkretnie nie działa?'}</h1>
+              <p className="insp-hint">{getStep2Hint(selectedProcesses)}</p>
               <div className="insp-problem-groups">
                 {getProblemsForSelection(industryId, selectedProcesses).map(group => (
                   <div key={group.process} className="insp-problem-group">
@@ -532,6 +564,21 @@ export function Inspirator({ onClose }: Props) {
               </div>
 
             </div>
+
+            {/* Bottom navigation */}
+            {onNavigate && (
+              <nav className="insp-nav">
+                <div className="insp-nav-bar">
+                  {navItems.map(item => (
+                    <button key={item.id} className="insp-nav-item"
+                      onClick={() => onNavigate(item.id === 'home' ? 'attract' : item.id)}>
+                      <Icon name={item.icon} size={15} strokeWidth={2} />
+                      <span>{item.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </nav>
+            )}
           </motion.div>
         )}
 
