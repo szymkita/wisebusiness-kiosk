@@ -14,20 +14,125 @@ const industries = inspirationIndustries.map(ind => ({
   icon: ind.icon,
 }));
 
-interface ProcessOption {
-  id: string;
-  name: string;
-  icon: string;
+/* ── Processes per industry ── */
+const processesByIndustry: Record<string, string[]> = {
+  production: [
+    'Obsługa zleceń produkcyjnych',
+    'Planowanie i harmonogramowanie produkcji',
+    'Kontrola jakości i dokumentacja',
+    'Utrzymanie ruchu i serwis maszyn',
+    'Magazyn i zaopatrzenie',
+    'Wyceny i ofertowanie',
+    'Obsługa reklamacji',
+    'Rozliczenia i koszty produkcji',
+  ],
+  transport: [
+    'Zarządzanie zleceniami transportowymi',
+    'Dyspozycja i planowanie tras',
+    'Tracking przesyłek i komunikacja z klientem',
+    'Dokumenty przewozowe (CMR, listy, POD)',
+    'Rozliczenia tras i marża per zlecenie',
+    'Zarządzanie flotą i serwis pojazdów',
+    'Rozliczenia z kierowcami',
+    'Obsługa podwykonawców',
+  ],
+  ecommerce: [
+    'Obsługa zamówień i fulfillment',
+    'Zarządzanie stanami magazynowymi',
+    'Obsługa wielu kanałów sprzedaży',
+    'Obsługa zwrotów i reklamacji',
+    'Marketing i retencja klientów',
+    'Obsługa klienta hurtowego / B2B',
+    'Analityka sprzedaży i raportowanie',
+    'Integracja z kurierami i płatnościami',
+  ],
+  agencies: [
+    'Pipeline sprzedażowy i pozyskiwanie klientów',
+    'Wyceny, ofertowanie i umowy',
+    'Zarządzanie projektami i zadaniami',
+    'Alokacja zespołu i obłożenie',
+    'Śledzenie czasu pracy (timetracking)',
+    'Rozliczenia z klientem i rentowność projektu',
+    'Onboarding nowego klienta',
+    'Raportowanie postępów do klienta',
+  ],
+  finance: [
+    'Obieg dokumentów księgowych',
+    'Fakturowanie i windykacja',
+    'Obsługa klientów biura rachunkowego',
+    'Kadry i płace',
+    'Raportowanie finansowe i analityka',
+    'Deklaracje i rozliczenia z US/ZUS',
+    'Kontrola kosztów i budżetowanie',
+    'Archiwizacja i zgodność',
+  ],
+  construction: [
+    'Zarządzanie inwestycją / projektem budowlanym',
+    'Kosztorysy i ofertowanie',
+    'Harmonogram robót i koordynacja ekip',
+    'Dziennik budowy i dokumentacja',
+    'Rozliczenia z podwykonawcami',
+    'Zarządzanie sprzętem i materiałami',
+    'Odbiory i protokoły',
+    'Zarządzanie nieruchomościami po oddaniu',
+  ],
+  gastro: [
+    'Zarządzanie menu, recepturami i cenami',
+    'Zamówienia do dostawców i stany magazynowe',
+    'Grafiki pracy i rozliczenia zespołu',
+    'Obsługa zamówień online i delivery',
+    'System rezerwacji i zarządzanie stolikami',
+    'HACCP i kontrola jakości',
+    'Rozliczenia i analityka sprzedaży',
+    'Zarządzanie wieloma lokalami',
+  ],
+  it: [
+    'Pipeline sprzedażowy i presales',
+    'Wyceny projektów i estymacje',
+    'Zarządzanie projektami i sprintami',
+    'Alokacja developerów i obłożenie zespołu',
+    'Śledzenie czasu pracy i rozliczenia',
+    'Onboarding nowych programistów',
+    'Obsługa support / SLA / tickety',
+    'Raportowanie do klienta i demo',
+  ],
+  healthcare: [
+    'Rejestracja pacjentów i zarządzanie wizytami',
+    'Dokumentacja medyczna',
+    'Rozliczenia z NFZ / ubezpieczycielami',
+    'Zarządzanie personelem i grafikami dyżurów',
+    'Gospodarka lekowa i magazyn',
+    'Komunikacja z pacjentem (przypomnienia, wyniki)',
+    'Telemedycyna i wizyty online',
+    'Raportowanie i statystyki medyczne',
+  ],
+  hr: [
+    'Rekrutacja i zarządzanie kandydatami (ATS)',
+    'Onboarding nowych pracowników',
+    'Ewidencja czasu pracy i urlopy',
+    'Oceny pracownicze i development plan',
+    'Szkolenia i certyfikaty',
+    'Offboarding i exit interviews',
+    'Komunikacja wewnętrzna',
+    'Raportowanie HR i analityka',
+  ],
+  education: [
+    'Rekrutacja uczestników / słuchaczy',
+    'Planowanie zajęć i harmonogramy',
+    'Platforma e-learningowa',
+    'Zarządzanie trenerami / wykładowcami',
+    'Certyfikaty i zaliczenia',
+    'Rozliczenia i fakturowanie',
+    'Komunikacja z uczestnikami',
+    'Ewaluacja i zbieranie feedbacku',
+  ],
+};
+
+function getProcessesForIndustry(industryId: string): string[] {
+  return processesByIndustry[industryId] || [];
 }
 
-/* Get processes (sections) for selected industry */
-function getProcessesForIndustry(industryId: string): ProcessOption[] {
-  const ind = inspirationIndustries.find(i => i.id === industryId);
-  if (!ind) return [];
-  return ind.sections.map((s, i) => ({ id: `${industryId}-${i}`, name: s.name, icon: s.icon }));
-}
-
-/* Universal problems that apply per-area — shown grouped by selected process */
+/* Universal problems */
 const universalProblems = [
   'Ręczna praca — przepisywanie, kopiowanie, klikanie w wielu miejscach',
   'Brak jednego źródła prawdy — dane w Excelach, mailach, głowach',
@@ -79,7 +184,7 @@ export function Inspirator({ onClose }: Props) {
   const [step, setStep] = useState(0);
   const [industryId, setIndustryId] = useState('');
   const [industry, setIndustry] = useState('');
-  const [selectedProcesses, setSelectedProcesses] = useState<ProcessOption[]>([]);
+  const [selectedProcesses, setSelectedProcesses] = useState<string[]>([]);
   const [selectedProblems, setSelectedProblems] = useState<string[]>([]);
   const [selectedCosts, setSelectedCosts] = useState<string[]>([]);
   const [size, setSize] = useState('');
@@ -110,8 +215,8 @@ export function Inspirator({ onClose }: Props) {
   const pickIndustry = useCallback((id: string, name: string) => { setIndustryId(id); setIndustry(name); go(1); }, [go]);
 
   const availableProcesses = getProcessesForIndustry(industryId);
-  const toggleProcess = useCallback((p: ProcessOption) => {
-    setSelectedProcesses(prev => prev.some(x => x.id === p.id) ? prev.filter(x => x.id !== p.id) : [...prev, p]);
+  const toggleProcess = useCallback((p: string) => {
+    setSelectedProcesses(prev => prev.includes(p) ? prev.filter(x => x !== p) : [...prev, p]);
   }, []);
   const toggleProblem = useCallback((p: string) => {
     setSelectedProblems(prev => prev.includes(p) ? prev.filter(x => x !== p) : [...prev, p]);
@@ -120,7 +225,7 @@ export function Inspirator({ onClose }: Props) {
     setSelectedCosts(prev => prev.includes(label) ? prev.filter(x => x !== label) : [...prev, label]);
   }, []);
 
-  const processCtx = selectedProcesses.map(p => p.name).join('; ');
+  const processCtx = selectedProcesses.join('; ');
 
   const pickSize = useCallback((label: string) => {
     setSize(label);
@@ -156,7 +261,7 @@ export function Inspirator({ onClose }: Props) {
     if (phoneDigits < 9) return;
     const session = {
       timestamp: new Date().toISOString(), industry,
-      processes: selectedProcesses.map(p => p.name), problems: selectedProblems,
+      processes: selectedProcesses, problems: selectedProblems,
       costs: selectedCosts, company_size: size, ai_diagnosis: results?.diagnosis.insight,
       ai_ideas: results?.ideas.map(i => i.title), phone: typed,
     };
@@ -222,12 +327,12 @@ export function Inspirator({ onClose }: Props) {
               <p className="insp-hint">Zaznacz wszystkie, które dotyczą Twojej firmy</p>
               <div className="insp-opts">
                 {availableProcesses.map(p => {
-                  const on = selectedProcesses.some(x => x.id === p.id);
+                  const on = selectedProcesses.includes(p);
                   return (
-                    <button key={p.id} className={`insp-opt ${on ? 'on' : ''}`} onClick={() => toggleProcess(p)}>
+                    <button key={p} className={`insp-opt ${on ? 'on' : ''}`} onClick={() => toggleProcess(p)}>
                       <span className="insp-chk">{on && <Icon name="check-circle" size={14} strokeWidth={2.5} />}</span>
                       <span className="insp-opt-body">
-                        <span className="insp-opt-title">{p.name}</span>
+                        <span className="insp-opt-title">{p}</span>
                       </span>
                     </button>
                   );
@@ -327,7 +432,7 @@ export function Inspirator({ onClose }: Props) {
                 <p className="res-hero-text">{results.diagnosis.insight}</p>
                 <div className="res-hero-tags">
                   <span>{industry}</span>
-                  {selectedProcesses.map(p => <span key={p.id}>{p.name}</span>)}
+                  {selectedProcesses.map(p => <span key={p}>{p}</span>)}
                   <span>{size}</span>
                 </div>
               </div>
