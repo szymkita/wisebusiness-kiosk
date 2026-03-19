@@ -9,7 +9,8 @@
 .cv-brand-col {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  gap: clamp(20px, 2.5vh, 36px);
   padding: clamp(20px, 2.5vh, 36px) clamp(18px, 2vw, 36px);
   background: linear-gradient(155deg, #059669 0%, #10b981 50%, #34d399 100%);
   border-radius: var(--r);
@@ -27,20 +28,23 @@
   pointer-events: none;
 }
 
-.cv-brand-top { position: relative; z-index: 1; }
-
-.cv-logo {
-  width: clamp(100px, 9vw, 160px);
-  filter: brightness(0) invert(1);
-  margin-bottom: clamp(8px, 1vh, 14px);
+.cv-brand-top {
+  position: relative; z-index: 1;
+  text-align: center;
 }
 
-.cv-brand-text {
-  font-size: clamp(14px, 1.1vw, 22px);
-  font-weight: 700;
-  line-height: 1.3;
-  letter-spacing: -0.02em;
-  opacity: 0.9;
+.cv-brand-headline {
+  font-size: clamp(22px, 2vw, 40px);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+
+.cv-brand-sub {
+  font-size: clamp(11px, 0.8vw, 16px);
+  font-weight: 500;
+  opacity: 0.7;
+  margin-top: clamp(6px, 0.6vh, 10px);
 }
 
 /* Two QR codes with divider */

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Logo } from '../components/Logo';
@@ -20,29 +20,9 @@ const dockItems = [
   { id: 'contact', label: 'Kontakt', icon: 'map-pin' },
 ];
 
-const IDLE_TIMEOUT = 60_000;
-
 export function Home() {
   const [view, setView] = useState<'attract' | 'inspirator' | string>('attract');
   const navigate = useNavigate();
-  const idleTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
-
-  const resetIdle = useCallback(() => {
-    clearTimeout(idleTimer.current);
-    idleTimer.current = setTimeout(() => setView('attract'), IDLE_TIMEOUT);
-  }, []);
-
-  useEffect(() => {
-    const handler = () => resetIdle();
-    window.addEventListener('touchstart', handler, { passive: true });
-    window.addEventListener('mousedown', handler, { passive: true });
-    resetIdle();
-    return () => {
-      window.removeEventListener('touchstart', handler);
-      window.removeEventListener('mousedown', handler);
-      clearTimeout(idleTimer.current);
-    };
-  }, [resetIdle]);
 
   const onTile = useCallback((t: TileData, panelId: string) => {
     if (panelId === 'industries') navigate(`/industry/${t.id}`);
@@ -148,48 +128,76 @@ export function Home() {
             initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 30 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}>
-            <div className="home-panel-header">
-              <button className="home-panel-back" onClick={() => setView('attract')}>
-                <Icon name="arrow-left" size={18} strokeWidth={2} />
-              </button>
-              <span className="home-panel-title">
-                {dockItems.find(d => d.id === openPanel)?.label}
-              </span>
-            </div>
-            <div className="home-panel-body">
-              {openPanel === 'contact' ? <ContactView />
-                : openPanel === 'cases' ? <CaseStudies />
-                : tileTab ? (
-                  <div className="grid">
-                    {tileTab.tiles.map((t, i) => (
-                      <motion.button className={`tile ${t.demoId ? 'tile--demo' : ''}`}
-                        key={t.id}
-                        style={{ '--c': t.color, '--c-l': `${t.color}18`, '--c-m': `${t.color}30` } as React.CSSProperties}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.4, delay: i * 0.04, ease: [0.16, 1, 0.3, 1] }}
-                        onClick={() => onTile(t, openPanel)}>
-                        <div className="tile-gradient" />
-                        <div className="tile-head">
-                          <div className="tile-icon">
-                            <Icon name={t.icon} size={18} strokeWidth={1.8} />
-                          </div>
-                          {t.demoId && (
-                            <span className="tile-arrow">
-                              <Icon name="arrow-up-right" size={14} strokeWidth={2.5} />
-                            </span>
-                          )}
-                        </div>
-                        <div className="tile-info">
-                          <span className="tile-name">{t.name}</span>
-                          <span className="tile-desc">{t.desc}</span>
-                        </div>
-                        {t.demoId && <span className="tile-badge">Demo</span>}
-                      </motion.button>
-                    ))}
-                  </div>
-                ) : null}
-            </div>
+
+            {openPanel === 'contact' ? (
+              <>
+                <div className="home-panel-header home-panel-header--logo">
+                  <Logo className="home-panel-logo" />
+                </div>
+                <div className="home-panel-body">
+                  <ContactView />
+                </div>
+                <div className="home-panel-switcher">
+                  {dockItems.filter(d => d.id !== 'contact' && d.id !== 'home').map(item => (
+                    <button key={item.id}
+                      className="home-panel-switcher-item"
+                      onClick={() => setView(item.id)}>
+                      <Icon name={item.icon} size={14} strokeWidth={2} />
+                      <span>{item.label}</span>
+                    </button>
+                  ))}
+                  <button className="home-panel-switcher-item home-panel-switcher-item--home"
+                    onClick={() => setView('attract')}>
+                    <Icon name="home" size={14} strokeWidth={2} />
+                    <span>Strona główna</span>
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="home-panel-header">
+                  <button className="home-panel-back" onClick={() => setView('attract')}>
+                    <Icon name="arrow-left" size={18} strokeWidth={2} />
+                  </button>
+                  <span className="home-panel-title">
+                    {dockItems.find(d => d.id === openPanel)?.label}
+                  </span>
+                </div>
+                <div className="home-panel-body">
+                  {openPanel === 'cases' ? <CaseStudies />
+                    : tileTab ? (
+                      <div className="grid">
+                        {tileTab.tiles.map((t, i) => (
+                          <motion.button className={`tile ${t.demoId ? 'tile--demo' : ''}`}
+                            key={t.id}
+                            style={{ '--c': t.color, '--c-l': `${t.color}18`, '--c-m': `${t.color}30` } as React.CSSProperties}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.4, delay: i * 0.04, ease: [0.16, 1, 0.3, 1] }}
+                            onClick={() => onTile(t, openPanel)}>
+                            <div className="tile-gradient" />
+                            <div className="tile-head">
+                              <div className="tile-icon">
+                                <Icon name={t.icon} size={18} strokeWidth={1.8} />
+                              </div>
+                              {t.demoId && (
+                                <span className="tile-arrow">
+                                  <Icon name="arrow-up-right" size={14} strokeWidth={2.5} />
+                                </span>
+                              )}
+                            </div>
+                            <div className="tile-info">
+                              <span className="tile-name">{t.name}</span>
+                              <span className="tile-desc">{t.desc}</span>
+                            </div>
+                            {t.demoId && <span className="tile-badge">Demo</span>}
+                          </motion.button>
+                        ))}
+                      </div>
+                    ) : null}
+                </div>
+              </>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

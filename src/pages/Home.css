@@ -257,6 +257,61 @@
   padding: 0 clamp(12px, 1.5vw, 24px) clamp(12px, 1.5vh, 20px);
 }
 
+/* ── Contact panel: logo header ── */
+.home-panel-header--logo {
+  justify-content: center;
+}
+
+.home-panel-logo {
+  width: clamp(120px, 11vw, 180px);
+  height: auto;
+}
+
+/* ── Contact panel: bottom switcher ── */
+.home-panel-switcher {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: clamp(8px, 1vh, 12px) clamp(20px, 2.5vw, 36px);
+  flex-shrink: 0;
+}
+
+.home-panel-switcher-item {
+  display: flex;
+  align-items: center;
+  gap: clamp(5px, 0.4vw, 8px);
+  padding: clamp(10px, 1vh, 14px) clamp(14px, 1.4vw, 22px);
+  font-size: clamp(11px, 0.72vw, 14px);
+  font-weight: 600;
+  font-family: inherit;
+  color: #999;
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+
+.home-panel-switcher-item:hover {
+  color: #1a1a1a;
+  background: rgba(0,0,0,0.04);
+}
+
+.home-panel-switcher-item:active {
+  transform: scale(0.97);
+}
+
+.home-panel-switcher-item--home {
+  color: #10b981;
+}
+
+.home-panel-switcher-item--home:hover {
+  color: #059669;
+  background: rgba(16,185,129,0.08);
+}
+
 /* ── Grid for tile panels ── */
 .grid {
   display: grid;

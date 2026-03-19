@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Icon } from './Icon';
-import { Logo } from './Logo';
 import './ContactView.css';
 
 const PHONE_DISPLAY = '571 399 932';
@@ -62,10 +61,10 @@ export function ContactView() {
       {/* Left — QR codes + brand */}
       <div className="cv-brand-col">
         <div className="cv-brand-top">
-          <Logo className="cv-logo" />
-          <p className="cv-brand-text">
-            Pomagamy firmom<br />pracować mądrzej
-          </p>
+          <h2 className="cv-brand-headline">
+            Zeskanuj i<br />porozmawiajmy
+          </h2>
+          <p className="cv-brand-sub">Wybierz wygodny sposób kontaktu</p>
         </div>
 
         <div className="cv-qr-pair">
