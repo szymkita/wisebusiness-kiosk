@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════
-   INSPIRATION MAP — Browse → Pick → Discover
+   INSPIRATION MAP — Browse → Discover
    ═══════════════════════════════════════ */
 
 .imap {
@@ -63,30 +63,29 @@
 .imap-body {
   flex: 1;
   min-height: 0;
-  padding: 0 clamp(12px, 1.5vw, 24px) clamp(12px, 1.5vh, 20px);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
 }
 
 .imap-content {
-  height: 100%;
+  padding: 0 clamp(16px, 2vw, 32px) clamp(16px, 2vh, 28px);
 }
 
 /* ═══ STEP 1: Industry grid ═══ */
 .imap-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
   gap: clamp(8px, 0.8vw, 14px);
-  height: 100%;
+  padding: clamp(4px, 0.5vh, 8px) 0;
 }
 
 .imap-tile {
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: clamp(18px, 2vh, 28px) clamp(16px, 1.5vw, 24px);
+  gap: clamp(16px, 1.8vh, 24px);
+  padding: clamp(18px, 2vh, 26px) clamp(16px, 1.5vw, 24px);
   background: #fff;
   border-radius: var(--r);
   border: 1px solid rgba(0,0,0,0.04);
@@ -95,7 +94,7 @@
   text-align: left;
   font-family: inherit;
   overflow: hidden;
-  transition: transform 0.12s ease, box-shadow 0.2s ease;
+  transition: transform 0.12s ease;
 }
 
 .imap-tile:active {
@@ -109,8 +108,8 @@
 }
 
 .imap-tile-icon {
-  width: clamp(40px, 3vw, 52px);
-  height: clamp(40px, 3vw, 52px);
+  width: clamp(40px, 3vw, 50px);
+  height: clamp(40px, 3vw, 50px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -124,237 +123,182 @@
 .imap-tile-info {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
   position: relative;
   z-index: 1;
+  flex: 1;
 }
 
 .imap-tile-name {
-  font-size: clamp(16px, 1.2vw, 22px);
+  font-size: clamp(15px, 1.1vw, 20px);
   font-weight: 800;
   letter-spacing: -0.02em;
   color: #1a1a1a;
   line-height: 1.2;
 }
 
-.imap-tile-count {
+.imap-tile-sub {
   font-size: clamp(10px, 0.65vw, 13px);
-  color: #aaa;
-  font-weight: 500;
+  color: #999;
+  font-weight: 450;
+  line-height: 1.4;
+}
+
+.imap-tile-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+
+.imap-tile-count {
+  font-size: clamp(10px, 0.6vw, 12px);
+  font-weight: 700;
+  color: var(--c);
+  background: var(--c-l);
+  padding: 3px 10px;
+  border-radius: 7px;
 }
 
 .imap-tile-arrow {
-  position: absolute;
-  top: clamp(18px, 2vh, 28px);
-  right: clamp(16px, 1.5vw, 24px);
-  width: clamp(28px, 2vw, 34px);
-  height: clamp(28px, 2vw, 34px);
+  width: clamp(26px, 1.8vw, 32px);
+  height: clamp(26px, 1.8vw, 32px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  color: #ccc;
+}
+
+/* ═══ STEP 2: Sections with ideas ═══ */
+.imap-section {
+  margin-bottom: clamp(20px, 2.5vh, 32px);
+}
+
+.imap-section-header {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 0.8vw, 14px);
+  margin-bottom: clamp(10px, 1.2vh, 16px);
+  padding: 0 4px;
+}
+
+.imap-section-icon {
+  width: clamp(32px, 2.2vw, 40px);
+  height: clamp(32px, 2.2vw, 40px);
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-  background: var(--c-l);
-  color: var(--c);
-  z-index: 1;
-}
-
-/* ═══ STEP 2: Department cards ═══ */
-.imap-dept-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: clamp(10px, 1vw, 16px);
-  max-width: 900px;
-  margin: 0 auto;
-  padding: clamp(16px, 2vh, 32px) 0;
-}
-
-.imap-dept {
-  display: flex;
-  align-items: center;
-  gap: clamp(14px, 1.2vw, 20px);
-  padding: clamp(20px, 2.2vh, 30px) clamp(18px, 1.8vw, 28px);
-  background: #fff;
-  border-radius: var(--r);
-  border: 1px solid rgba(0,0,0,0.04);
-  cursor: pointer;
-  outline: none;
-  text-align: left;
-  font-family: inherit;
-  transition: transform 0.12s ease, box-shadow 0.2s ease;
-}
-
-.imap-dept:active {
-  transform: scale(0.97);
-}
-
-.imap-dept-icon {
-  width: clamp(44px, 3.2vw, 56px);
-  height: clamp(44px, 3.2vw, 56px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 14px;
   background: var(--c-m);
   color: var(--c);
   flex-shrink: 0;
 }
 
-.imap-dept-info {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  flex: 1;
-  min-width: 0;
-}
-
-.imap-dept-name {
-  font-size: clamp(15px, 1.1vw, 20px);
+.imap-section-name {
+  font-size: clamp(14px, 0.95vw, 18px);
   font-weight: 800;
   letter-spacing: -0.015em;
   color: #1a1a1a;
-  line-height: 1.2;
+  flex: 1;
 }
 
-.imap-dept-count {
-  font-size: clamp(11px, 0.7vw, 13px);
-  color: #aaa;
-  font-weight: 500;
-}
-
-.imap-dept-arrow {
-  width: clamp(28px, 2vw, 34px);
-  height: clamp(28px, 2vw, 34px);
-  display: flex;
+.imap-section-count {
+  min-width: 1.5em;
+  height: 1.5em;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
-  color: #ccc;
-  flex-shrink: 0;
-  transition: color 0.15s;
+  border-radius: 6px;
+  font-size: clamp(10px, 0.6vw, 12px);
+  font-weight: 800;
+  background: rgba(0,0,0,0.05);
+  color: #999;
 }
 
-.imap-dept:active .imap-dept-arrow {
-  color: var(--c);
-}
-
-/* ═══ STEP 3: Idea cards ═══ */
+/* ── Idea cards ── */
 .imap-ideas {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(12px, 1.2vw, 18px);
-  max-width: 800px;
-  margin: 0 auto;
-  padding: clamp(8px, 1vh, 16px) 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+  gap: clamp(8px, 0.8vw, 12px);
 }
 
 .imap-idea {
   background: #fff;
   border-radius: var(--r);
   border: 1px solid rgba(0,0,0,0.04);
-  padding: clamp(20px, 2.2vh, 28px) clamp(20px, 2vw, 28px);
+  padding: clamp(16px, 1.6vh, 22px) clamp(16px, 1.5vw, 22px);
   display: flex;
   flex-direction: column;
-  gap: clamp(10px, 1vh, 16px);
+  gap: clamp(8px, 0.8vh, 12px);
+  transition: transform 0.12s ease;
 }
 
-.imap-idea-header {
+.imap-idea-top {
   display: flex;
   align-items: flex-start;
-  gap: clamp(12px, 1vw, 16px);
-}
-
-.imap-idea-num {
-  width: clamp(30px, 2.2vw, 38px);
-  height: clamp(30px, 2.2vw, 38px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  background: var(--c-l);
-  color: var(--c);
-  font-size: clamp(13px, 0.9vw, 16px);
-  font-weight: 900;
-  flex-shrink: 0;
-}
-
-.imap-idea-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  flex: 1;
-  min-width: 0;
+  justify-content: space-between;
+  gap: 10px;
 }
 
 .imap-idea-title {
-  font-size: clamp(16px, 1.1vw, 20px);
+  font-size: clamp(14px, 0.9vw, 17px);
   font-weight: 800;
   letter-spacing: -0.015em;
   color: #1a1a1a;
   line-height: 1.25;
   margin: 0;
+  flex: 1;
 }
 
 .imap-idea-badge {
   display: inline-flex;
   align-self: flex-start;
-  padding: 3px 10px;
-  border-radius: 7px;
-  font-size: clamp(9px, 0.6vw, 11px);
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: clamp(8px, 0.52vw, 10px);
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .imap-idea-desc {
-  font-size: clamp(13px, 0.85vw, 15px);
-  color: #666;
+  font-size: clamp(11px, 0.72vw, 13px);
+  color: #777;
   line-height: 1.6;
   margin: 0;
-}
-
-.imap-idea-footer {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding-top: clamp(6px, 0.6vh, 10px);
-  border-top: 1px solid rgba(0,0,0,0.04);
 }
 
 .imap-idea-impact {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: clamp(12px, 0.78vw, 14px);
+  font-size: clamp(11px, 0.7vw, 13px);
   font-weight: 700;
   color: var(--c);
+  padding-top: clamp(4px, 0.4vh, 8px);
+  border-top: 1px solid rgba(0,0,0,0.04);
 }
 
-/* ── Explore more ── */
-.imap-explore-more {
+/* ── Footer ── */
+.imap-footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(12px, 1vw, 20px);
-  padding: clamp(20px, 2.5vh, 36px) 0;
-  max-width: 800px;
-  margin: 0 auto;
+  padding: clamp(16px, 2vh, 28px) 0 clamp(24px, 3vh, 40px);
 }
 
-.imap-explore-text {
-  font-size: clamp(13px, 0.85vw, 15px);
-  color: #999;
-  font-weight: 500;
-  margin: 0;
-}
-
-.imap-explore-btn {
+.imap-footer-btn {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 20px;
+  padding: 12px 24px;
   background: rgba(0,0,0,0.04);
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   font-family: inherit;
   font-size: clamp(12px, 0.78vw, 14px);
   font-weight: 700;
@@ -363,7 +307,7 @@
   transition: background 0.15s;
 }
 
-.imap-explore-btn:active {
+.imap-footer-btn:active {
   background: rgba(0,0,0,0.08);
   transform: scale(0.97);
 }
