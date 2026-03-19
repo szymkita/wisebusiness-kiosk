@@ -21,41 +21,51 @@ const dockItems = [
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function DemoPanel({ navigate }: { navigate: (path: string) => void }) {
+  const demoCards = [
+    { id: 'hr', icon: 'users', title: 'Panel Klienta HR', desc: 'Śledzenie rekrutacji, pipeline kandydatów, raporty i komunikacja z agencją.', color: '#6366f1', gradient: 'linear-gradient(135deg, #4f46e5, #6366f1)' },
+    { id: 'quoting', icon: 'file-text', title: 'System Ofertowania', desc: 'Konfigurator ofert, szablony, analityka sprzedaży — Swiss style design.', color: '#e11d48', gradient: 'linear-gradient(135deg, #be123c, #e11d48)' },
+  ];
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', gap: 'clamp(16px, 2vh, 28px)', textAlign: 'center', padding: '0 4vw' }}>
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.4, ease: 'easeOut' }}
-        style={{ width: 'clamp(56px, 4.5vw, 72px)', height: 'clamp(56px, 4.5vw, 72px)', borderRadius: 18, background: 'linear-gradient(135deg, #4f46e5, #6366f1)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 32px rgba(99,102,241,.3)' }}>
-        <Icon name="users" size={28} strokeWidth={1.8} style={{ color: '#fff' }} />
-      </motion.div>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', gap: 'clamp(20px, 2.5vh, 36px)', textAlign: 'center', padding: '0 4vw' }}>
       <motion.h2
         initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.1 }}
         style={{ fontSize: 'clamp(18px, 1.5vw, 28px)', fontWeight: 800, color: 'var(--text)', letterSpacing: '-.03em', margin: 0 }}>
-        Dedykowany Panel Klienta
+        Interaktywne demo
       </motion.h2>
       <motion.p
         initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.2 }}
-        style={{ fontSize: 'clamp(11px, .75vw, 15px)', color: 'var(--text2)', maxWidth: '36vw', lineHeight: 1.6, margin: 0 }}>
-        Zobacz, jak wygląda panel klienta agencji HR — śledzenie rekrutacji, pipeline kandydatów, raporty i komunikacja z agencją w jednym miejscu.
+        style={{ fontSize: 'clamp(11px, .75vw, 15px)', color: 'var(--text2)', maxWidth: '40vw', lineHeight: 1.6, margin: 0 }}>
+        Dotknij, aby zobaczyć w pełni interaktywne demo naszych systemów — działające na ekranie dotykowym.
       </motion.p>
-      <motion.button
-        initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.3 }}
-        whileHover={{ scale: 1.03, boxShadow: '0 8px 28px rgba(99,102,241,.35)' }}
-        whileTap={{ scale: 0.97 }}
-        onClick={() => navigate('/demo/hr')}
-        style={{ display: 'inline-flex', alignItems: 'center', gap: '.5vw', padding: 'clamp(10px, 1vh, 14px) clamp(20px, 1.8vw, 32px)', background: 'linear-gradient(135deg, #4f46e5, #6366f1)', color: '#fff', border: 'none', borderRadius: 12, fontSize: 'clamp(12px, .8vw, 16px)', fontWeight: 700, fontFamily: 'inherit', cursor: 'pointer', boxShadow: '0 4px 16px rgba(99,102,241,.25)', transition: 'all .2s' }}>
-        <Icon name="arrow-up-right" size={16} strokeWidth={2.2} />
-        Otwórz Panel HR
-      </motion.button>
+      <div style={{ display: 'flex', gap: 'clamp(12px, 1.2vw, 20px)', flexWrap: 'wrap', justifyContent: 'center' }}>
+        {demoCards.map((d, i) => (
+          <motion.button
+            key={d.id}
+            initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.25 + i * 0.1 }}
+            whileHover={{ scale: 1.02, boxShadow: `0 8px 28px ${d.color}35` }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => navigate(`/demo/${d.id}`)}
+            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'clamp(8px, .8vh, 14px)', padding: 'clamp(18px, 2vh, 28px) clamp(22px, 2vw, 36px)', background: '#fff', border: `1px solid ${d.color}20`, borderRadius: 16, cursor: 'pointer', fontFamily: 'inherit', transition: 'all .2s', width: 'clamp(180px, 14vw, 240px)' }}>
+            <div style={{ width: 'clamp(44px, 3.5vw, 56px)', height: 'clamp(44px, 3.5vw, 56px)', borderRadius: 14, background: d.gradient, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: `0 6px 20px ${d.color}30` }}>
+              <Icon name={d.icon} size={22} strokeWidth={1.8} style={{ color: '#fff' }} />
+            </div>
+            <div style={{ fontSize: 'clamp(13px, .9vw, 17px)', fontWeight: 700, color: 'var(--text)', letterSpacing: '-.02em' }}>{d.title}</div>
+            <div style={{ fontSize: 'clamp(10px, .62vw, 13px)', color: 'var(--text2)', lineHeight: 1.5 }}>{d.desc}</div>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '.3vw', fontSize: 'clamp(11px, .7vw, 14px)', fontWeight: 700, color: d.color, marginTop: 'clamp(4px, .4vh, 8px)' }}>
+              Otwórz <Icon name="arrow-up-right" size={14} strokeWidth={2.2} />
+            </div>
+          </motion.button>
+        ))}
+      </div>
       <motion.span
         initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-        transition={{ duration: 0.3, delay: 0.5 }}
+        transition={{ duration: 0.3, delay: 0.6 }}
         style={{ fontSize: 'clamp(9px, .55vw, 11px)', color: 'var(--text3)', display: 'flex', alignItems: 'center', gap: '.3vw' }}>
-        <Icon name="eye" size={12} strokeWidth={2} /> Interaktywne demo — kliknij i testuj
+        <Icon name="eye" size={12} strokeWidth={2} /> W pełni interaktywne — kliknij i testuj
       </motion.span>
     </div>
   );

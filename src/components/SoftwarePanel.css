@@ -48,7 +48,7 @@
   max-width: 400px;
 }
 
-/* ── Cards grid ── */
+/* ── Cards grid — 2×4 with previews ── */
 .sw-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -57,14 +57,14 @@
 
 .sw-card {
   display: flex;
-  align-items: flex-start;
-  gap: clamp(8px, 0.7vw, 12px);
-  padding: clamp(10px, 1vh, 14px) clamp(10px, 0.9vw, 14px);
+  flex-direction: column;
+  gap: 0;
   background: #fff;
   border-radius: 12px;
   border: 1px solid rgba(0,0,0,0.04);
   transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
   cursor: pointer;
+  overflow: hidden;
 }
 
 .sw-card:hover {
@@ -78,13 +78,40 @@
   transform: scale(1.01);
 }
 
-.sw-card-icon {
-  width: clamp(28px, 2.2vw, 34px);
-  height: clamp(28px, 2.2vw, 34px);
+/* Card preview area — mini illustration */
+.sw-card-preview {
+  width: 100%;
+  height: clamp(52px, 5vh, 70px);
+  background: var(--c-l);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 9px;
+  overflow: hidden;
+  position: relative;
+  border-bottom: 1px solid rgba(0,0,0,0.02);
+}
+
+.sw-card-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Card bottom — icon + text */
+.sw-card-bottom {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(8px, 0.7vw, 12px);
+  padding: clamp(8px, 0.8vh, 12px) clamp(10px, 0.9vw, 14px);
+}
+
+.sw-card-icon {
+  width: clamp(24px, 2vw, 30px);
+  height: clamp(24px, 2vw, 30px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
   background: var(--c-l);
   color: var(--c);
   flex-shrink: 0;
@@ -98,7 +125,7 @@
 }
 
 .sw-card-name {
-  font-size: clamp(11px, 0.78vw, 14px);
+  font-size: clamp(10px, 0.72vw, 13px);
   font-weight: 700;
   color: #1a1a1a;
   letter-spacing: -0.01em;
@@ -106,7 +133,7 @@
 }
 
 .sw-card-desc {
-  font-size: clamp(9px, 0.6vw, 11px);
+  font-size: clamp(8px, 0.55vw, 10px);
   color: #999;
   line-height: 1.4;
 }
@@ -279,7 +306,7 @@
 
 .sw-mock-nav-item.active .sw-mock-nav-icon {
   opacity: 0.6;
-  background: #10b981;
+  background: var(--nav-accent, #10b981);
 }
 
 .sw-mock-sidebar-footer {
@@ -521,6 +548,27 @@
   font-weight: 600;
 }
 
+.sw-mock-chart-legend {
+  display: flex;
+  gap: 12px;
+  padding-top: 6px;
+}
+
+.sw-mock-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 7px;
+  font-weight: 600;
+  color: #999;
+}
+
+.sw-mock-legend-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 2px;
+}
+
 /* Table card */
 .sw-mock-table-card {
   background: #fff;
@@ -622,6 +670,330 @@
 }
 
 /* ═══════════════════════════════════════
+   CLIENT PORTAL — Order status + progress
+   ═══════════════════════════════════════ */
+
+.sw-mock-portal-orders {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.sw-mock-portal-order {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #fafaf8;
+  border: 1px solid rgba(0,0,0,0.03);
+}
+
+.sw-mock-portal-order-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sw-mock-portal-order-name {
+  font-size: 9px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.sw-mock-portal-order-status {
+  font-size: 7px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.sw-mock-portal-progress-track {
+  height: 4px;
+  background: rgba(0,0,0,0.04);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.sw-mock-portal-progress-bar {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s;
+}
+
+.sw-mock-portal-pct {
+  font-size: 8px;
+  font-weight: 700;
+  color: #999;
+  text-align: right;
+}
+
+/* ═══════════════════════════════════════
+   CRM — Kanban pipeline
+   ═══════════════════════════════════════ */
+
+.sw-mock-kanban {
+  display: flex;
+  gap: 6px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.sw-mock-kanban-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: #fafaf8;
+  border-radius: 8px;
+  padding: 8px 6px;
+  border: 1px solid rgba(0,0,0,0.03);
+}
+
+.sw-mock-kanban-header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 4px 4px;
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+}
+
+.sw-mock-kanban-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.sw-mock-kanban-title {
+  font-size: 8px;
+  font-weight: 700;
+  color: #1a1a1a;
+  flex: 1;
+}
+
+.sw-mock-kanban-count {
+  font-size: 7px;
+  font-weight: 700;
+  color: #999;
+  background: rgba(0,0,0,0.04);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.sw-mock-kanban-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.sw-mock-kanban-card {
+  background: #fff;
+  border-radius: 6px;
+  padding: 6px 8px;
+  border: 1px solid rgba(0,0,0,0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.sw-mock-kanban-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sw-mock-kanban-card-name {
+  font-size: 8px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.sw-mock-kanban-hot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ef4444;
+}
+
+.sw-mock-kanban-card-val {
+  font-size: 7px;
+  font-weight: 700;
+  color: #888;
+}
+
+/* ═══════════════════════════════════════
+   HELPDESK — Ticket SLA
+   ═══════════════════════════════════════ */
+
+.sw-mock-ticket-list {
+  grid-column: 1 / -1;
+}
+
+.sw-mock-ticket-list + .sw-mock-table-card {
+  grid-column: 1 / -1;
+  max-height: none;
+}
+
+.sw-mock-ticket-list .sw-mock-table {
+  overflow-y: auto;
+}
+
+.sw-mock-ticket-sla {
+  font-size: 8px;
+  font-weight: 700;
+  color: #888;
+  font-variant-numeric: tabular-nums;
+}
+
+.sw-mock-ticket-sla.warn {
+  color: #ef4444;
+  animation: slaBlink 1.5s ease-in-out infinite;
+}
+
+@keyframes slaBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Helpdesk grid override — stack vertically */
+.sw-mock-content:has(.sw-mock-ticket-list) {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1.4fr 1fr;
+}
+
+/* ═══════════════════════════════════════
+   HR — Onboarding cards + checklist
+   ═══════════════════════════════════════ */
+
+.sw-mock-onboarding-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.sw-mock-onboard-card {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #fafaf8;
+  border: 1px solid rgba(0,0,0,0.03);
+}
+
+.sw-mock-onboard-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sw-mock-onboard-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 7px;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.sw-mock-onboard-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.sw-mock-onboard-name {
+  font-size: 9px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.sw-mock-onboard-role {
+  font-size: 7px;
+  font-weight: 600;
+  color: #999;
+}
+
+.sw-mock-onboard-steps {
+  font-size: 8px;
+  font-weight: 700;
+  color: #999;
+  flex-shrink: 0;
+}
+
+.sw-mock-onboard-progress-track {
+  height: 3px;
+  background: rgba(0,0,0,0.04);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.sw-mock-onboard-progress-bar {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s;
+}
+
+/* Checklist */
+.sw-mock-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.sw-mock-check-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 4px;
+  font-size: 8px;
+  font-weight: 500;
+  color: #555;
+  border-radius: 4px;
+}
+
+.sw-mock-check-item.done {
+  color: #bbb;
+}
+
+.sw-mock-check-item.done span {
+  text-decoration: line-through;
+}
+
+.sw-mock-check-box {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  border: 1.5px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #fff;
+}
+
+.sw-mock-check-box.done {
+  background: #6366f1;
+  border-color: #6366f1;
+}
+
+/* ═══════════════════════════════════════
    WORKFLOW MOCKUP — Flow pipeline
    ═══════════════════════════════════════ */
 
@@ -704,7 +1076,7 @@
 }
 
 .sw-mock-flow-label.done { color: #1a1a1a; }
-.sw-mock-flow-label.active { color: #3b82f6; font-weight: 700; }
+.sw-mock-flow-label.active { color: #f59e0b; font-weight: 700; }
 
 .sw-mock-flow-line {
   position: absolute;
@@ -830,14 +1202,14 @@
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 9px;
   font-weight: 800;
   color: #fff;
-  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+  box-shadow: 0 4px 16px rgba(6, 182, 212, 0.3);
 }
 
 .sw-mock-int-node {

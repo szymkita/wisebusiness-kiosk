@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Icon } from './Icon';
 import { generateIdeas } from '../services/ai';
 import { inspirationIndustries } from '../data/inspirationMap';
+import { getProblemsForSelection } from '../data/diagnosticProblems';
 import type { AIResults } from '../services/ai';
 import './Inspirator.css';
 
@@ -132,19 +133,6 @@ function getProcessesForIndustry(industryId: string): string[] {
   return processesByIndustry[industryId] || [];
 }
 
-/* Universal problems */
-const universalProblems = [
-  'Ręczna praca — przepisywanie, kopiowanie, klikanie w wielu miejscach',
-  'Brak jednego źródła prawdy — dane w Excelach, mailach, głowach',
-  'Brak widoczności — nie wiadomo co jest na jakim etapie',
-  'Zależność od ludzi — jak ktoś odejdzie, proces się sypie',
-  'Powtarzające się błędy i pomyłki',
-  'Brak standaryzacji — każdy robi po swojemu',
-  'Nie skaluje się — przy wzroście chaos rośnie szybciej',
-  'Wdrożenie nowej osoby trwa tygodniami',
-  'Brak raportów — decyzje na wyczucie',
-  'Klient nie zna statusu — musi dzwonić',
-];
 
 const costs = [
   { id: 'clients', label: 'Tracimy klientów', desc: 'Odchodzą do szybszej konkurencji' },
@@ -342,22 +330,29 @@ export function Inspirator({ onClose }: Props) {
           </motion.div>
         )}
 
-        {/* 2 — Problemy (per-process) */}
+        {/* 2 — Problemy (per process × per industry) */}
         {step === 2 && (
           <motion.div className="insp-body" key="s2" {...fade}>
             <div className="insp-inner">
               <h1 className="insp-q">Co konkretnie nie działa?</h1>
               <p className="insp-hint">Zaznacz wszystko, co pasuje — im więcej, tym lepsza diagnoza</p>
-              <div className="insp-opts">
-                {universalProblems.map(p => {
-                  const on = selectedProblems.includes(p);
-                  return (
-                    <button key={p} className={`insp-opt insp-opt--sm ${on ? 'on' : ''}`} onClick={() => toggleProblem(p)}>
-                      <span className="insp-chk">{on && <Icon name="check-circle" size={14} strokeWidth={2.5} />}</span>
-                      <span>{p}</span>
-                    </button>
-                  );
-                })}
+              <div className="insp-problem-groups">
+                {getProblemsForSelection(industryId, selectedProcesses).map(group => (
+                  <div key={group.process} className="insp-problem-group">
+                    <span className="insp-problem-group-label">{group.process}</span>
+                    <div className="insp-opts">
+                      {group.problems.map(p => {
+                        const on = selectedProblems.includes(p);
+                        return (
+                          <button key={p} className={`insp-opt insp-opt--sm ${on ? 'on' : ''}`} onClick={() => toggleProblem(p)}>
+                            <span className="insp-chk">{on && <Icon name="check-circle" size={14} strokeWidth={2.5} />}</span>
+                            <span>{p}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </motion.div>

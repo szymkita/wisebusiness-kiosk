@@ -4,6 +4,7 @@ import { LogisticsDemo } from './LogisticsDemo';
 import { EcommerceDemo } from './EcommerceDemo';
 import { HealthcareDemo } from './HealthcareDemo';
 import { HrDemo } from './HrDemo';
+import { QuotingDemo } from './QuotingDemo';
 
 export interface DemoEntry { title: string; icon: string; color: string; component: ComponentType; }
 
@@ -13,4 +14,5 @@ export const demos: Record<string, DemoEntry> = {
   ecommerce:  { title: 'Platforma E-commerce',    icon: 'shopping-cart', color: '#f59e0b', component: EcommerceDemo },
   healthcare: { title: 'System Medyczny',          icon: 'activity',      color: '#ef4444', component: HealthcareDemo },
   hr:         { title: 'Panel Klienta HR',         icon: 'users',         color: '#6366f1', component: HrDemo },
+  quoting:    { title: 'System Ofertowania',       icon: 'file-text',     color: '#e11d48', component: QuotingDemo },
 };

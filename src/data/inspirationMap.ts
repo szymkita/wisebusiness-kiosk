@@ -111,6 +111,7 @@ export const inspirationIndustries: InspIndustry[] = [
         ideas: [
           { title: 'Kalkulator ceny transportu w czasie rzeczywistym', desc: 'Klient pyta o cenę? Handlowiec wpisuje trasę — system od razu podpowiada: dystans, aktualna cena paliwa, dostępność aut w regionie, sugerowana stawka z marżą. Oferta wysyłana w minuty, nie po "muszę sprawdzić i oddzwonię jutro".', outcome: 'Szybka odpowiedź — zanim klient zapyta konkurencję', icon: 'zap' },
           { title: 'Ranking klientów po marży i terminowości płatności', desc: 'System wie, ile zarabiasz na każdym kliencie (marża na trasach) i jak płaci (terminowo? z opóźnieniem?). Widzisz, z kim warto budować relację, a kto de facto kosztuje Cię pieniądze. Dane do negocjacji stawek — nie "bo się wydaje, że jest OK".', outcome: 'Decyzje biznesowe o klientach oparte na twardych danych', icon: 'bar-chart' },
+          { title: 'Ankieta satysfakcji po dostawie', desc: 'Dostawa zakończona → klient dostaje krótką ankietę: terminowość, stan towaru, komunikacja. Niska ocena? Alert do opiekuna klienta z kontekstem. System zbiera dane — widzisz trendy w jakości obsługi per kierowca, per trasa, per klient.', outcome: 'Problemy wychwycone zanim klient odejdzie — a nie "czemu przestał zamawiać?"', icon: 'heart' },
         ],
       },
     ],
@@ -149,6 +150,7 @@ export const inspirationIndustries: InspIndustry[] = [
           { title: 'System obsługi zgłoszeń z pełnym kontekstem', desc: 'Klient pisze z problemem → system rozpoznaje klienta, wyciąga historię zamówień, identyfikuje temat (zwrot, reklamacja, pytanie) i kieruje do odpowiedniej osoby z kontekstem. Agent nie zaczyna od "proszę podać numer zamówienia" — ma wszystko.', outcome: 'Szybsza i lepsza obsługa, bo każdy ma pełen obraz', icon: 'message-circle' },
           { title: 'Dashboard sprzedażowy zamiast logowania do 5 narzędzi', desc: 'Konwersja, marża, top produkty, ROAS z kampanii, zwroty — w jednym widoku, zaciągane z różnych źródeł. Alert, gdy coś odbiega od normy. Tygodniowy raport generuje się sam i leci na maila. Wiesz, jak idzie biznes, bez godziny zbierania danych.', outcome: 'Obraz biznesu w jednym miejscu — decyzje zamiast szukania danych', icon: 'monitor' },
           { title: 'Analiza rentowności per produkt i per kanał', desc: 'Nie wystarczy wiedzieć, co się sprzedaje. Ważne, co zarabia — po uwzględnieniu kosztów wysyłki, zwrotów, prowizji marketplace, kosztów reklamy. System liczy marżę netto per SKU per kanał. Może się okazać, że bestseller na Allegro po prowizji i zwrotach jest na zero.', outcome: 'Wiesz, na czym naprawdę zarabiasz — nie na czym obrót wygląda dobrze', icon: 'bar-chart' },
+          { title: 'Automatyczne opisy produktów i tłumaczenia', desc: 'Nowy produkt w katalogu — system generuje opis sprzedażowy z danych technicznych. Sprzedajesz na rynkach zagranicznych? Opisy tłumaczone automatycznie z zachowaniem SEO. Nie czekasz, aż copywriter napisze opisy do 200 nowych SKU.', outcome: 'Produkty z opisami od razu po dodaniu — nie "kiedyś ktoś napisze"', icon: 'cpu' },
         ],
       },
     ],
@@ -236,6 +238,7 @@ export const inspirationIndustries: InspIndustry[] = [
           { title: 'CRM ubezpieczeniowy z terminarzem polis i odnowień', desc: 'Każdy klient, jego polisy, daty wygasania, historia roszczeń — w jednym systemie. 60 dni przed końcem polisy system uruchamia proces odnowienia: alert do brokera, mail do klienta, przygotowanie ofert porównawczych. Żadna polisa nie wygasa po cichu.', outcome: 'Odnowienia obsługiwane proaktywnie — klient zaopiekowany, przychód zabezpieczony', icon: 'clock' },
           { title: 'Portal klienta z obsługą szkód', desc: 'Klient zgłasza szkodę przez portal — formularz, zdjęcia, dokumenty. System kompletuje wniosek i wysyła do TU. Klient widzi status na bieżąco. Broker interweniuje gdy sprawa jest skomplikowana, nie przy każdym rutynowym zgłoszeniu.', outcome: 'Obsługa szkód jako uporządkowany proces — nie seria telefonów', icon: 'shield' },
           { title: 'Analiza portfela polis — co wygasa, co jest niedoubezpieczone', desc: 'Dashboard całego portfela: ile polis, jakie wartości, które wygasają w najbliższych miesiącach, gdzie klient może mieć lukę w ochronie. System sam sugeruje, z kim porozmawiać o rozszerzeniu zakresu — nie czekasz, aż klient sam się zapyta.', outcome: 'Aktywna sprzedaż oparta na danych portfela — nie na przypadku', icon: 'bar-chart' },
+          { title: 'Porównywarka ofert towarzystw', desc: 'Broker wpisuje parametry klienta → system zestawia oferty kilku TU w czytelnej tabeli: zakres, składka, wyłączenia, warunki. Klient dostaje porównanie PDF i wie, za co płaci. Nie ręczne kopiowanie z 5 systemów do jednego Excela.', outcome: 'Profesjonalne zestawienie ofert — szybko i czytelnie', icon: 'search' },
         ],
       },
     ],
@@ -256,6 +259,8 @@ export const inspirationIndustries: InspIndustry[] = [
         ideas: [
           { title: 'Dziennik budowy, postępy i dokumentacja w jednej apce', desc: 'Kierownik loguje postępy z telefonu: zdjęcia, notatki, pogoda, obecność ekip. Inwestor widzi status online. Harmonogram aktualizuje się na żywo — opóźnienie tynków automatycznie przesuwa zależne zadania. Budżet per pozycja kosztorysowa — wiadomo, gdzie jesteśmy finansowo.', outcome: 'Transparentna budowa — wszyscy wiedzą, co się dzieje i za ile', icon: 'smartphone' },
           { title: 'Portal podwykonawcy — harmonogram, dokumenty, odbiory', desc: 'Podwykonawca widzi swoje zadania, potwierdza terminy, wrzuca dokumenty (ubezpieczenie, certyfikaty). Zgłasza gotowość do odbioru — system tworzy zadanie dla inspektora. Koniec z szukaniem "czy ten podwykonawca miał ważne ubezpieczenie?".', outcome: 'Dokumentacja i rozliczenia podwykonawców w jednym miejscu', icon: 'users' },
+          { title: 'Portal inwestora — postępy, zdjęcia, budżet', desc: 'Inwestor nie musi jeździć na budowę. Loguje się do portalu i widzi: aktualny postęp prac ze zdjęciami, harmonogram z prognozą zakończenia, budżet z rozliczeniami. Cotygodniowy digest generowany automatycznie. Inwestor ma poczucie kontroli, kierownik budowy nie pisze raportów ręcznie.', outcome: 'Inwestor poinformowany bez dodatkowej pracy po Twojej stronie', icon: 'monitor' },
+          { title: 'System ofertowania i kosztorysowania', desc: 'Nowy przetarg? System bierze bazę cen jednostkowych, stawki robocizny, narzuty i kalkuluje kosztorys ofertowy. Przy zmianie stawki paliwa lub materiałów — przelicza automatycznie. Historyczne dane z poprzednich budów pomagają weryfikować, czy wycena jest realna.', outcome: 'Wyceny oparte na historii i danych — nie na "zrobimy to za tyle"', icon: 'dollar-sign' },
         ],
       },
       {
@@ -272,6 +277,7 @@ export const inspirationIndustries: InspIndustry[] = [
           { title: 'Panel najemcy — zgłoszenia, rachunki, komunikacja', desc: 'Najemca loguje się do panelu: zgłasza usterkę z opisem i zdjęciem, widzi rachunki, pobiera dokumenty. Zgłoszenie automatycznie trafia do właściwego technika — najemca widzi status jak przesyłkę. Rozliczenia mediów generują się z odczytów — od odczytu do rachunku bez Excela.', outcome: 'Obsługa najemców uporządkowana i samoobsługowa — mniej telefonów, mniej chaosu', icon: 'globe' },
           { title: 'Terminarz umów i automatyczne przypomnienia', desc: 'Umowa wygasa za 3 miesiące? System informuje zarządcę. Renegocjacja, nowa oferta, przygotowanie lokalu — system proponuje kolejne kroki. Nie odkrywasz pustostanu, gdy najemca się już wyprowadził.', outcome: 'Proaktywne zarządzanie portfelem — nie reaktywne', icon: 'clock' },
           { title: 'Rozliczenie funduszu remontowego i głosowania wspólnoty', desc: 'Naliczanie funduszu per lokal, rejestr wpłat, plan remontów z kosztorysem. Głosowania online — każdy właściciel głosuje z domu. Protokoły generują się automatycznie. Zarządca nie organizuje chaotycznych zebrań i nie klei Exceli.', outcome: 'Wspólnota zarządzana sprawnie — mniej spotkań, więcej porządku', icon: 'users' },
+          { title: 'Wycena nieruchomości z porównywalnych transakcji', desc: 'System zbiera dane o transakcjach w okolicy (z portali, z własnych danych). Przy wycenie nowej nieruchomości — automatycznie dobiera porównywalne oferty i transakcje. Agent nie wycenia "z głowy" — ma dane rynkowe. Właściciel widzi, na czym opiera się cena.', outcome: 'Wyceny oparte na danych rynkowych — wiarygodne dla właściciela i kupca', icon: 'trending-up' },
         ],
       },
     ],
@@ -310,6 +316,14 @@ export const inspirationIndustries: InspIndustry[] = [
           { title: 'Menu engineering — co zarabia, co traci', desc: 'Matryca popularność × marża dla każdego dania. System pokazuje: co warto promować (popularne i marżowe), co wycenić inaczej (popularne, ale nisko marżowe), co usunąć z karty (niepopularne i nisko marżowe). Decyzje o menu oparte na danych z kasy, nie na intuicji szefa kuchni.', outcome: 'Karta menu, która zarabia — bo wiesz, co na niej trzymać', icon: 'bar-chart' },
         ],
       },
+      {
+        name: 'Kadry i grafiki zmianowe', icon: 'users',
+        ideas: [
+          { title: 'Grafik zmianowy z apką pracownika', desc: 'Pracownicy podają dostępność w apce. System układa grafik uwzględniając kwalifikacje (barista, kucharz, kelner), obłożenie (z rezerwacji i historii) i preferencje. Zamiana zmian — przez apkę, system sprawdza pokrycie. Koniec z tablicą korkową i telefonami "czy ktoś może wziąć sobotnią zmianę?".', outcome: 'Grafik robiony w minuty — pracownicy mają go zawsze pod ręką', icon: 'clock' },
+          { title: 'Ewidencja czasu pracy z telefonu', desc: 'Pracownik loguje start/koniec zmiany z telefonu (z weryfikacją lokalizacji). System liczy godziny, nadgodziny, przerwy. Na koniec miesiąca — lista płac z dokładnymi danymi. Nikt nie dyskutuje o godzinach, bo obie strony widzą to samo.', outcome: 'Rozliczenia precyzyjne i bezsporne', icon: 'smartphone' },
+          { title: 'Dashboard kosztów pracy vs. przychód', desc: 'System zestawia koszty personelu (z ewidencji czasu) z przychodem (z kasy) per dzień, tydzień, miesiąc. Widzisz, kiedy masz za dużo ludzi (i przepalasz), a kiedy za mało (i tracisz przychód). Dane do optymalizacji grafiku — nie "bo tak zawsze robiliśmy".', outcome: 'Koszty pracy dopasowane do obrotów — nie stałe niezależnie od sezonu', icon: 'bar-chart' },
+        ],
+      },
     ],
   },
 
@@ -339,6 +353,16 @@ export const inspirationIndustries: InspIndustry[] = [
           { title: 'Portal klienta — status projektu, deliverables, feedback', desc: 'Klient widzi: co jest w sprincie, co zrobione, co czeka. Pobiera buildy, daje feedback do konkretnych elementów, widzi burndown. Nie pyta "jak idzie?" — sam sprawdza. PM wysyła cotygodniowy digest jednym kliknięciem.', outcome: 'Klient z poczuciem kontroli — Ty z mniejszą liczbą spotkań statusowych', icon: 'globe' },
         ],
       },
+      {
+        name: 'Zespół i procesy wewnętrzne', icon: 'users',
+        ideas: [
+          { title: 'Matryca kompetencji zespołu', desc: 'Kto umie React? Kto zna branżę medyczną? Kto prowadził projekt powyżej 500h? System zbiera dane o doświadczeniu z historii projektów i samooceny. Przy nowym projekcie widzisz, kogo przydzielić — i gdzie masz lukę kompetencyjną, którą warto zasypać.', outcome: 'Dobór ludzi do projektów oparty na danych — nie na "kto jest wolny"', icon: 'users' },
+          { title: 'Onboarding nowego developera z checklistą', desc: 'Nowa osoba → system generuje: dostępy (Git, Jira, Slack, VPN), dokumentacja projektowa do przeczytania, spotkania z kluczowymi osobami, coding standards. Buddy wie, co mu opowiedzieć. Za tydzień developer wchodzi w projekt — nie za miesiąc.', outcome: 'Nowy człowiek produktywny szybko — bo onboarding jest procesem, nie chaosem', icon: 'check-circle' },
+          { title: 'Dashboard operacyjny firmy', desc: 'Ile projektów aktywnych, jaki łączny utilization, ile na bench-u, pipeline sprzedażowy, przychód MTD, terminy nadchodzących milestones. CEO otwiera jeden dashboard rano — wie, jak idzie firma. Nie pyta 5 osób o 5 rzeczy.', outcome: 'Stan firmy w jednym widoku — dla founder, CEO, board', icon: 'monitor' },
+          { title: 'System ocen i 1:1 z historią', desc: 'Regularne 1:1 z feedbackiem logowane w systemie. Cele na kwartał, postępy, notatki z rozmów. Manager widzi historię — nie startuje od zera co spotkanie. Przy review rocznym — pełen obraz, nie "co tu było ostatnio?".', outcome: 'Rozwój ludzi oparty na ciągłym dialogu — nie na jednorazowej ocenie', icon: 'heart' },
+          { title: 'Prognoza przychodów z backloga i pipeline', desc: 'Podpisane umowy (backlog kontraktowy) + szanse w CRM (z wagą prawdopodobieństwa) + bench cost = prognoza na 3-6 miesięcy. Widzisz, czy trzeba sprzedawać agresywniej, czy zatrudniać, czy może trzymać koszty. Board podejmuje decyzje na danych.', outcome: 'Planowanie finansowe oparte na tym, co wiesz — nie na tym, w co wierzysz', icon: 'trending-up' },
+        ],
+      },
     ],
   },
 
@@ -357,6 +381,7 @@ export const inspirationIndustries: InspIndustry[] = [
         ideas: [
           { title: 'Rezerwacja online z automatycznym przypominaniem', desc: 'Pacjent rezerwuje 24/7 przez stronę lub Google. Potwierdzenie SMS natychmiast, przypomnienie dzień przed i 2h przed. Opcja przełożenia jednym kliknięciem — bez dzwonienia. Check-in na tablecie w poczekalni — pacjent skanuje QR, potwierdza dane, system informuje lekarza. Rejestratorka zajmuje się trudniejszymi sprawami.', outcome: 'Pacjent rejestruje się sam — rejestratorka nie jest wąskim gardłem', icon: 'globe' },
           { title: 'Inteligentne planowanie harmonogramu', desc: 'Wizyty kontrolne 15 min, konsultacje 30 min, zabiegi 45 min — z buforem na opóźnienia. System zna specyfikę każdego lekarza. Pacjent widzi realistyczny czas wejścia. Choroba lekarza? System proponuje przesunięcia pacjentów.', outcome: 'Poczekalnia bez frustracji, gabinety wykorzystane optymalnie', icon: 'clock' },
+          { title: 'System komunikacji z pacjentem po wizycie', desc: 'Wizyta zakończona → pacjent dostaje podsumowanie: co ustalono, jakie leki, kiedy następna wizyta, co robić w razie pogorszenia. Nie musi pamiętać co lekarz powiedział. Przed kontrolną wizytą — przypomnienie z listą: co zabrać, jakie badania zrobić wcześniej.', outcome: 'Pacjent przygotowany — wizyta efektywniejsza, mniej "zapomniałem"', icon: 'mail' },
         ],
       },
       {
@@ -374,6 +399,7 @@ export const inspirationIndustries: InspIndustry[] = [
           { title: 'Zarządzanie grafikami lekarzy i gabinetów', desc: 'Który lekarz w którym gabinecie, ile slotów prywatnych vs. NFZ, urlopy, szkolenia — w jednym widoku. Optymalne wykorzystanie czasu i przestrzeni. Nie zarządzasz tym na tablicy korkowej.', outcome: 'Gabinety i lekarze — optymalnie rozplanowani', icon: 'clock' },
           { title: 'Kampanie profilaktyczne i recall pacjentów', desc: 'Pacjent był na badaniach kontrolnych rok temu? System przypomina: "czas na kolejną wizytę kontrolną". Pacjent po zabiegu? Automatyczny follow-up po tygodniu. Sezon grypowy? SMS z ofertą szczepień do odpowiedniej grupy pacjentów. Aktywna opieka zamiast czekania, aż pacjent sam przyjdzie.', outcome: 'Pacjent zaopiekowany proaktywnie — placówka z wyższą retencją', icon: 'heart' },
           { title: 'Dashboard operacyjny placówki', desc: 'Ile wizyt dzisiaj, ile anulacji, jaki przychód MTD, najczęstsze procedury, obłożenie gabinetów, czas oczekiwania na wizytę. Wszystko w jednym widoku. Manager placówki widzi, jak działa klinika — nie pyta każdego o osobno.', outcome: 'Zarządzanie placówką na danych — nie na "wydaje mi się"', icon: 'monitor' },
+          { title: 'Cennik usług i pakiety z kalkulacją online', desc: 'Pacjent na stronie widzi cennik, może złożyć pakiet zabiegów, od razu widzi cenę. Płaci online lub rezerwuje z zaliczką. System kalkuluje cenę pakietową z rabatami i tworzy harmonogram zabiegów. Recepcja nie przelicza ręcznie "ile będzie za 3 zabiegi z rabatem".', outcome: 'Pacjent kupuje pakiet online — placówka ma wyższy średni rachunek', icon: 'shopping-cart' },
         ],
       },
     ],
@@ -402,6 +428,8 @@ export const inspirationIndustries: InspIndustry[] = [
         ideas: [
           { title: 'Od umowy do pierwszego dnia pracy — systemowo', desc: 'Nowy pracownik → system generuje umowę, skierowanie na badania, BHP. Klient potwierdza. Podpis elektroniczny. Cały proces w systemie — nie w folderze na dysku. Ewidencja czasu pracy z potwierdzeniem przez klienta — obie strony widzą to samo. Naliczanie wynagrodzenia i faktura generują się automatycznie.', outcome: 'Obsadzenie stanowiska w godzinach — rozliczenie bez sporów', icon: 'file-text' },
           { title: 'Dashboard obłożenia i zapotrzebowania', desc: 'Ilu pracowników pracuje, ilu dostępnych, ilu potrzebnych w przyszłym tygodniu. Wiesz czy rekrutować, czy masz nadmiar. Klient zgłasza zapotrzebowanie — od razu widzisz, kto jest dostępny z odpowiednimi kwalifikacjami.', outcome: 'Zarządzanie zasobami ludzkimi w real-time — nie na oko', icon: 'bar-chart' },
+          { title: 'Apka pracownika tymczasowego', desc: 'Pracownik widzi swoje przydziały, loguje czas, pobiera paski wynagrodzenia, zgłasza dostępność na kolejne tygodnie. Nie dzwoni do agencji z pytaniami — ma wszystko w telefonie. Agencja widzi kto jest dostępny, kto chce więcej godzin, kto rezygnuje.', outcome: 'Pracownik tymczasowy zaopiekowany — mniejsza rotacja, mniej telefonów', icon: 'smartphone' },
+          { title: 'Rozliczenie z klientem per pracownik per miesiąc', desc: 'System zbiera: godziny (z ewidencji), stawkę (z umowy), faktury per klient. Na koniec miesiąca — rozliczenie generuje się samo. Klient widzi w portalu, za co płaci. Agencja wie, jaką marżę ma na każdym kontrakcie. Nie klei tego ręcznie w Excelu.', outcome: 'Rozliczenia klienta generowane z danych — nie składane z 10 źródeł', icon: 'dollar-sign' },
         ],
       },
       {
@@ -431,6 +459,8 @@ export const inspirationIndustries: InspIndustry[] = [
         ideas: [
           { title: 'Platforma kursowa z automatyczną ścieżką i certyfikatem', desc: 'Uczeń kupuje kurs → dostaje dostęp → system prowadzi przez moduły. Quiz po każdym — nie przejdzie dalej bez zaliczenia. Po ukończeniu → certyfikat z unikalnym numerem, weryfikowalny online. Sprzedajesz kurs raz — skaluje się na dowolną liczbę osób bez dodatkowej pracy.', outcome: 'Edukacja, która się skaluje — bez ograniczenia liczbą trenerów', icon: 'award' },
           { title: 'Automatyczny funnel sprzedażowy dla kursów', desc: 'Landing page → płatność → natychmiastowy dostęp. Sekwencja email z materiałami. Po ukończeniu — oferta kursu zaawansowanego w niższej cenie. Cały funnel ustawiony raz — sprzedaje 24/7. Integracja z systemem płatności i fakturowania.', outcome: 'Przychód ze sprzedaży wiedzy bez ręcznej obsługi', icon: 'shopping-cart' },
+          { title: 'Webinary i live z automatyczną rejestracją', desc: 'Rejestracja na webinar → przypomnienie → link do transmisji → nagranie dostępne po → ankieta → oferta kursu pełnego. Cały flow automatyczny. Webinary jako narzędzie lead generation — system zbiera dane uczestników i przekazuje do sprzedaży.', outcome: 'Webinary jako maszyna do generowania leadów — nie jednorazowy event', icon: 'monitor' },
+          { title: 'System partnerski — trenerzy i afiliacja', desc: 'Zewnętrzni trenerzy wrzucają kursy na Twoją platformę — system rozlicza prowizję. Program afiliacyjny: partnerzy polecają kursy linkiem, system liczy konwersje i wypłaca prowizję. Platforma rośnie bez zwiększania wewnętrznego zespołu.', outcome: 'Platforma, która rośnie dzięki partnerom — nie tylko dzięki Twojemu zespołowi', icon: 'users' },
         ],
       },
       {
@@ -447,6 +477,7 @@ export const inspirationIndustries: InspIndustry[] = [
           { title: 'System egzaminacyjny z weryfikowalnymi certyfikatami', desc: 'Egzamin online z losowaniem pytań, timerem, zabezpieczeniami. Wynik natychmiast. Certyfikat z unikalnym numerem — pracodawca lub regulator weryfikuje ważność jednym kliknięciem (QR/link). Rejestr: kto zdał, kiedy, co wygasa. Automatyczne przypomnienia o odnowieniu.', outcome: 'Certyfikaty, które mają realną wartość — bo są weryfikowalne', icon: 'check-circle' },
           { title: 'Raportowanie do regulatorów z danych systemu', desc: 'SIO, UDT, ULC — raporty generowane z danych o kursantach, egzaminach i certyfikatach. Nie ręcznie z Excela — z danych, które już masz w systemie. Jedno kliknięcie zamiast godzin wypełniania arkuszy.', outcome: 'Raportowanie regulacyjne jako kliknięcie — nie projekt', icon: 'file-text' },
           { title: 'Panel firmy szkoleniowej — klienci, szkolenia, dokumenty', desc: 'Klient korporacyjny loguje się: widzi swoich pracowników, zapisuje na szkolenia, pobiera certyfikaty, widzi historię. Dział HR w firmie klienta ma porządek — wie kto co ukończył. Ty masz dane do raportów i upsellingu kolejnych kursów.', outcome: 'Klient B2B obsługiwany przez panel — sprzedaż kolejnych szkoleń na danych', icon: 'globe' },
+          { title: 'Mapa kompetencji i luk szkoleniowych', desc: 'System zbiera: kto co ukończył, jakie certyfikaty ma, co wygasa. Zestawia z wymaganiami stanowisk. Pokazuje luki — kto potrzebuje doszkolenia, jakie kursy zaproponować klientowi B2B. Trener widzi, czego rynek potrzebuje. Sprzedaż szkoleń oparta na danych, nie na przeczuciu.', outcome: 'Oferta szkoleniowa dopasowana do realnych potrzeb — nie do domysłów', icon: 'target' },
         ],
       },
     ],
