@@ -318,6 +318,17 @@
   text-align: left;
 }
 
+.res-contact-home {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; width: 100%;
+  margin-top: 8px; padding: 14px;
+  background: #1a1a1a; color: #fff;
+  font-size: 15px; font-weight: 700; font-family: inherit;
+  border: none; border-radius: 10px; cursor: pointer;
+  min-height: 48px;
+}
+.res-contact-home:active { transform: scale(0.97); }
+
 /* Dialer */
 .res-dialer {
   display: flex; flex-direction: column;

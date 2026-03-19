@@ -387,13 +387,19 @@ export function Inspirator({ onClose }: Props) {
                   To wygenerował AI w kilka sekund. Wyobraź sobie, co zrobimy gdy naprawdę poznamy Twoje procesy.
                 </p>
                 {contactSent ? (
-                  <div className="res-contact-done">
-                    <Icon name="check-circle" size={20} strokeWidth={2} />
-                    <div>
-                      <strong>Dziękujemy!</strong><br />
-                      Oddzwonimy najszybciej jak to możliwe.
+                  <>
+                    <div className="res-contact-done">
+                      <Icon name="check-circle" size={20} strokeWidth={2} />
+                      <div>
+                        <strong>Dziękujemy!</strong><br />
+                        Oddzwonimy najszybciej jak to możliwe.
+                      </div>
                     </div>
-                  </div>
+                    <button className="res-contact-home" onClick={onClose}>
+                      <Icon name="home" size={15} strokeWidth={2} />
+                      Wróć do strony głównej
+                    </button>
+                  </>
                 ) : (
                   <div className="res-dialer">
                     <span className="res-dialer-label">Zostaw numer — oddzwonimy</span>
