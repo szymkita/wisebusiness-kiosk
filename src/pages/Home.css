@@ -208,6 +208,29 @@
   color: #fff;
 }
 
+/* ── Contact button highlight ── */
+.dock-item--contact {
+  color: #fff !important;
+  background: linear-gradient(135deg, #10b981, #059669);
+  box-shadow: 0 2px 12px rgba(16, 185, 129, 0.3);
+  animation: contactPulse 2.5s ease-in-out infinite;
+}
+
+.dock-item--contact:active {
+  transform: scale(0.97);
+}
+
+.dock-item--contact.active {
+  color: #fff !important;
+  animation: none;
+  box-shadow: 0 2px 16px rgba(16, 185, 129, 0.4);
+}
+
+@keyframes contactPulse {
+  0%, 100% { box-shadow: 0 2px 12px rgba(16, 185, 129, 0.3); }
+  50% { box-shadow: 0 4px 24px rgba(16, 185, 129, 0.5), 0 0 0 3px rgba(16, 185, 129, 0.1); }
+}
+
 /* ── Content panels (light overlay) ── */
 .home-panel {
   position: absolute;

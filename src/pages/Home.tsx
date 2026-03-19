@@ -143,7 +143,7 @@ export function Home() {
           transition={{ duration: 0.5, delay: 0.7 }}>
           {dockItems.map(item => (
             <button key={item.id}
-              className={`dock-item ${item.id === 'home' ? (view === 'attract' ? 'active' : '') : openPanel === item.id ? 'active' : ''}`}
+              className={`dock-item ${item.id === 'home' ? (view === 'attract' ? 'active' : '') : openPanel === item.id ? 'active' : ''} ${item.id === 'contact' ? 'dock-item--contact' : ''}`}
               onClick={() => setView(item.id === 'home' ? 'attract' : item.id)}>
               <Icon name={item.icon} size={15} strokeWidth={2} />
               <span>{item.label}</span>
@@ -230,7 +230,7 @@ export function Home() {
                   const itemId = item.id === 'home' ? 'attract' : item.id;
                   return (
                     <button key={item.id}
-                      className={`dock-item ${openPanel === item.id ? 'active' : ''}`}
+                      className={`dock-item ${openPanel === item.id ? 'active' : ''} ${item.id === 'contact' ? 'dock-item--contact' : ''}`}
                       onClick={() => setView(itemId)}>
                       <Icon name={item.icon} size={15} strokeWidth={2} />
                       <span>{item.label}</span>
