@@ -82,6 +82,50 @@ const LOADING_MIN_MS = 7000;
 
 const fade = { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: 0.25 } };
 
+/* Extracted ShareScreen — simple, no AnimatePresence issues */
+function ShareScreen({ shareUrl, phone, setPhone, smsSent, onSendSms, onRestart }: {
+  shareUrl: string;
+  phone: string;
+  setPhone: (v: string) => void;
+  smsSent: boolean;
+  onSendSms: () => void;
+  onRestart: () => void;
+}) {
+  if (smsSent) {
+    return (
+      <>
+        <div className="insp-done-icon"><Icon name="check-circle" size={28} strokeWidth={1.8} /></div>
+        <h1 className="insp-q">Wysłano!</h1>
+        <p className="insp-note">Link leci na Twój telefon. Wpadnij do nas na stanowisku!</p>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <h1 className="insp-q">Zabierz pomysły ze sobą</h1>
+      <p className="insp-hint">Zeskanuj kod QR telefonem</p>
+      <div className="insp-qr-frame">
+        {shareUrl
+          ? <QRCodeSVG value={shareUrl} size={180} bgColor="#ffffff" fgColor="#1a1a1a" level="L" />
+          : <span style={{ color: '#ccc', fontSize: 12 }}>Generuję kod...</span>
+        }
+      </div>
+      <span className="insp-qr-caption">Otwórz aparat i zeskanuj kod</span>
+      <div className="insp-divider"><span>lub wyślij SMS-em</span></div>
+      <div className="insp-sms-row">
+        <input type="tel" className="insp-input insp-input--phone"
+          value={phone} onChange={e => setPhone(e.target.value)} placeholder="+48 123 456 789" />
+        <button className="insp-btn" onClick={onSendSms}
+          disabled={phone.replace(/[^0-9]/g, '').length < 11}>
+          <Icon name="send" size={14} strokeWidth={2} /> Wyślij
+        </button>
+      </div>
+      <button className="insp-btn insp-btn--ghost" onClick={onRestart}>Zacznij od nowa</button>
+    </>
+  );
+}
+
 interface Props { onClose: () => void; }
 
 export function Inspirator({ onClose }: Props) {
@@ -89,7 +133,7 @@ export function Inspirator({ onClose }: Props) {
   const [industry, setIndustry] = useState('');
   const [selectedProcesses, setSelectedProcesses] = useState<typeof processes[0][]>([]);
   const [selectedProblems, setSelectedProblems] = useState<string[]>([]);
-  const [cost, setCost] = useState('');
+  const [selectedCosts, setSelectedCosts] = useState<string[]>([]);
   const [size, setSize] = useState('');
   const [results, setResults] = useState<AIResults | null>(null);
   const [prevIdeas, setPrevIdeas] = useState<string[]>([]);
@@ -107,13 +151,15 @@ export function Inspirator({ onClose }: Props) {
   const toggleProblem = useCallback((p: string) => {
     setSelectedProblems(prev => prev.includes(p) ? prev.filter(x => x !== p) : [...prev, p]);
   }, []);
-  const pickCost = useCallback((label: string) => { setCost(label); go(4); }, [go]);
+  const toggleCost = useCallback((label: string) => {
+    setSelectedCosts(prev => prev.includes(label) ? prev.filter(x => x !== label) : [...prev, label]);
+  }, []);
 
   const processCtx = selectedProcesses.map(p => `${p.name}: ${p.desc}`).join('; ');
 
   const pickSize = useCallback((label: string) => {
     setSize(label);
-    const ctx = [`Procesy do usprawnienia: ${processCtx}`, ...selectedProblems, `Największy koszt: ${cost}`];
+    const ctx = [`Procesy do usprawnienia: ${processCtx}`, ...selectedProblems, `Największe koszty: ${selectedCosts.join(', ')}`];
     const t0 = Date.now();
     aiRef.current = generateIdeas(industry, ctx, label);
     go(5);
@@ -121,7 +167,7 @@ export function Inspirator({ onClose }: Props) {
       const wait = Math.max(0, LOADING_MIN_MS - (Date.now() - t0));
       setTimeout(() => { setResults(data); setPrevIdeas(data.ideas.map(i => i.title)); setStep(6); }, wait);
     });
-  }, [industry, processCtx, selectedProblems, cost, go]);
+  }, [industry, processCtx, selectedProblems, selectedCosts, go]);
 
   useEffect(() => {
     if (step !== 5) return;
@@ -133,19 +179,19 @@ export function Inspirator({ onClose }: Props) {
   const moreIdeas = useCallback(async () => {
     setMoreLoading(true);
     try {
-      const ctx = [`Procesy: ${processCtx}`, ...selectedProblems, `Największy koszt: ${cost}`];
+      const ctx = [`Procesy: ${processCtx}`, ...selectedProblems, `Największe koszty: ${selectedCosts.join(', ')}`];
       const data = await generateIdeas(industry, ctx, size, prevIdeas);
       setResults(data);
       setPrevIdeas(prev => [...prev, ...data.ideas.map(i => i.title)]);
     } catch { /* keep */ }
     setMoreLoading(false);
-  }, [industry, processCtx, selectedProblems, cost, size, prevIdeas]);
+  }, [industry, processCtx, selectedProblems, selectedCosts, size, prevIdeas]);
 
   const shareUrl = useMemo(() => {
     if (!results) return '';
-    try { return encodeResults({ industry, processes: selectedProcesses.map(p => p.name), outcome: cost, size, results }); }
+    try { return encodeResults({ industry, processes: selectedProcesses.map(p => p.name), outcome: selectedCosts.join(', '), size, results }); }
     catch { return ''; }
-  }, [results, industry, selectedProcesses, cost, size]);
+  }, [results, industry, selectedProcesses, selectedCosts, size]);
 
   const sendSms = useCallback(() => {
     const clean = phone.replace(/[^0-9+]/g, '');
@@ -153,7 +199,7 @@ export function Inspirator({ onClose }: Props) {
     const session = {
       timestamp: new Date().toISOString(), industry,
       processes: selectedProcesses.map(p => p.name), problems: selectedProblems,
-      cost, company_size: size, ai_diagnosis: results?.diagnosis.insight,
+      costs: selectedCosts, company_size: size, ai_diagnosis: results?.diagnosis.insight,
       ai_ideas: results?.ideas.map(i => i.title), phone: clean, share_url: shareUrl,
     };
     const sessions = JSON.parse(localStorage.getItem('inspirator_sessions') || '[]');
@@ -165,16 +211,16 @@ export function Inspirator({ onClose }: Props) {
     }).catch(() => {});
     setSmsSent(true);
     setTimeout(() => onClose(), 8000);
-  }, [industry, selectedProcesses, selectedProblems, cost, size, results, phone, shareUrl, onClose]);
+  }, [industry, selectedProcesses, selectedProblems, selectedCosts, size, results, phone, shareUrl, onClose]);
 
   const restart = useCallback(() => {
     setStep(0); setIndustry(''); setSelectedProcesses([]);
-    setSelectedProblems([]); setCost(''); setSize('');
+    setSelectedProblems([]); setSelectedCosts([]); setSize('');
     setResults(null); setPrevIdeas([]); setLoadingIdx(0);
     setPhone('+48'); setSmsSent(false);
   }, []);
 
-  const stepNames = ['Branża', 'Proces', 'Problemy', 'Koszt', 'Skala', 'Analiza', 'Wyniki', ''];
+  const stepNames = ['Branża', 'Proces', 'Problemy', 'Koszt', 'Skala', 'Analiza', 'Wyniki', 'Udostępnij'];
 
   return (
     <motion.div className="insp" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
@@ -262,16 +308,20 @@ export function Inspirator({ onClose }: Props) {
           <motion.div className="insp-body" key="s3" {...fade}>
             <div className="insp-inner">
               <h1 className="insp-q">Co Was to kosztuje?</h1>
-              <p className="insp-hint">Co jest największą konsekwencją tych problemów?</p>
+              <p className="insp-hint">Zaznacz wszystkie konsekwencje, które odczuwacie</p>
               <div className="insp-opts">
-                {costs.map(c => (
-                  <button key={c.id} className="insp-opt" onClick={() => pickCost(c.label)}>
-                    <span className="insp-opt-body">
-                      <span className="insp-opt-title">{c.label}</span>
-                      <span className="insp-opt-sub">{c.desc}</span>
-                    </span>
-                  </button>
-                ))}
+                {costs.map(c => {
+                  const on = selectedCosts.includes(c.label);
+                  return (
+                    <button key={c.id} className={`insp-opt ${on ? 'on' : ''}`} onClick={() => toggleCost(c.label)}>
+                      <span className="insp-chk">{on && <Icon name="check-circle" size={14} strokeWidth={2.5} />}</span>
+                      <span className="insp-opt-body">
+                        <span className="insp-opt-title">{c.label}</span>
+                        <span className="insp-opt-sub">{c.desc}</span>
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </motion.div>
@@ -392,39 +442,17 @@ export function Inspirator({ onClose }: Props) {
           </motion.div>
         )}
 
-        {/* 7 — QR + SMS */}
-        {step === 7 && !smsSent && (
-          <motion.div className="insp-body" key="s7" {...fade}>
-            <div className="insp-inner insp-inner--narrow" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, paddingTop: 24 }}>
-              <h1 className="insp-q">Zabierz pomysły ze sobą</h1>
-              <p className="insp-hint">Zeskanuj kod QR telefonem</p>
-              {shareUrl ? (
-                <div className="insp-qr-frame">
-                  <QRCodeSVG value={shareUrl} size={200} bgColor="#ffffff" fgColor="#1a1a1a" level="L" style={{ width: '100%', height: '100%' }} />
-                </div>
-              ) : (
-                <div className="insp-qr-frame" style={{ border: '2px dashed rgba(0,0,0,0.1)' }}>
-                  <span style={{ color: '#bbb', fontSize: 13, textAlign: 'center' as const }}>QR niedostępny</span>
-                </div>
-              )}
-              <span className="insp-qr-caption">Otwórz aparat i zeskanuj kod</span>
-              <div className="insp-divider"><span>lub wyślij SMS-em</span></div>
-              <div className="insp-sms-row">
-                <input type="tel" className="insp-input insp-input--phone" value={phone} onChange={e => setPhone(e.target.value)} placeholder="+48 123 456 789" />
-                <button className="insp-btn" onClick={sendSms} disabled={phone.replace(/[^0-9]/g, '').length < 11}>
-                  <Icon name="send" size={14} strokeWidth={2} /> Wyślij
-                </button>
-              </div>
-              <button className="insp-btn insp-btn--ghost" onClick={restart}>Zacznij od nowa</button>
-            </div>
-          </motion.div>
-        )}
-
-        {step === 7 && smsSent && (
-          <motion.div className="insp-body insp-body--mid" key="thx" {...fade}>
-            <div className="insp-done-icon"><Icon name="check-circle" size={28} strokeWidth={1.8} /></div>
-            <h1 className="insp-q">Wysłano!</h1>
-            <p className="insp-note">Link leci na Twój telefon. Wpadnij do nas na stanowisku!</p>
+        {/* 7 — Share */}
+        {step === 7 && (
+          <motion.div className="insp-body insp-body--mid" key="s7" {...fade}>
+            <ShareScreen
+              shareUrl={shareUrl}
+              phone={phone}
+              setPhone={setPhone}
+              smsSent={smsSent}
+              onSendSms={sendSms}
+              onRestart={restart}
+            />
           </motion.div>
         )}
 
@@ -443,6 +471,14 @@ export function Inspirator({ onClose }: Props) {
           <span className="insp-counter">Wybrano: <strong>{selectedProblems.length}</strong></span>
           <button className="insp-btn" disabled={selectedProblems.length < MIN_PROBLEMS} onClick={() => setStep(3)}>
             {selectedProblems.length < MIN_PROBLEMS ? `Jeszcze ${MIN_PROBLEMS - selectedProblems.length}` : 'Dalej'} <Icon name="chevron-right" size={15} strokeWidth={2.5} />
+          </button>
+        </div>
+      )}
+      {step === 3 && (
+        <div className="insp-footer">
+          <span className="insp-counter">Wybrano: <strong>{selectedCosts.length}</strong></span>
+          <button className="insp-btn" disabled={selectedCosts.length < 1} onClick={() => setStep(4)}>
+            {selectedCosts.length < 1 ? 'Wybierz min. 1' : 'Dalej'} <Icon name="chevron-right" size={15} strokeWidth={2.5} />
           </button>
         </div>
       )}
