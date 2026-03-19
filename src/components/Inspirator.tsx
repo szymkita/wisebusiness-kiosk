@@ -1,7 +1,9 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { QRCodeSVG } from 'qrcode.react';
 import { Icon } from './Icon';
 import { generateIdeas } from '../services/ai';
+import { encodeResults } from '../services/share';
 import type { AIResults } from '../services/ai';
 import './Inspirator.css';
 
@@ -96,8 +98,8 @@ export function Inspirator({ onClose }: Props) {
   const [prevIdeas, setPrevIdeas] = useState<string[]>([]);
   const [loadingIdx, setLoadingIdx] = useState(0);
   const [moreLoading, setMoreLoading] = useState(false);
-  const [email, setEmail] = useState('');
-  const [sent, setSent] = useState(false);
+  const [phone, setPhone] = useState('+48');
+  const [smsSent, setSmsSent] = useState(false);
   const aiRef = useRef<Promise<AIResults> | null>(null);
 
   const go = useCallback((s: number) => setTimeout(() => setStep(s), 300), []);
@@ -154,14 +156,30 @@ export function Inspirator({ onClose }: Props) {
     setMoreLoading(false);
   }, [industry, processContext, selectedProblems, goal, size, prevIdeas]);
 
-  const submit = useCallback(() => {
+  // Generate share URL when results are ready
+  const shareUrl = useMemo(() => {
+    if (!results) return '';
+    return encodeResults({
+      industry,
+      processes: selectedProcesses.map(p => p.name),
+      goal,
+      size,
+      results,
+    });
+  }, [results, industry, selectedProcesses, goal, size]);
+
+  const sendSms = useCallback(() => {
+    const cleanPhone = phone.replace(/[^0-9+]/g, '');
+    if (cleanPhone.length < 11) return;
+
     const session = {
       timestamp: new Date().toISOString(),
-      industry, processes: selectedProcesses.map(p => p.name), problems: selectedProblems, goal, company_size: size,
+      industry, processes: selectedProcesses.map(p => p.name),
+      problems: selectedProblems, goal, company_size: size,
       ai_diagnosis: results?.diagnosis.insight,
       ai_ideas: results?.ideas.map(i => i.title),
-      email: email || undefined,
-      more_ideas: prevIdeas.length > 5,
+      phone: cleanPhone,
+      share_url: shareUrl,
     };
     const sessions = JSON.parse(localStorage.getItem('inspirator_sessions') || '[]');
     sessions.push(session);
@@ -170,15 +188,15 @@ export function Inspirator({ onClose }: Props) {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(session),
     }).catch(() => {});
-    setSent(true);
+    setSmsSent(true);
     setTimeout(() => onClose(), 8000);
-  }, [industry, selectedProcesses, selectedProblems, goal, size, results, email, prevIdeas, onClose]);
+  }, [industry, selectedProcesses, selectedProblems, goal, size, results, phone, shareUrl, onClose]);
 
   const restart = useCallback(() => {
     setStep(0); setIndustry(''); setSelectedProcesses([]);
     setSelectedProblems([]); setGoal(''); setSize('');
     setResults(null); setPrevIdeas([]); setLoadingIdx(0);
-    setEmail(''); setSent(false);
+    setPhone('+48'); setSmsSent(false);
   }, []);
 
   const labels = ['Branża', 'Proces', 'Problemy', 'Cel', 'Skala', 'Analiza', 'Wyniki', 'Kontakt'];
@@ -401,8 +419,8 @@ export function Inspirator({ onClose }: Props) {
                 <p className="insp-cta-text">{results.cta}</p>
                 <div className="insp-cta-row">
                   <button className="insp-btn" onClick={() => setStep(7)}>
-                    <Icon name="send" size={14} strokeWidth={2} />
-                    Wyślij mi te pomysły
+                    <Icon name="download" size={14} strokeWidth={2} />
+                    Zabierz pomysły ze sobą
                   </button>
                   <button className="insp-btn insp-btn--ghost" onClick={restart}>
                     Od nowa
@@ -413,31 +431,62 @@ export function Inspirator({ onClose }: Props) {
           </motion.div>
         )}
 
-        {/* 7 — Contact */}
-        {step === 7 && !sent && (
-          <motion.div className="insp-body insp-body--center" key="s7" variants={variants} initial="enter" animate="center" exit="exit" transition={transition}>
-            <h1 className="insp-q">Gdzie wysłać pomysły?</h1>
-            <input type="email" className="insp-input" placeholder="twoj@email.pl"
-              value={email} onChange={e => setEmail(e.target.value)} autoFocus />
-            <button className="insp-btn" onClick={submit} disabled={!email.includes('@')}>
-              <Icon name="send" size={14} strokeWidth={2} /> Wyślij
-            </button>
-            <p className="insp-note">Dostaniesz raport + 2 dodatkowe pomysły</p>
-            <button className="insp-btn insp-btn--ghost" onClick={submit}>Pomiń</button>
+        {/* 7 — Share: QR + SMS */}
+        {step === 7 && !smsSent && (
+          <motion.div className="insp-body" key="s7" variants={variants} initial="enter" animate="center" exit="exit" transition={transition}>
+            <div className="insp-share">
+              <h1 className="insp-q">Zabierz pomysły ze sobą</h1>
+              <p className="insp-hint">Zeskanuj kod QR telefonem lub wyślij link SMS-em</p>
+
+              {/* QR Code */}
+              <div className="insp-qr-wrap">
+                <div className="insp-qr-frame">
+                  {shareUrl && (
+                    <QRCodeSVG
+                      value={shareUrl}
+                      size={200}
+                      bgColor="#ffffff"
+                      fgColor="#1a1a1a"
+                      level="L"
+                      style={{ width: '100%', height: '100%' }}
+                    />
+                  )}
+                </div>
+                <span className="insp-qr-label">Zeskanuj aparatem w telefonie</span>
+              </div>
+
+              {/* SMS */}
+              <div className="insp-sms">
+                <span className="insp-sms-label">lub wyślij link SMS-em</span>
+                <div className="insp-sms-row">
+                  <input type="tel" className="insp-input insp-input--phone"
+                    value={phone} onChange={e => setPhone(e.target.value)}
+                    placeholder="+48 123 456 789" />
+                  <button className="insp-btn" onClick={sendSms}
+                    disabled={phone.replace(/[^0-9]/g, '').length < 11}>
+                    <Icon name="send" size={14} strokeWidth={2} />
+                    Wyślij
+                  </button>
+                </div>
+              </div>
+
+              <button className="insp-btn insp-btn--ghost" onClick={restart} style={{ marginTop: 8 }}>
+                Zacznij od nowa
+              </button>
+            </div>
           </motion.div>
         )}
 
-        {step === 7 && sent && (
+        {step === 7 && smsSent && (
           <motion.div className="insp-body insp-body--center" key="thx"
             initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
             <div className="insp-done-icon">
               <Icon name="check-circle" size={28} strokeWidth={1.8} />
             </div>
-            <h1 className="insp-q">Dziękujemy!</h1>
+            <h1 className="insp-q">Wysłano!</h1>
             <p className="insp-note">
-              {email ? 'Pomysły lecą na Twój mail.' : 'Zapisaliśmy Twoje wyniki.'}
-              {' '}Wpadnij do nas na stanowisku!
+              Link do pomysłów leci na Twój telefon. Wpadnij do nas na stanowisku!
             </p>
           </motion.div>
         )}

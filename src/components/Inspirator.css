@@ -510,6 +510,54 @@
   max-width: 320px;
 }
 
+/* ═══ Share: QR + SMS ═══ */
+.insp-share {
+  display: flex; flex-direction: column;
+  align-items: center; gap: clamp(16px, 2vh, 24px);
+  max-width: 420px;
+  margin: 0 auto; width: 100%;
+  padding: clamp(12px, 2vh, 24px) 0;
+}
+
+.insp-qr-wrap {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 10px;
+}
+
+.insp-qr-frame {
+  width: clamp(160px, 18vw, 220px);
+  height: clamp(160px, 18vw, 220px);
+  padding: 16px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.insp-qr-label {
+  font-size: 12px; font-weight: 600; color: #bbb;
+}
+
+.insp-sms {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 8px;
+  width: 100%;
+}
+
+.insp-sms-label {
+  font-size: 12px; font-weight: 600; color: #bbb;
+}
+
+.insp-sms-row {
+  display: flex; gap: 8px;
+  width: 100%;
+}
+
+.insp-input--phone {
+  flex: 1;
+  text-align: left;
+}
+
 /* Thank you */
 .insp-done-icon {
   width: 52px; height: 52px; border-radius: 50%;
