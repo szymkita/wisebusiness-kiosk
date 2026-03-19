@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Logo } from '../components/Logo';
 import { Icon } from '../components/Icon';
 import { ContactView } from '../components/ContactView';
-import { CaseStudies } from '../components/CaseStudies';
 import { Inspirator } from '../components/Inspirator';
 import { InspirationMap } from '../components/InspirationMap';
 import { SoftwarePanel } from '../components/SoftwarePanel';
@@ -16,9 +15,51 @@ const dockItems = [
   { id: 'home', label: 'Home', icon: 'home' },
   { id: 'inspiration', label: 'Inspiracje', icon: 'target' },
   { id: 'software', label: 'Co budujemy', icon: 'code', count: tabs[1]?.tiles.length },
-  { id: 'cases', label: 'Case Studies', icon: 'trending-up', count: 35 },
+  { id: 'demo', label: 'Demo', icon: 'monitor' },
   { id: 'contact', label: 'Kontakt', icon: 'map-pin' },
 ];
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function DemoPanel({ navigate }: { navigate: (path: string) => void }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', gap: 'clamp(16px, 2vh, 28px)', textAlign: 'center', padding: '0 4vw' }}>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+        style={{ width: 'clamp(56px, 4.5vw, 72px)', height: 'clamp(56px, 4.5vw, 72px)', borderRadius: 18, background: 'linear-gradient(135deg, #4f46e5, #6366f1)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 32px rgba(99,102,241,.3)' }}>
+        <Icon name="users" size={28} strokeWidth={1.8} style={{ color: '#fff' }} />
+      </motion.div>
+      <motion.h2
+        initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.1 }}
+        style={{ fontSize: 'clamp(18px, 1.5vw, 28px)', fontWeight: 800, color: 'var(--text)', letterSpacing: '-.03em', margin: 0 }}>
+        Dedykowany Panel Klienta
+      </motion.h2>
+      <motion.p
+        initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.2 }}
+        style={{ fontSize: 'clamp(11px, .75vw, 15px)', color: 'var(--text2)', maxWidth: '36vw', lineHeight: 1.6, margin: 0 }}>
+        Zobacz, jak wygląda panel klienta agencji HR — śledzenie rekrutacji, pipeline kandydatów, raporty i komunikacja z agencją w jednym miejscu.
+      </motion.p>
+      <motion.button
+        initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.3 }}
+        whileHover={{ scale: 1.03, boxShadow: '0 8px 28px rgba(99,102,241,.35)' }}
+        whileTap={{ scale: 0.97 }}
+        onClick={() => navigate('/demo/hr')}
+        style={{ display: 'inline-flex', alignItems: 'center', gap: '.5vw', padding: 'clamp(10px, 1vh, 14px) clamp(20px, 1.8vw, 32px)', background: 'linear-gradient(135deg, #4f46e5, #6366f1)', color: '#fff', border: 'none', borderRadius: 12, fontSize: 'clamp(12px, .8vw, 16px)', fontWeight: 700, fontFamily: 'inherit', cursor: 'pointer', boxShadow: '0 4px 16px rgba(99,102,241,.25)', transition: 'all .2s' }}>
+        <Icon name="arrow-up-right" size={16} strokeWidth={2.2} />
+        Otwórz Panel HR
+      </motion.button>
+      <motion.span
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+        transition={{ duration: 0.3, delay: 0.5 }}
+        style={{ fontSize: 'clamp(9px, .55vw, 11px)', color: 'var(--text3)', display: 'flex', alignItems: 'center', gap: '.3vw' }}>
+        <Icon name="eye" size={12} strokeWidth={2} /> Interaktywne demo — kliknij i testuj
+      </motion.span>
+    </div>
+  );
+}
 
 export function Home() {
   const [view, setView] = useState<'attract' | 'inspirator' | string>('attract');
@@ -134,7 +175,7 @@ export function Home() {
                   exit={{ opacity: 0, y: -6 }}
                   transition={{ duration: 0.2, ease: 'easeOut' }}>
                   {openPanel === 'contact' ? <ContactView />
-                    : openPanel === 'cases' ? <CaseStudies />
+                    : openPanel === 'demo' ? <DemoPanel navigate={navigate} />
                     : openPanel === 'inspiration' ? <InspirationMap />
                     : openPanel === 'software' ? <SoftwarePanel />
                     : tileTab ? (
