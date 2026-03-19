@@ -101,186 +101,208 @@
   position: relative;
 }
 
-/* ═══ INDUSTRY DETAIL ═══ */
-.cs-industry {
+/* ═══ CASE STUDIES VIEW ═══ */
+.cs-view {
   height: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
 
+.cs-topbar {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1vw, 18px);
+  flex-shrink: 0;
+  margin-bottom: clamp(8px, 0.8vh, 14px);
+}
+
 .cs-back {
   display: inline-flex;
   align-items: center;
-  gap: clamp(4px, 0.3vw, 6px);
-  padding: clamp(6px, 0.6vh, 10px) clamp(12px, 1vw, 18px);
+  gap: clamp(3px, 0.25vw, 5px);
+  padding: clamp(5px, 0.5vh, 8px) clamp(10px, 0.8vw, 16px);
   background: var(--bg-white);
   border: 1px solid var(--border);
   border-radius: 10px;
   font-family: inherit;
-  font-size: clamp(11px, 0.68vw, 14px);
+  font-size: clamp(10px, 0.62vw, 13px);
   font-weight: 600;
   color: var(--text2);
   cursor: pointer;
-  align-self: flex-start;
   flex-shrink: 0;
   transition: transform 0.1s;
-  min-height: 36px;
+  min-height: 32px;
 }
 .cs-back:active { transform: scale(0.96); }
 
-.cs-industry-head {
+.cs-topbar-info {
   display: flex;
   align-items: center;
-  gap: clamp(10px, 0.8vw, 16px);
-  padding: clamp(10px, 1vh, 16px) 0 clamp(10px, 1vh, 18px);
-  flex-shrink: 0;
+  gap: clamp(6px, 0.5vw, 10px);
 }
 
-.cs-industry-icon {
-  width: clamp(42px, 3.2vw, 56px);
-  height: clamp(42px, 3.2vw, 56px);
+.cs-topbar-icon {
+  width: clamp(30px, 2.2vw, 38px);
+  height: clamp(30px, 2.2vw, 38px);
   display: flex; align-items: center; justify-content: center;
-  border-radius: 16px;
+  border-radius: 10px;
   background: var(--cs-cm);
   color: var(--cs-c);
 }
 
-.cs-industry-name {
-  font-size: clamp(18px, 1.4vw, 28px);
+.cs-topbar-name {
+  font-size: clamp(14px, 1vw, 20px);
   font-weight: 800;
   color: var(--text);
-  letter-spacing: -0.03em;
-  line-height: 1.15;
+  letter-spacing: -0.02em;
 }
 
-.cs-industry-sub {
-  font-size: clamp(10px, 0.62vw, 13px);
-  font-weight: 500;
-  color: var(--text3);
-  margin-top: 2px;
-}
-
-/* ═══ CASE STUDY CARDS ═══ */
-.cs-cases {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, clamp(260px, 22vw, 380px)), 1fr));
-  gap: clamp(8px, 0.8vw, 14px);
+/* ═══ SCROLLABLE CASE LIST ═══ */
+.cs-scroll {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 0.8vw, 14px);
+  padding-right: 4px;
   padding-bottom: 4px;
   scrollbar-width: thin;
   scrollbar-color: var(--cs-cm) transparent;
 }
 
-.cs-case {
+/* ═══ CASE CARD ═══ */
+.cs-card {
   background: var(--bg-white);
   border-radius: var(--r);
-  padding: clamp(18px, 1.8vh, 28px) clamp(18px, 1.6vw, 28px);
+  display: grid;
+  grid-template-columns: clamp(200px, 18vw, 320px) 1fr;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.03);
+  flex-shrink: 0;
+}
+
+/* ── Left side: title + hero metric ── */
+.cs-card-left {
+  padding: clamp(16px, 1.6vh, 24px) clamp(16px, 1.4vw, 26px);
   display: flex;
   flex-direction: column;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.03);
+  border-right: 1px solid rgba(0,0,0,0.04);
   position: relative;
-  overflow: hidden;
 }
 
-.cs-case::before {
+.cs-card-left::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
+  top: 0; left: 0; bottom: 0;
+  width: 3px;
   background: var(--cs-c);
+  border-radius: 3px 0 0 3px;
 }
 
-/* Title and context */
-.cs-case-top {
-  margin-bottom: clamp(12px, 1.2vh, 20px);
-}
-
-.cs-case-title {
+.cs-card-title {
   font-size: clamp(14px, 1vw, 20px);
   font-weight: 800;
   color: var(--text);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
   line-height: 1.2;
   margin-bottom: clamp(3px, 0.3vh, 6px);
 }
 
-.cs-case-ctx {
-  font-size: clamp(10px, 0.62vw, 13px);
+.cs-card-ctx {
+  font-size: clamp(9px, 0.55vw, 12px);
   color: var(--text3);
   line-height: 1.45;
+  margin-bottom: auto;
 }
 
-/* Hero metric — before → after */
-.cs-case-metric {
+.cs-card-hero {
   display: flex;
   align-items: baseline;
-  gap: clamp(8px, 0.7vw, 14px);
-  margin-bottom: 2px;
+  gap: clamp(6px, 0.5vw, 10px);
+  margin-top: clamp(10px, 1vh, 18px);
 }
 
-.cs-case-before {
-  font-size: clamp(24px, 2vw, 42px);
+.cs-card-before {
+  font-size: clamp(20px, 1.6vw, 34px);
   font-weight: 900;
   color: var(--text);
   letter-spacing: -0.04em;
   line-height: 1;
-  opacity: 0.25;
+  opacity: 0.2;
   text-decoration: line-through;
   text-decoration-thickness: 2px;
 }
 
-.cs-case-arrow {
+.cs-card-arrow {
   color: var(--cs-c);
-  display: flex;
-  align-items: center;
   flex-shrink: 0;
-  opacity: 0.6;
+  opacity: 0.5;
 }
 
-.cs-case-after {
-  font-size: clamp(28px, 2.4vw, 48px);
+.cs-card-after {
+  font-size: clamp(24px, 2vw, 40px);
   font-weight: 900;
   color: var(--cs-c);
   letter-spacing: -0.04em;
   line-height: 1;
 }
 
-.cs-case-mlabel {
-  font-size: clamp(9px, 0.55vw, 12px);
+.cs-card-label {
+  font-size: clamp(8px, 0.48vw, 10px);
   font-weight: 500;
   color: var(--text3);
   line-height: 1.3;
-  margin-bottom: clamp(12px, 1.2vh, 20px);
+  margin-top: 3px;
 }
 
-/* Extra metrics */
-.cs-case-extras {
-  display: flex;
-  gap: clamp(6px, 0.5vw, 10px);
-  margin-top: auto;
-  padding-top: clamp(10px, 1vh, 16px);
-  border-top: 1px solid rgba(0,0,0,0.05);
+/* ── Right side: process tiles grid ── */
+.cs-card-procs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(clamp(140px, 12vw, 220px), 1fr));
+  gap: 1px;
+  background: rgba(0,0,0,0.04);
 }
 
-.cs-case-extra {
-  flex: 1;
+.cs-proc {
+  background: var(--bg-white);
+  padding: clamp(8px, 0.8vh, 14px) clamp(10px, 0.9vw, 16px);
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: clamp(3px, 0.3vh, 5px);
 }
 
-.cs-case-eval {
-  font-size: clamp(12px, 0.82vw, 17px);
-  font-weight: 800;
+.cs-proc-name {
+  font-size: clamp(9px, 0.55vw, 12px);
+  font-weight: 700;
   color: var(--text);
-  letter-spacing: -0.02em;
+  line-height: 1.25;
 }
 
-.cs-case-elabel {
-  font-size: clamp(8px, 0.48vw, 10px);
+.cs-proc-vals {
+  display: flex;
+  align-items: center;
+  gap: clamp(4px, 0.3vw, 7px);
+}
+
+.cs-proc-old {
+  font-size: clamp(9px, 0.55vw, 12px);
   font-weight: 600;
   color: var(--text3);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+.cs-proc-arrow {
+  color: var(--cs-c);
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+.cs-proc-new {
+  font-size: clamp(10px, 0.65vw, 14px);
+  font-weight: 800;
+  color: var(--cs-c);
+  letter-spacing: -0.01em;
 }

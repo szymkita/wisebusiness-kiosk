@@ -3,13 +3,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Icon } from './Icon';
 import './CaseStudies.css';
 
+interface Process {
+  name: string;
+  before: string;
+  after: string;
+}
+
 interface Case {
   title: string;
   context: string;
   before: string;
   after: string;
   metricLabel: string;
-  extras: { label: string; value: string }[];
+  processes: Process[];
 }
 
 interface Industry {
@@ -28,27 +34,51 @@ const data: Industry[] = [
     cases: [
       {
         title: 'Harmonogram produkcji',
-        context: 'Ręczne planowanie zleceń na 12 liniach w Excelu. Każda zmiana priorytetów = godziny przeplanowywania.',
-        before: '3 dni', after: '15 min', metricLabel: 'czas ułożenia harmonogramu tygodniowego',
-        extras: [{ label: 'Przezbrojenia', value: '-40%' }, { label: 'Pomyłki w kolejności', value: '-90%' }],
+        context: 'Ręczne planowanie zleceń na 12 liniach w Excelu — każda zmiana priorytetów to godziny przeplanowywania.',
+        before: '3 dni', after: '15 min', metricLabel: 'ułożenie harmonogramu tygodniowego',
+        processes: [
+          { name: 'Pobranie zamówień z ERP', before: 'Ręczne', after: 'Auto-sync' },
+          { name: 'Sprawdzenie dostępności maszyn', before: '2h', after: '0 — system wie' },
+          { name: 'Uwzględnienie przezbrojenia', before: 'Z głowy', after: 'Algorytm' },
+          { name: 'Reakcja na zmianę priorytetu', before: '4h', after: '2 min' },
+          { name: 'Komunikacja ze zmianami', before: 'Telefon/tablica', after: 'Auto push' },
+        ],
       },
       {
         title: 'Predykcyjne utrzymanie maszyn',
         context: 'Awarie wykrywane dopiero gdy maszyna stawała. Serwisanci reagowali zamiast zapobiegać.',
         before: '4.5h', after: '35 min', metricLabel: 'średni czas od wykrycia do naprawy',
-        extras: [{ label: 'Przestoje', value: '-60%' }, { label: 'Wyprzedzenie predykcji', value: '48h' }],
+        processes: [
+          { name: 'Wykrycie anomalii', before: 'Po awarii', after: '48h wcześniej' },
+          { name: 'Diagnoza przyczyny', before: '1.5h szukania', after: 'Auto z czujników' },
+          { name: 'Zamówienie części', before: 'Ad hoc, 2 dni', after: 'Zaplanowane z góry' },
+          { name: 'Raport zmianowy', before: '45 min ręcznie', after: 'Auto, real-time' },
+          { name: 'Historia serwisowa maszyny', before: 'Zeszyt', after: 'Cyfrowa książka' },
+        ],
       },
       {
-        title: 'Cyfrowe protokoły jakości',
-        context: 'Papierowe karty kontrolne, ręczne przepisywanie wyników. Audyt ISO = tydzień szukania dokumentów.',
+        title: 'Kontrola jakości i traceability',
+        context: 'Papierowe karty kontrolne, ręczne przepisywanie. Klient pyta o historię partii — 3h szukania.',
         before: '25 min', after: '3 min', metricLabel: 'kontrola jakości jednej partii',
-        extras: [{ label: 'Czas przygotowania audytu', value: '-85%' }, { label: 'Wykrywalność wad', value: '99.5%' }],
+        processes: [
+          { name: 'Protokół kontrolny', before: 'Papier + przepisywanie', after: 'Tablet + QR' },
+          { name: 'Genealogia partii', before: '3h szukania', after: '10 sekund' },
+          { name: 'Blokada wadliwej partii', before: 'Telefon do kierownika', after: 'Auto-blokada' },
+          { name: 'Przygotowanie do audytu', before: '1 tydzień', after: '1 klik' },
+          { name: 'Analiza trendów jakości', before: 'Brak', after: 'Dashboard live' },
+        ],
       },
       {
-        title: 'Traceability produkcji end-to-end',
-        context: 'Klient pyta o historię partii — odpowiedź po 3 godzinach szukania w papierach i systemach.',
-        before: '3h', after: '10 sek', metricLabel: 'czas znalezienia pełnej genealogii partii',
-        extras: [{ label: 'Zgodność ISO/IATF', value: '100%' }, { label: 'Reklamacje', value: '-70%' }],
+        title: 'Dashboard OEE w real-time',
+        context: 'Nikt nie wie, która maszyna "nie dowozi" i dlaczego. Dane zbierane ręcznie na koniec zmiany.',
+        before: 'Koniec zmiany', after: 'Real-time', metricLabel: 'dostępność danych o wydajności',
+        processes: [
+          { name: 'Pomiar dostępności', before: 'Ręczny, z zeszytu', after: 'Auto z PLC' },
+          { name: 'Pomiar wydajności', before: 'Szacunkowy', after: 'Dokładny, live' },
+          { name: 'Pomiar jakości', before: 'Po fakcie', after: 'W trakcie produkcji' },
+          { name: 'Identyfikacja wąskich gardeł', before: 'Spotkanie tygodniowe', after: 'Alert na bieżąco' },
+          { name: 'Raport dla zarządu', before: '2 dni kompilowania', after: 'Zawsze gotowy' },
+        ],
       },
     ],
   },
@@ -57,22 +87,39 @@ const data: Industry[] = [
     icon: 'truck', color: '#3b82f6',
     cases: [
       {
-        title: 'Optymalizacja tras i dyspozycja',
-        context: 'Dyspozytor planuje trasy ręcznie na 200 pojazdów. 3h dziennie na telefony z kierowcami.',
-        before: '40 min', after: '90 sek', metricLabel: 'planowanie jednej trasy',
-        extras: [{ label: 'Terminowość dostaw', value: '72→97%' }, { label: 'Czas dyspozytora na rutynę', value: '-85%' }],
+        title: 'Dyspozycja i planowanie tras',
+        context: '200+ pojazdów, 15 dyspozytorów. Planowanie na telefon i w Excelu.',
+        before: '40 min', after: '90 sek', metricLabel: 'zaplanowanie jednej trasy',
+        processes: [
+          { name: 'Sprawdzenie dostępności pojazdów', before: 'Telefon', after: 'Dashboard live' },
+          { name: 'Optymalizacja kolejności', before: 'Z doświadczenia', after: 'Algorytm' },
+          { name: 'Komunikacja z kierowcą', before: 'Telefon + SMS', after: 'Auto push do apki' },
+          { name: 'Status dostawy dla klienta', before: '15 min (telefon)', after: 'Link w SMS' },
+          { name: 'Dokumenty CMR', before: 'Ręcznie, papier', after: 'Auto-generowane' },
+        ],
       },
       {
-        title: 'Rozliczanie kierowców',
-        context: 'Dane z tachografów, delegacje, diety — zbierane z papierów i pendrive\'ów. Księgowość zamyka miesiąc z opóźnieniem.',
-        before: '5 dni', after: '4h', metricLabel: 'rozliczenie miesiąca dla całej floty',
-        extras: [{ label: 'Błędy w rozliczeniach', value: '-95%' }, { label: 'Dane z tachografu', value: 'Auto-import' }],
+        title: 'Rozliczanie kierowców i floty',
+        context: 'Dane z tachografów na pendrive\'ach, delegacje w papierze. Zamknięcie miesiąca = tydzień.',
+        before: '5 dni', after: '4h', metricLabel: 'rozliczenie miesiąca całej floty',
+        processes: [
+          { name: 'Import danych z tachografu', before: 'Pendrive + ręcznie', after: 'Auto-download' },
+          { name: 'Naliczanie diet i delegacji', before: 'Ręcznie w Excelu', after: 'Auto z GPS' },
+          { name: 'Kontrola czasu pracy', before: 'Wyrywkowo', after: '100%, real-time' },
+          { name: 'Raport paliwowy', before: 'Raz w miesiącu', after: 'Codzienny, auto' },
+          { name: 'Wykrycie anomalii (tankowanie)', before: 'Brak', after: 'Auto-alert' },
+        ],
       },
       {
-        title: 'Śledzenie przesyłek dla klientów',
-        context: 'Klient dzwoni z pytaniem "gdzie moja przesyłka?". Dyspozytor musi zadzwonić do kierowcy i oddzwonić.',
-        before: '15 min', after: '0 min', metricLabel: 'czas obsługi zapytania o status',
-        extras: [{ label: 'Zapytania telefoniczne', value: '-90%' }, { label: 'Satysfakcja klientów', value: '+40%' }],
+        title: 'Zarządzanie magazynem',
+        context: 'Stany w Excelu, inwentaryzacja raz na kwartał. Kompletacja zamówień "z pamięci".',
+        before: '8 min', after: '90 sek', metricLabel: 'kompletacja jednego zamówienia',
+        processes: [
+          { name: 'Lokalizacja towaru', before: 'Szukanie po hali', after: 'Skan → lokalizacja' },
+          { name: 'Stany magazynowe', before: 'Excel, raz/dzień', after: 'Real-time, auto' },
+          { name: 'Inwentaryzacja', before: '2 dni, raz/kwartał', after: 'Ciągła, rolling' },
+          { name: 'Generowanie WZ/PZ', before: 'Ręcznie', after: 'Auto z operacji' },
+        ],
       },
     ],
   },
@@ -81,22 +128,39 @@ const data: Industry[] = [
     icon: 'shopping-cart', color: '#f59e0b',
     cases: [
       {
-        title: 'Obsługa zamówień i fulfillment',
-        context: '2000+ zamówień dziennie, 4 magazyny. Obsługa wymagała 12 osób — ręczne sprawdzanie stanów, przypisywanie magazynu, drukowanie etykiet.',
+        title: 'Fulfillment — od zamówienia do wysyłki',
+        context: '2000+ zamówień/dzień, 4 magazyny, 12 osób na pełen etat do obsługi.',
         before: '6h', after: '12 min', metricLabel: 'od zamówienia do gotowości wysyłki',
-        extras: [{ label: 'Błędy kompletacji', value: '8%→0.3%' }, { label: 'Obsługa Black Friday', value: '8× wolumen, 0 nowych etatów' }],
+        processes: [
+          { name: 'Weryfikacja płatności', before: 'Ręczna, 15 min', after: 'Auto, instant' },
+          { name: 'Dobór magazynu', before: 'Jeden domyślny', after: 'Najbliższy, auto' },
+          { name: 'Lista kompletacji', before: 'Druk + szukanie', after: 'Auto + nawigacja' },
+          { name: 'Etykieta kurierska', before: 'Ręcznie w panelu', after: 'Auto-druk' },
+          { name: 'Powiadomienie klienta', before: 'Ręczny mail', after: 'Auto + tracking' },
+        ],
       },
       {
-        title: 'Synchronizacja stanów magazynowych',
-        context: 'Sprzedaż na Allegro, własny sklep, hurtownia B2B — stany aktualizowane 2x dziennie. Overselling co tydzień.',
-        before: '2× dziennie', after: 'Real-time', metricLabel: 'częstotliwość synchronizacji stanów',
-        extras: [{ label: 'Overselling', value: '-98%' }, { label: 'Kanały sprzedaży', value: '1 źródło prawdy' }],
+        title: 'Synchronizacja stanów i kanałów',
+        context: 'Allegro, własny sklep, hurtownia B2B — stany aktualizowane 2x dziennie. Overselling co tydzień.',
+        before: '2×/dzień', after: 'Real-time', metricLabel: 'synchronizacja stanów magazynowych',
+        processes: [
+          { name: 'Aktualizacja stanów', before: 'Ręczny eksport/import', after: 'Auto-sync live' },
+          { name: 'Overselling', before: 'Co tydzień', after: 'Wyeliminowany' },
+          { name: 'Nowy kanał sprzedaży', before: '2 tyg integracji', after: '1 dzień' },
+          { name: 'Ceny między kanałami', before: 'Ręczne per kanał', after: '1 źródło prawdy' },
+        ],
       },
       {
-        title: 'Automatyczne cenowanie',
-        context: 'Pricing manager ręcznie sprawdzał ceny konkurencji i aktualizował 4000 SKU. Tydzień pracy na jedną rundę cenową.',
-        before: '5 dni', after: '15 min', metricLabel: 'pełna aktualizacja cen w katalogu',
-        extras: [{ label: 'Częstotliwość repricing', value: 'Codziennie' }, { label: 'Marżowość', value: '+12%' }],
+        title: 'Repricing i analityka cenowa',
+        context: 'Pricing manager ręcznie monitorował 4000 SKU. Tydzień na jedną rundę cenową.',
+        before: '5 dni', after: '15 min', metricLabel: 'aktualizacja cen w całym katalogu',
+        processes: [
+          { name: 'Monitoring konkurencji', before: 'Ręczne sprawdzanie', after: 'Auto-scraping' },
+          { name: 'Kalkulacja nowych cen', before: 'Excel + intuicja', after: 'Reguły + algorytm' },
+          { name: 'Wdrożenie cen', before: 'Per kanał, ręcznie', after: '1 klik, wszystkie' },
+          { name: 'Analiza wpływu na marżę', before: 'Brak', after: 'Dashboard real-time' },
+          { name: 'Częstotliwość repricing', before: 'Raz na miesiąc', after: 'Codziennie' },
+        ],
       },
     ],
   },
@@ -105,22 +169,40 @@ const data: Industry[] = [
     icon: 'briefcase', color: '#8b5cf6',
     cases: [
       {
-        title: 'Pipeline projektowy i statusy',
-        context: 'PM-owie spędzali więcej czasu na zbieraniu statusów niż na dostarczaniu wartości. Klient pyta o progress — szukanie po Slacku.',
-        before: '8h/tyg', after: '45 min/tyg', metricLabel: 'czas PM na raportowanie i statusy',
-        extras: [{ label: 'Raport dla klienta', value: '2h→1 klik' }, { label: 'Alokacja zespołu', value: 'Data-driven' }],
+        title: 'Pipeline projektowy',
+        context: 'PM-owie spędzali więcej czasu na statusach niż na dostarczaniu. Klient pyta — szukanie po Slacku.',
+        before: '8h/tyg', after: '45 min/tyg', metricLabel: 'czas PM na statusy i raportowanie',
+        processes: [
+          { name: 'Zbieranie statusów', before: 'Standup + Slack', after: 'Dashboard auto' },
+          { name: 'Raport dla klienta', before: '2h kompilowania', after: '1 klik' },
+          { name: 'Alokacja ludzi do projektu', before: '"Kto wolny?"', after: 'Skills + availability' },
+          { name: 'Alert o ryzyku budżetowym', before: 'Po fakcie', after: '72h wcześniej' },
+          { name: 'Timesheet', before: 'Z pamięci, piątek', after: 'Auto z tasków' },
+        ],
       },
       {
-        title: 'Zarządzanie sprawami klientów',
-        context: 'Kancelaria prawna, 800+ aktywnych spraw. Terminy w Excelu. Ryzyko przegapienia terminu sądowego — realne i kosztowne.',
+        title: 'Zarządzanie sprawami (kancelaria)',
+        context: '800+ aktywnych spraw, terminy w Excelu. Ryzyko przegapienia terminu sądowego — realne.',
         before: '1.5h/dzień', after: '15 min/dzień', metricLabel: 'administracja per prawnik dziennie',
-        extras: [{ label: 'Znalezienie dokumentu', value: '12min→8sek' }, { label: 'Przeoczone terminy', value: '0' }],
+        processes: [
+          { name: 'Szukanie dokumentu w sprawie', before: '12 min', after: '8 sekund' },
+          { name: 'Przygotowanie pisma procesowego', before: '2h od zera', after: '20 min z szablonu' },
+          { name: 'Kontrola terminów', before: 'Ręczna, Excel', after: 'Auto + alerty' },
+          { name: 'Historia korespondencji', before: 'Folder mailowy', after: 'Timeline w sprawie' },
+          { name: 'Rozliczenie godzin klienta', before: 'Koniec miesiąca, ręcznie', after: 'Auto z aktywności' },
+        ],
       },
       {
-        title: 'Ofertowanie i follow-up',
-        context: 'Handlowiec przygotowuje ofertę 2h, wysyła mailem, zapomina o follow-upie. 40% ofert ginie bez odpowiedzi.',
+        title: 'Ofertowanie i sprzedaż',
+        context: 'Handlowiec przygotowuje ofertę 2h, wysyła mailem, zapomina o follow-upie. 40% ofert ginie.',
         before: '2h', after: '10 min', metricLabel: 'przygotowanie spersonalizowanej oferty',
-        extras: [{ label: 'Follow-up', value: 'Automatyczny' }, { label: 'Konwersja ofert', value: '+35%' }],
+        processes: [
+          { name: 'Generowanie oferty', before: 'Word + kopiuj/wklej', after: 'Auto z CRM' },
+          { name: 'Personalizacja', before: 'Ręczne dane', after: 'Auto z kontaktu' },
+          { name: 'Follow-up', before: 'Zapominam', after: 'Auto sekwencja' },
+          { name: 'Śledzenie otwarcia', before: 'Brak', after: 'Powiadomienie live' },
+          { name: 'Analiza win/loss', before: 'Brak', after: 'Auto per handlowiec' },
+        ],
       },
     ],
   },
@@ -130,21 +212,38 @@ const data: Industry[] = [
     cases: [
       {
         title: 'Zamknięcie miesiąca',
-        context: 'Biuro rachunkowe, 200+ klientów. Zbieranie faktur: mail, WhatsApp, kurier. Ręczne przepisywanie do systemu.',
+        context: 'Biuro rachunkowe, 200+ klientów. Faktury z maila, WhatsAppa, kuriera. Ręczne przepisywanie.',
         before: '3 dni', after: '4h', metricLabel: 'zamknięcie miesiąca per klient',
-        extras: [{ label: 'Wprowadzanie faktury', value: '3min→15sek' }, { label: 'Brakujące dokumenty', value: 'Auto-remind' }],
-      },
-      {
-        title: 'Uzgodnienia międzysystemowe',
-        context: 'Dane w bankowości, systemie fakturowym i CRM. Ręczne uzgadnianie to 3 dni pracy i ryzyko błędu.',
-        before: '3 dni', after: '20 min', metricLabel: 'pełne uzgodnienie danych klienta',
-        extras: [{ label: 'Błędy w uzgodnieniach', value: '-95%' }, { label: 'Źródła danych', value: 'Auto-sync' }],
+        processes: [
+          { name: 'Zbieranie dokumentów', before: 'Mail + telefon', after: 'Portal + auto-remind' },
+          { name: 'Rozpoznanie faktury', before: '3 min ręcznie', after: '15 sek (OCR + AI)' },
+          { name: 'Dekretacja', before: 'Ręczna', after: 'Auto-sugestia (95%)' },
+          { name: 'Uzgodnienie z bankiem', before: '2h per klient', after: '5 min auto-match' },
+          { name: 'Brakujące dokumenty', before: 'Telefon, mail', after: 'Auto-przypomnienie' },
+        ],
       },
       {
         title: 'Raportowanie finansowe',
-        context: 'Zarząd czekał 3 dni robocze na raport miesięczny. Dane zbierane ręcznie z 8 systemów.',
+        context: 'Zarząd czekał 3 dni na raport miesięczny. Dane z 8 systemów zbierane ręcznie.',
         before: '3 dni', after: '10 sek', metricLabel: 'generowanie raportu finansowego',
-        extras: [{ label: 'Dostępność danych', value: 'Real-time' }, { label: 'Błędy w danych', value: '-95%' }],
+        processes: [
+          { name: 'Pobranie danych z banku', before: 'Eksport CSV', after: 'API real-time' },
+          { name: 'Konsolidacja danych', before: 'Excel, 8 plików', after: 'Auto, 1 źródło' },
+          { name: 'Wizualizacja KPI', before: 'Wykresy w Excelu', after: 'Dashboard live' },
+          { name: 'Dystrybucja raportu', before: 'PDF mailem', after: 'Link + auto-wysyłka' },
+          { name: 'Drill-down do szczegółów', before: 'Nowy raport = 1 dzień', after: '1 klik' },
+        ],
+      },
+      {
+        title: 'Compliance i kontrola podatkowa',
+        context: 'Przygotowanie do kontroli US = tydzień gorączkowego szukania. Ryzyko pomyłki = kara.',
+        before: '1 tydzień', after: '2h', metricLabel: 'przygotowanie pełnej dokumentacji do kontroli',
+        processes: [
+          { name: 'Zebranie dokumentów', before: 'Szafa + serwer', after: '1 filtr w systemie' },
+          { name: 'Sprawdzenie kompletności', before: 'Ręczna checklista', after: 'Auto-walidacja' },
+          { name: 'Historia zmian', before: 'Brak', after: 'Pełny audit trail' },
+          { name: 'Raporty JPK', before: '4h generowania', after: '1 klik' },
+        ],
       },
     ],
   },
@@ -154,21 +253,37 @@ const data: Industry[] = [
     cases: [
       {
         title: 'Dziennik budowy i dokumentacja',
-        context: 'Papierowy dziennik budowy, zdjęcia na telefonie kierownika, raporty w Wordzie. Szukanie dokumentu = godziny.',
+        context: 'Papierowy dziennik, zdjęcia na telefonie kierownika, raporty w Wordzie.',
         before: '45 min/dzień', after: '5 min/dzień', metricLabel: 'czas kierownika na dokumentację',
-        extras: [{ label: 'Znalezienie protokołu', value: '30min→10sek' }, { label: 'Gotowość do kontroli', value: 'Zawsze' }],
+        processes: [
+          { name: 'Wpis do dziennika', before: 'Ręcznie, papier', after: 'Apka + głos' },
+          { name: 'Dokumentacja zdjęciowa', before: 'Telefon → folder', after: 'Apka → auto-tag' },
+          { name: 'Znalezienie protokołu', before: '30 min', after: '10 sekund' },
+          { name: 'Raport dzienny dla inwestora', before: '1h', after: 'Auto-generowany' },
+          { name: 'Gotowość do kontroli', before: '3 dni przygotowań', after: 'Zawsze gotowy' },
+        ],
       },
       {
-        title: 'Kosztorysowanie i ofertowanie',
-        context: 'Kosztorysant przygotowuje ofertę na przetarg 3-5 dni. Ręczne wyceny podwykonawców, ceny materiałów z zeszłego kwartału.',
+        title: 'Kosztorysowanie i przetargi',
+        context: 'Kosztorysant przygotowuje ofertę 3-5 dni. Ceny materiałów z zeszłego kwartału.',
         before: '4 dni', after: '6h', metricLabel: 'przygotowanie pełnego kosztorysu',
-        extras: [{ label: 'Ceny materiałów', value: 'Aktualne, auto' }, { label: 'Dokładność wycen', value: '+30%' }],
+        processes: [
+          { name: 'Przedmiar robót', before: 'Ręczne liczenie', after: 'Auto z BIM/rysunku' },
+          { name: 'Ceny materiałów', before: 'Zeszły kwartał', after: 'Baza aktualna, live' },
+          { name: 'Wyceny podwykonawców', before: 'Telefon + mail', after: 'Portal zapytań' },
+          { name: 'Porównanie wariantów', before: 'Nowy plik Excela', after: 'Scenariusze, 1 klik' },
+        ],
       },
       {
         title: 'Zarządzanie podwykonawcami',
-        context: 'Odbiory robót na kartce, rozliczenia w Excelu. Kto ile zrobił, co zostało — nikt nie ma pełnego obrazu.',
+        context: 'Odbiory na kartce, rozliczenia w Excelu. Kto ile zrobił — nikt nie ma pełnego obrazu.',
         before: '2h/tyg', after: '15 min/tyg', metricLabel: 'rozliczenie podwykonawców per projekt',
-        extras: [{ label: 'Spory o zakresy', value: '-80%' }, { label: 'Statusy robót', value: 'Real-time' }],
+        processes: [
+          { name: 'Odbiór robót', before: 'Kartka + podpis', after: 'Apka + zdjęcie + GPS' },
+          { name: 'Zaawansowanie prac', before: 'Szacunek PM-a', after: 'Auto z odbiorów' },
+          { name: 'Rozliczenie finansowe', before: 'Excel, raz/miesiąc', after: 'Auto z odbiorów' },
+          { name: 'Spory o zakres', before: 'Częste', after: 'Dowody w systemie' },
+        ],
       },
     ],
   },
@@ -177,22 +292,39 @@ const data: Industry[] = [
     icon: 'coffee', color: '#f97316',
     cases: [
       {
-        title: 'Zamówienia surowców i stany magazynowe',
-        context: 'Szef kuchni zamawiał "na oko" — raz za dużo (marnowanie), raz za mało (brak dań w menu).',
-        before: '1h/dzień', after: '5 min/dzień', metricLabel: 'czas na planowanie zakupów',
-        extras: [{ label: 'Marnowanie surowców', value: '-45%' }, { label: 'Braki w menu', value: '-90%' }],
+        title: 'Zamówienia surowców',
+        context: 'Szef kuchni zamawiał "na oko" — raz za dużo (marnowanie), raz za mało (brak dań).',
+        before: '1h/dzień', after: '5 min/dzień', metricLabel: 'planowanie zakupów dziennych',
+        processes: [
+          { name: 'Analiza stanów', before: 'Na oko / liczenie', after: 'Auto z wagi + POS' },
+          { name: 'Zamówienie do dostawcy', before: 'Telefon', after: 'Auto-zamówienie' },
+          { name: 'Rozliczenie dostaw', before: 'Ręczne, raz/tydzień', after: 'Przy przyjęciu, auto' },
+          { name: 'Predykcja zużycia', before: 'Brak', after: 'ML z historii + rezerwacji' },
+          { name: 'Marnowanie surowców', before: '~15% wartości', after: '~3%' },
+        ],
       },
       {
         title: 'Obsługa zamówień cateringowych',
-        context: 'Zamówienie przez telefon → ręczne wpisanie → kuchnia → dostawa. Pomyłki, brak potwierdzeń, chaos logistyczny.',
+        context: 'Telefon → ręczne wpisanie → kuchnia → dostawa. Pomyłki i brak potwierdzeń.',
         before: '30 min', after: '2 min', metricLabel: 'przyjęcie i potwierdzenie zamówienia',
-        extras: [{ label: 'Pomyłki w zamówieniach', value: '-95%' }, { label: 'Logistyka dostaw', value: 'Auto-planowana' }],
+        processes: [
+          { name: 'Przyjęcie zamówienia', before: 'Telefon + notka', after: 'Formularz online' },
+          { name: 'Potwierdzenie dla klienta', before: 'Mail ręcznie', after: 'Auto instant' },
+          { name: 'Przekazanie do kuchni', before: 'Karteczka', after: 'Auto na ekranie' },
+          { name: 'Planowanie dostawy', before: 'Ręczne', after: 'Auto z optymalizacją' },
+          { name: 'Fakturowanie', before: 'Po fakcie, ręcznie', after: 'Auto po dostawie' },
+        ],
       },
       {
-        title: 'Rozliczenia produkcji i food cost',
-        context: 'Food cost liczony raz w miesiącu, z opóźnieniem. Marże poszczególnych dań — zgadywanka.',
-        before: 'Raz/miesiąc', after: 'Codziennie', metricLabel: 'częstotliwość kontroli food cost',
-        extras: [{ label: 'Dokładność kalkulacji', value: '+40%' }, { label: 'Rentowność menu', value: 'Widoczna per danie' }],
+        title: 'Food cost i rentowność menu',
+        context: 'Food cost liczony raz w miesiącu. Marże dań — zgadywanka.',
+        before: 'Raz/mies.', after: 'Codziennie', metricLabel: 'kontrola food cost',
+        processes: [
+          { name: 'Kalkulacja kosztu dania', before: 'Ręczna, przybliżona', after: 'Auto z receptury' },
+          { name: 'Aktualizacja po zmianie cen', before: 'Zapominam', after: 'Auto-przeliczenie' },
+          { name: 'Ranking rentowności dań', before: 'Brak', after: 'Dashboard live' },
+          { name: 'Optymalizacja menu', before: 'Intuicja', after: 'Dane + marża + popularność' },
+        ],
       },
     ],
   },
@@ -201,22 +333,39 @@ const data: Industry[] = [
     icon: 'code', color: '#6366f1',
     cases: [
       {
-        title: 'Delivery pipeline i CI/CD',
-        context: 'Deployment ręczny, co 2 tygodnie. Każdy release = dzień stresu, ręczne testy, modlitwa.',
-        before: 'Co 2 tyg', after: 'Kilka razy/dzień', metricLabel: 'częstotliwość deploymentu',
-        extras: [{ label: 'Czas deploymentu', value: '4h→8min' }, { label: 'Rollback', value: '1 klik' }],
+        title: 'CI/CD i delivery pipeline',
+        context: 'Deployment ręczny co 2 tygodnie. Każdy release = dzień stresu i modlitwa.',
+        before: 'Co 2 tyg', after: 'Kilka ×/dzień', metricLabel: 'częstotliwość deploymentu',
+        processes: [
+          { name: 'Build + testy', before: '45 min ręcznie', after: '8 min, auto' },
+          { name: 'Deploy na staging', before: '2h', after: '1 komenda, 3 min' },
+          { name: 'Deploy na produkcję', before: '4h + downtime', after: 'Zero-downtime, auto' },
+          { name: 'Rollback', before: '1h paniki', after: '1 klik, 30 sek' },
+          { name: 'Monitoring po deploy', before: 'Ręczne sprawdzanie', after: 'Auto health-check' },
+        ],
       },
       {
-        title: 'Onboarding nowego developera',
-        context: 'Nowy developer dostawał 15 linków do Confluence, 3 repo i życzenia powodzenia. Produktywny po 3 tygodniach.',
+        title: 'Onboarding developera',
+        context: 'Nowy developer: 15 linków do Confluence, 3 repo, życzenia powodzenia. Produktywny po 3 tygodniach.',
         before: '3 tyg', after: '3 dni', metricLabel: 'czas do pierwszego merge requesta',
-        extras: [{ label: 'Setup środowiska', value: '1 dzień→30min' }, { label: 'Dokumentacja', value: 'Zawsze aktualna' }],
+        processes: [
+          { name: 'Setup środowiska', before: '1 dzień + frustracja', after: '30 min, skrypt' },
+          { name: 'Dostępy do systemów', before: '3 dni, 5 osób', after: '1 formularz, auto' },
+          { name: 'Dokumentacja architektury', before: 'Nieaktualna', after: 'Auto-generowana' },
+          { name: 'Pierwszy task', before: 'Tydzień 2', after: 'Dzień 1' },
+        ],
       },
       {
-        title: 'Monitoring i incident response',
-        context: 'Klient dzwoni że "nie działa" zanim ktokolwiek w zespole wie o problemie. SLA? Teoretyczne.',
+        title: 'Incident response i monitoring',
+        context: 'Klient dzwoni "nie działa" zanim ktokolwiek w zespole wie. SLA? Teoretyczne.',
         before: '45 min', after: '90 sek', metricLabel: 'czas od incydentu do reakcji',
-        extras: [{ label: 'Wykrycie problemu', value: 'Przed klientem' }, { label: 'SLA compliance', value: '94→99.8%' }],
+        processes: [
+          { name: 'Wykrycie problemu', before: 'Klient dzwoni', after: 'Alert automatyczny' },
+          { name: 'Diagnoza', before: '30 min logów', after: 'Auto-korelacja' },
+          { name: 'Powiadomienie zespołu', before: 'Slack ręcznie', after: 'Auto-eskalacja' },
+          { name: 'Post-mortem', before: 'Zapominamy', after: 'Auto-wygenerowany szkic' },
+          { name: 'SLA tracking', before: 'Excel, koniec miesiąca', after: 'Real-time dashboard' },
+        ],
       },
     ],
   },
@@ -225,22 +374,38 @@ const data: Industry[] = [
     icon: 'activity', color: '#ef4444',
     cases: [
       {
-        title: 'Rejestracja i umawianie wizyt',
-        context: 'Recepcja na telefonie non-stop. Pacjenci czekają na linii, rezygnują. 30% wizyt to no-show bez przypomnienia.',
-        before: '5 min', after: '30 sek', metricLabel: 'czas rejestracji jednego pacjenta',
-        extras: [{ label: 'No-show', value: '30%→8%' }, { label: 'Rejestracja online', value: '24/7' }],
+        title: 'Rejestracja pacjentów',
+        context: 'Recepcja na telefonie non-stop. 30% wizyt to no-show. Pacjenci rezygnują z czekania.',
+        before: '5 min', after: '30 sek', metricLabel: 'rejestracja jednego pacjenta',
+        processes: [
+          { name: 'Umawianie wizyty', before: 'Tylko telefon', after: 'Online 24/7 + telefon' },
+          { name: 'Przypomnienie o wizycie', before: 'Brak', after: 'SMS 24h + 2h przed' },
+          { name: 'No-show rate', before: '30%', after: '8%' },
+          { name: 'Zarządzanie kolejką', before: 'Karteczki', after: 'Ekran + auto-call' },
+          { name: 'Weryfikacja ubezpieczenia', before: '3 min ręcznie', after: 'Auto eWUŚ' },
+        ],
       },
       {
         title: 'Dokumentacja medyczna',
-        context: 'Lekarz po wizycie spędza 15 minut na wypełnianiu dokumentacji. "Pracuję dla komputera, nie dla pacjenta".',
-        before: '15 min/wizytę', after: '3 min/wizytę', metricLabel: 'czas na dokumentację po wizycie',
-        extras: [{ label: 'Szablony i auto-uzupełnianie', value: 'Per specjalizację' }, { label: 'Więcej pacjentów/dzień', value: '+25%' }],
+        context: 'Lekarz po wizycie: 15 minut na dokumentację. "Pracuję dla komputera, nie dla pacjenta."',
+        before: '15 min', after: '3 min', metricLabel: 'dokumentacja po wizycie',
+        processes: [
+          { name: 'Opis wizyty', before: 'Od zera, każdorazowo', after: 'Szablon + auto-uzupeł.' },
+          { name: 'E-recepta', before: '5 min szukania leku', after: '30 sek, podpowiedzi' },
+          { name: 'E-skierowanie', before: 'Ręcznie, druk', after: 'Auto z rozpoznania' },
+          { name: 'Historia leczenia', before: 'Teczka papierowa', after: '1 ekran, pełna' },
+        ],
       },
       {
-        title: 'Wyniki i komunikacja z pacjentem',
-        context: 'Pacjent dzwoni po wyniki. Recepcja szuka, lekarz musi opisać. Pacjent dzwoni ponownie. Koło.',
-        before: '2-3 dni', after: '4h', metricLabel: 'czas od badania do wyniku u pacjenta',
-        extras: [{ label: 'Telefony o wyniki', value: '-85%' }, { label: 'Satysfakcja pacjentów', value: '4.8/5' }],
+        title: 'Wyniki badań i komunikacja',
+        context: 'Pacjent dzwoni po wyniki. Recepcja szuka, lekarz opisuje, pacjent dzwoni ponownie.',
+        before: '2-3 dni', after: '4h', metricLabel: 'od badania do wyniku u pacjenta',
+        processes: [
+          { name: 'Import wyników z laboratorium', before: 'Fax / mail', after: 'Auto-integracja' },
+          { name: 'Opis wyniku', before: 'Lekarz szuka karty', after: 'Auto-podpięcie do wizyty' },
+          { name: 'Udostępnienie pacjentowi', before: 'Wizyta po odbiór', after: 'Portal / SMS' },
+          { name: 'Telefony o wyniki', before: '~30/dzień', after: '~5/dzień' },
+        ],
       },
     ],
   },
@@ -250,21 +415,38 @@ const data: Industry[] = [
     cases: [
       {
         title: 'Proces rekrutacyjny',
-        context: 'CV w mailach, statusy w głowie rekrutera. Kandydat czeka tydzień na odpowiedź i idzie do konkurencji.',
-        before: '14 dni', after: '3 dni', metricLabel: 'czas od aplikacji do decyzji',
-        extras: [{ label: 'Odpowiedź do kandydata', value: '5dni→2h' }, { label: 'Utrata kandydatów', value: '-60%' }],
+        context: 'CV w mailach, statusy w głowie rekrutera. Kandydat czeka tydzień i idzie do konkurencji.',
+        before: '14 dni', after: '3 dni', metricLabel: 'od aplikacji do decyzji',
+        processes: [
+          { name: 'Screening CV', before: '3 min × 200', after: 'Auto-scoring + top 20' },
+          { name: 'Odpowiedź do kandydata', before: '5 dni', after: '2h auto' },
+          { name: 'Umawianie rozmów', before: 'Ping-pong mailowy', after: 'Kalendarz self-service' },
+          { name: 'Feedback po rozmowie', before: 'Mail do PM-a', after: 'Formularz → ATS' },
+          { name: 'Raport z rekrutacji', before: 'Ręcznie, z pamięci', after: 'Auto z pipeline' },
+        ],
       },
       {
-        title: 'Onboarding pracownika',
-        context: 'Nowy pracownik — 15 dokumentów do podpisania, 8 systemów do skonfigurowania, 5 osób musi coś "ogarnąć".',
-        before: '3 dni', after: '4h', metricLabel: 'pełny onboarding nowego pracownika',
-        extras: [{ label: 'Dokumenty', value: 'E-podpis, auto' }, { label: 'Konfiguracja systemów', value: '1 formularz' }],
+        title: 'Onboarding nowego pracownika',
+        context: '15 dokumentów, 8 systemów, 5 osób musi coś "ogarnąć". Nowy czeka.',
+        before: '3 dni', after: '4h', metricLabel: 'pełny onboarding pracownika',
+        processes: [
+          { name: 'Dokumenty do podpisu', before: '15 papierów', after: 'E-podpis, 10 min' },
+          { name: 'Konta w systemach', before: 'Mail do IT, 2 dni', after: 'Auto-provisioning' },
+          { name: 'Szkolenie wstępne', before: 'Kto ma czas?', after: 'LMS + auto-harmonogram' },
+          { name: 'Checklist dla managera', before: 'Brak / email', after: 'Auto-tasklist' },
+        ],
       },
       {
         title: 'Delegowanie pracowników tymczasowych',
-        context: 'Agencja pracy deleguje 500+ osób. Grafiki, obecności, rozliczenia — Excel i telefony.',
+        context: 'Agencja pracy, 500+ osób. Grafiki, obecności, rozliczenia — Excel i telefony.',
         before: '2h/dzień', after: '15 min/dzień', metricLabel: 'zarządzanie grafikami i obecnościami',
-        extras: [{ label: 'Rozliczenie pracownika', value: 'Auto z ewidencji' }, { label: 'Konflikty grafiku', value: '-90%' }],
+        processes: [
+          { name: 'Grafik tygodniowy', before: 'Excel + telefon', after: 'System + auto-match' },
+          { name: 'Ewidencja czasu pracy', before: 'Papierowa lista', after: 'Apka + GPS' },
+          { name: 'Rozliczenie pracownika', before: 'Ręczne, koniec miesiąca', after: 'Auto z ewidencji' },
+          { name: 'Zastępstwo za nieobecność', before: 'Panika + telefony', after: 'Auto-sugestia' },
+          { name: 'Raport dla klienta', before: 'Excel, mail', after: 'Portal, auto' },
+        ],
       },
     ],
   },
@@ -273,22 +455,39 @@ const data: Industry[] = [
     icon: 'book-open', color: '#a855f7',
     cases: [
       {
-        title: 'Zarządzanie kursami i uczestnikami',
-        context: 'Zapisy przez formularz, płatności na przelew, potwierdzenia ręcznie. Przy 50+ kursach/miesiąc — chaos.',
-        before: '20 min', after: '0 min', metricLabel: 'obsługa jednego zapisu (automatyczna)',
-        extras: [{ label: 'Potwierdzenia', value: 'Automatyczne' }, { label: 'Duplikaty i błędy', value: '-95%' }],
+        title: 'Zarządzanie kursami i zapisami',
+        context: 'Zapisy przez formularz, płatności na przelew, potwierdzenia ręcznie. 50+ kursów/miesiąc — chaos.',
+        before: '20 min', after: '0 min', metricLabel: 'obsługa jednego zapisu (pełna automatyzacja)',
+        processes: [
+          { name: 'Formularz zapisu', before: 'Google Form', after: 'Portal z płatnością' },
+          { name: 'Potwierdzenie', before: 'Mail ręcznie', after: 'Auto instant' },
+          { name: 'Płatność', before: 'Przelew + sprawdzanie', after: 'Online + auto-match' },
+          { name: 'Materiały do uczestnika', before: 'Mail z załącznikiem', after: 'Auto-dostęp LMS' },
+          { name: 'Reminder przed kursem', before: 'Zapominam', after: 'Auto, 24h + 1h' },
+        ],
       },
       {
         title: 'Certyfikacja i egzaminy',
-        context: 'Egzaminy papierowe, ręczne sprawdzanie, certyfikaty w Wordzie. Wydanie certyfikatu — 2 tygodnie.',
+        context: 'Egzaminy papierowe, ręczne sprawdzanie, certyfikat w Wordzie. 2 tygodnie czekania.',
         before: '2 tyg', after: '5 min', metricLabel: 'od zdania egzaminu do certyfikatu',
-        extras: [{ label: 'Egzaminy', value: 'Online, auto-sprawdzane' }, { label: 'Weryfikacja certyfikatu', value: 'QR code' }],
+        processes: [
+          { name: 'Egzamin', before: 'Papierowy, sala', after: 'Online, auto-sprawdzany' },
+          { name: 'Sprawdzenie', before: 'Ręczne, 3 dni', after: 'Instant, auto' },
+          { name: 'Generowanie certyfikatu', before: 'Word, ręcznie', after: 'Auto + QR' },
+          { name: 'Wysyłka', before: 'Poczta / mail', after: 'Auto-link instant' },
+          { name: 'Weryfikacja ważności', before: 'Telefon do nas', after: 'Skan QR = wynik' },
+        ],
       },
       {
         title: 'Rozliczenia trenerów i sal',
-        context: 'Trener prowadzi 12 szkoleń w miesiącu, każde z inną stawką. Rozliczenie = 2 dni pracy administracji.',
+        context: '12 szkoleń/miesiąc per trener, każde z inną stawką. Rozliczenie = 2 dni administracji.',
         before: '2 dni', after: '30 min', metricLabel: 'rozliczenie wszystkich trenerów miesięcznie',
-        extras: [{ label: 'Rezerwacja sal', value: 'Auto z grafiku' }, { label: 'Konflikty terminów', value: '0' }],
+        processes: [
+          { name: 'Ewidencja godzin', before: 'Ręczna, z grafiku', after: 'Auto z kalendarza' },
+          { name: 'Kalkulacja wynagrodzenia', before: 'Excel, 3 stawki', after: 'Auto per typ' },
+          { name: 'Rezerwacja sal', before: 'Telefon / mail', after: 'System, auto z grafiku' },
+          { name: 'Konflikty terminowe', before: 'Dowiaduję się za późno', after: 'Alert natychmiast' },
+        ],
       },
     ],
   },
@@ -302,52 +501,57 @@ export function CaseStudies() {
     <div className="cs">
       <AnimatePresence mode="wait">
         {industry ? (
-          <motion.div className="cs-industry" key={industry.id}
+          <motion.div className="cs-view" key={industry.id}
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            style={{ '--cs-c': industry.color, '--cs-cl': `${industry.color}12`, '--cs-cm': `${industry.color}28` } as React.CSSProperties}
+            style={{ '--cs-c': industry.color, '--cs-cl': `${industry.color}10`, '--cs-cm': `${industry.color}22` } as React.CSSProperties}
           >
-            <button className="cs-back" onClick={() => setSelected(null)}>
-              <Icon name="chevron-left" size={16} strokeWidth={2.5} />
-              Branże
-            </button>
-
-            <div className="cs-industry-head">
-              <div className="cs-industry-icon">
-                <Icon name={industry.icon} size={22} strokeWidth={1.8} />
-              </div>
-              <div>
-                <h2 className="cs-industry-name">{industry.name}</h2>
-                <p className="cs-industry-sub">{industry.cases.length} przykłady automatyzacji</p>
+            <div className="cs-topbar">
+              <button className="cs-back" onClick={() => setSelected(null)}>
+                <Icon name="chevron-left" size={16} strokeWidth={2.5} />
+                Branże
+              </button>
+              <div className="cs-topbar-info">
+                <div className="cs-topbar-icon">
+                  <Icon name={industry.icon} size={18} strokeWidth={1.8} />
+                </div>
+                <span className="cs-topbar-name">{industry.name}</span>
               </div>
             </div>
 
-            <div className="cs-cases">
+            <div className="cs-scroll">
               {industry.cases.map((c, i) => (
-                <motion.div className="cs-case" key={i}
+                <motion.div className="cs-card" key={i}
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: i * 0.07, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <div className="cs-case-top">
-                    <h3 className="cs-case-title">{c.title}</h3>
-                    <p className="cs-case-ctx">{c.context}</p>
+                  {/* Left side — info + hero metric */}
+                  <div className="cs-card-left">
+                    <h3 className="cs-card-title">{c.title}</h3>
+                    <p className="cs-card-ctx">{c.context}</p>
+                    <div className="cs-card-hero">
+                      <span className="cs-card-before">{c.before}</span>
+                      <svg className="cs-card-arrow" width="32" height="12" viewBox="0 0 32 12" fill="none">
+                        <path d="M0 6h28m0 0l-4.5-4.5M28 6l-4.5 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                      <span className="cs-card-after">{c.after}</span>
+                    </div>
+                    <span className="cs-card-label">{c.metricLabel}</span>
                   </div>
 
-                  <div className="cs-case-metric">
-                    <span className="cs-case-before">{c.before}</span>
-                    <span className="cs-case-arrow">
-                      <svg width="28" height="12" viewBox="0 0 28 12" fill="none"><path d="M0 6h24m0 0l-4-4m4 4l-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    </span>
-                    <span className="cs-case-after">{c.after}</span>
-                  </div>
-                  <span className="cs-case-mlabel">{c.metricLabel}</span>
-
-                  <div className="cs-case-extras">
-                    {c.extras.map((e, j) => (
-                      <div className="cs-case-extra" key={j}>
-                        <span className="cs-case-eval">{e.value}</span>
-                        <span className="cs-case-elabel">{e.label}</span>
+                  {/* Right side — process breakdown tiles */}
+                  <div className="cs-card-procs">
+                    {c.processes.map((p, j) => (
+                      <div className="cs-proc" key={j}>
+                        <span className="cs-proc-name">{p.name}</span>
+                        <div className="cs-proc-vals">
+                          <span className="cs-proc-old">{p.before}</span>
+                          <svg className="cs-proc-arrow" width="16" height="8" viewBox="0 0 16 8" fill="none">
+                            <path d="M0 4h13m0 0l-2.5-2.5M13 4l-2.5 2.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                          <span className="cs-proc-new">{p.after}</span>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -364,7 +568,7 @@ export function CaseStudies() {
             <div className="cs-tiles">
               {data.map((ind, i) => (
                 <motion.button className="cs-tile" key={ind.id}
-                  style={{ '--cs-c': ind.color, '--cs-cl': `${ind.color}12`, '--cs-cm': `${ind.color}28` } as React.CSSProperties}
+                  style={{ '--cs-c': ind.color, '--cs-cl': `${ind.color}10`, '--cs-cm': `${ind.color}22` } as React.CSSProperties}
                   initial={{ opacity: 0, y: 14, scale: 0.97 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ duration: 0.45, delay: i * 0.04, ease: [0.16, 1, 0.3, 1] }}
