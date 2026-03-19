@@ -5,7 +5,8 @@ import { inspirationIndustries } from '../data/inspirationMap';
 import type { InspIndustry, AutomationIdea } from '../data/inspirationMap';
 import './InspirationMap.css';
 
-const transition = { duration: 0.35, ease: [0.16, 1, 0.3, 1] };
+const ease = [0.16, 1, 0.3, 1] as const;
+const transition = { duration: 0.35, ease };
 const variants = {
   enter: { opacity: 0, x: 50 },
   center: { opacity: 1, x: 0 },
@@ -47,7 +48,7 @@ export function InspirationMap({ onClose }: Props) {
     <motion.div className="imap"
       initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 30 }}
-      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}>
+      transition={{ duration: 0.35, ease }}>
 
       {/* Header */}
       <div className="imap-header">
@@ -79,7 +80,7 @@ export function InspirationMap({ onClose }: Props) {
                   <motion.button className="imap-tile" key={ind.id}
                     style={{ '--c': ind.color, '--c-l': `${ind.color}15`, '--c-m': `${ind.color}28` } as React.CSSProperties}
                     initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.35, delay: i * 0.04, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.35, delay: i * 0.04, ease }}
                     onClick={() => pickIndustry(ind)}>
                     <div className="imap-tile-gradient" />
                     <div className="imap-tile-icon">
@@ -165,7 +166,7 @@ function IdeaCard({ idea, index: _index, globalIndex, color }: {
     <motion.div className="imap-idea"
       style={{ '--c': color, '--c-l': `${color}10` } as React.CSSProperties}
       initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35, delay: 0.05 + globalIndex * 0.03, ease: [0.16, 1, 0.3, 1] }}>
+      transition={{ duration: 0.35, delay: 0.05 + globalIndex * 0.03, ease }}>
 
       <div className="imap-idea-top">
         <h3 className="imap-idea-title">{idea.title}</h3>
