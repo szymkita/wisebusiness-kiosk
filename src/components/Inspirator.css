@@ -112,6 +112,25 @@
 .insp-opt-title { font-size: clamp(14px, 1vw, 17px); font-weight: 750; color: #1a1a1a; letter-spacing: -0.01em; }
 .insp-opt-sub { font-size: clamp(12px, 0.78vw, 14px); font-weight: 450; color: #999; }
 
+/* Problem groups */
+.insp-problem-groups {
+  display: flex; flex-direction: column;
+  gap: clamp(18px, 2vh, 28px);
+}
+
+.insp-problem-group {
+  display: flex; flex-direction: column;
+  gap: clamp(4px, 0.4vh, 7px);
+}
+
+.insp-problem-group-label {
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: #10b981;
+  padding-left: 2px;
+  margin-bottom: 2px;
+}
+
 /* Loading */
 .insp-loader { width: 56px; height: 56px; position: relative; }
 .insp-loader-ring {
@@ -270,41 +289,71 @@
   font-weight: 700; color: #555;
 }
 
-/* Share inline */
-.res-share {
-  padding: clamp(20px, 2.2vh, 28px) clamp(20px, 2vw, 28px);
+/* Contact CTA */
+.res-contact {
+  padding: clamp(24px, 2.8vh, 36px) clamp(20px, 2vw, 28px);
   background: #fff; border: 1px solid rgba(0,0,0,0.05);
   border-radius: 16px; margin-bottom: clamp(10px, 1vh, 14px);
+  text-align: center;
 }
 
-.res-share-row {
-  display: flex; gap: clamp(16px, 1.5vw, 24px); align-items: flex-start;
-  margin-top: clamp(10px, 1.2vh, 16px);
+.res-contact-title {
+  font-size: clamp(18px, 1.4vw, 24px);
+  font-weight: 800; color: #1a1a1a;
+  letter-spacing: -0.02em; line-height: 1.2;
+  margin-bottom: 8px;
 }
 
-.res-share-qr {
-  width: 140px; height: 140px; flex-shrink: 0;
-  padding: 10px; background: #fff;
-  border: 1px solid rgba(0,0,0,0.06); border-radius: 12px;
-  display: flex; align-items: center; justify-content: center;
+.res-contact-text {
+  font-size: clamp(13px, 0.88vw, 15px);
+  font-weight: 450; color: #888;
+  line-height: 1.6; margin-bottom: clamp(16px, 2vh, 24px);
 }
 
-.res-share-info { flex: 1; display: flex; flex-direction: column; gap: 12px; }
+.res-contact-form {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 8px;
+}
 
-.res-share-text { font-size: 13px; font-weight: 500; color: #888; line-height: 1.5; }
+.res-contact-label {
+  font-size: 12px; font-weight: 650; color: #aaa;
+}
 
-.res-share-sms { display: flex; flex-direction: column; gap: 6px; }
-.res-share-sms-label { font-size: 11px; font-weight: 600; color: #bbb; }
-.res-share-sms-row { display: flex; gap: 6px; }
+.res-contact-row {
+  display: flex; gap: 8px;
+  width: 100%; max-width: 400px;
+}
 
-.res-share-input {
-  flex: 1; padding: 10px 14px;
+.res-contact-input {
+  flex: 1; padding: 14px 16px;
   background: #fafaf8; border: 1.5px solid rgba(0,0,0,0.06);
-  border-radius: 8px; color: #1a1a1a;
-  font-size: 14px; font-weight: 600; font-family: inherit; outline: none;
+  border-radius: 10px; color: #1a1a1a;
+  font-size: 16px; font-weight: 600; font-family: inherit; outline: none;
 }
-.res-share-input:focus { border-color: #10b981; }
-.res-share-input::placeholder { color: #ddd; }
+.res-contact-input:focus { border-color: #10b981; }
+.res-contact-input::placeholder { color: #ddd; }
+
+.res-contact-btn {
+  padding: 14px 24px;
+  background: #10b981; color: #fff;
+  font-size: 14px; font-weight: 700; font-family: inherit;
+  border: none; border-radius: 10px; cursor: pointer;
+  white-space: nowrap; min-height: 48px;
+}
+.res-contact-btn:active { transform: scale(0.97); }
+.res-contact-btn:disabled { background: rgba(0,0,0,0.06); color: #ccc; cursor: default; }
+
+.res-contact-done {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; padding: 16px;
+  background: rgba(16,185,129,0.06); border-radius: 10px;
+  color: #059669; font-size: 14px; font-weight: 650;
+}
+
+.res-restart {
+  display: flex; justify-content: center;
+  padding: clamp(8px, 1vh, 12px) 0;
+}
 
 /* More button */
 .res-more {
@@ -376,35 +425,3 @@
 .insp-counter { font-size: 12px; font-weight: 600; color: #ccc; }
 .insp-counter strong { color: #10b981; }
 
-/* QR */
-.insp-qr-frame {
-  width: clamp(160px, 18vw, 220px); height: clamp(160px, 18vw, 220px);
-  padding: 16px; background: #fff;
-  border: 1px solid rgba(0,0,0,0.06); border-radius: 16px;
-  display: flex; align-items: center; justify-content: center;
-}
-.insp-qr-caption { font-size: 12px; font-weight: 550; color: #bbb; }
-
-.insp-divider {
-  display: flex; align-items: center; gap: 12px;
-  width: 100%; max-width: 320px; color: #ddd;
-}
-.insp-divider::before, .insp-divider::after { content: ''; flex: 1; height: 1px; background: rgba(0,0,0,0.06); }
-.insp-divider span { font-size: 11px; font-weight: 600; color: #ccc; white-space: nowrap; }
-
-.insp-sms-row { display: flex; gap: 8px; width: 100%; max-width: 360px; }
-
-.insp-input {
-  width: 100%; max-width: 360px;
-  padding: clamp(13px, 1.5vh, 18px) clamp(16px, 1.6vw, 22px);
-  background: #fff; border: 2px solid rgba(0,0,0,0.06);
-  border-radius: 12px; color: #1a1a1a;
-  font-size: clamp(16px, 1.1vw, 20px); font-weight: 600; font-family: inherit;
-  outline: none; text-align: center;
-}
-.insp-input::placeholder { color: #ddd; }
-.insp-input:focus { border-color: #10b981; }
-.insp-input--phone { flex: 1; text-align: left; font-size: clamp(14px, 0.9vw, 17px); }
-
-.insp-note { font-size: clamp(11px, 0.7vw, 13px); font-weight: 450; color: #bbb; text-align: center; line-height: 1.5; max-width: 320px; }
-.insp-done-icon { width: 52px; height: 52px; border-radius: 50%; background: rgba(16,185,129,0.08); display: flex; align-items: center; justify-content: center; color: #10b981; }

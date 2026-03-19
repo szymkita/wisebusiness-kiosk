@@ -1,9 +1,7 @@
-import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { QRCodeSVG } from 'qrcode.react';
 import { Icon } from './Icon';
 import { generateIdeas } from '../services/ai';
-import { encodeResults } from '../services/share';
 import type { AIResults } from '../services/ai';
 import './Inspirator.css';
 
@@ -35,20 +33,72 @@ const processes = [
   { id: 'operations', name: 'Operacje', desc: 'Magazyn, dostawy, codzienna koordynacja' },
 ];
 
-const problems = [
-  'Za dużo pracy ręcznej — kopiowanie, przepisywanie, klikanie w wielu miejscach',
-  'Dane rozsiane po Excelach, mailach i systemach — brak jednego źródła prawdy',
-  'Zbyt długi czas realizacji — klient lub szef czeka na odpowiedź',
-  'Brak widoczności — nie wiadomo co jest na jakim etapie i kto za co odpowiada',
-  'Zależność od konkretnych ludzi — jak ktoś odejdzie, proces się sypie',
-  'Powtarzające się błędy i pomyłki wynikające z ręcznej pracy',
-  'Brak standaryzacji — każdy robi to samo inaczej',
-  'Proces nie skaluje się — przy wzroście firmy chaos rośnie szybciej',
-  'Trudne wdrożenie nowych osób — potrzeba tygodni zanim ktoś ogarnie',
-  'Brak raportów i analityki — decyzje podejmowane na wyczucie',
-  'Komunikacja przez telefon i maile — rzeczy giną i się opóźniają',
-  'Klienci nie znają statusu — muszą dzwonić żeby się czegokolwiek dowiedzieć',
-];
+/* Problems per process — contextual, specific */
+const problemsByProcess: Record<string, string[]> = {
+  sales: [
+    'Leady giną — nikt nie pilnuje follow-upów',
+    'Oferta przygotowywana od zera za każdym razem',
+    'Nie wiemy na jakim etapie jest klient i kto z nim rozmawiał',
+    'Handlowiec odchodzi i zabiera kontakty ze sobą',
+    'Brak prognoz — nie wiemy ile sprzedamy w tym miesiącu',
+  ],
+  fulfillment: [
+    'Zamówienia przepisywane ręcznie z maila do systemu',
+    'Obiecujemy terminy nie wiedząc czy mamy zasoby',
+    'Statusy zamówień trzeba sprawdzać na piechotę',
+    'Pomyłki w kompletacji — zły towar, zła ilość, zły adres',
+    'Faktura wystawiana ręcznie z opóźnieniem',
+  ],
+  'client-service': [
+    'Zgłoszenia przychodzą zewsząd — mail, telefon, czat — i giną',
+    'Nie wiemy czy ktoś już odpowiedział klientowi',
+    'Te same pytania pojawiają się co tydzień — brak bazy wiedzy',
+    'Reklamacja krąży między działami — nikt nie czuje się odpowiedzialny',
+    'Klient musi powtarzać swoją historię przy każdym kontakcie',
+  ],
+  projects: [
+    'Każdy projekt prowadzony inaczej — brak szablonu',
+    'Nie wiemy ile czasu zjada projekt vs. ile wyceniliśmy',
+    'Zarządzanie zadaniami w Excelu lub w głowie PM-a',
+    'Klient nie widzi postępu — robimy ręczne statusy',
+    'Przy kilku projektach naraz tracimy kontrolę nad priorytetami',
+  ],
+  finance: [
+    'Fakturowanie ręczne — opóźnienia i błędy w kwotach',
+    'Nie wiemy które projekty lub klienci są rentowni',
+    'Raport finansowy wymaga dwóch dni zbierania danych',
+    'Rozliczenia z podwykonawcami to chaos',
+    'Koszty śledzone w Excelu — nikt nie ma aktualnych danych',
+  ],
+  people: [
+    'Rekrutacja ciągnie się tygodniami — kandydaci uciekają',
+    'Wdrożenie nowej osoby wymaga osobistego oprowadzania krok po kroku',
+    'Nie wiemy kto ma jakie kompetencje i uprawnienia',
+    'Grafiki i urlopy zarządzane przez Excele',
+    'Oceny pracownicze raz do roku na papierze',
+  ],
+  quality: [
+    'Kontrola jakości "na oko" — bez checklisty, bez śladu',
+    'Niezgodności odkrywane dopiero po dostarczeniu klientowi',
+    'Brak zapisu kto, kiedy i co sprawdził',
+    'Audyt = panika i gorączkowe szukanie dokumentów',
+    'Procedury istnieją na papierze, ale nikt ich nie czyta',
+  ],
+  operations: [
+    'Stany magazynowe rozbieżne z tym co jest na półce',
+    'Planowanie dostaw w głowie jednej osoby',
+    'Kierowcy dzwonią pytając co, gdzie i do kiedy',
+    'Brak widoczności co jest gdzie w danym momencie',
+    'Koordynacja między działami wyłącznie przez telefon',
+  ],
+};
+
+function getProblemsForProcesses(selected: typeof processes[number][]): { process: string; problems: string[] }[] {
+  return selected.map(p => ({
+    process: p.name,
+    problems: problemsByProcess[p.id] || [],
+  }));
+}
 
 const costs = [
   { id: 'clients', label: 'Tracimy klientów', desc: 'Odchodzą do szybszej konkurencji' },
@@ -95,8 +145,8 @@ export function Inspirator({ onClose }: Props) {
   const [prevIdeas, setPrevIdeas] = useState<string[]>([]);
   const [loadingIdx, setLoadingIdx] = useState(0);
   const [moreLoading, setMoreLoading] = useState(false);
+  const [contactSent, setContactSent] = useState(false);
   const [phone, setPhone] = useState('+48');
-  const [smsSent, setSmsSent] = useState(false);
   const aiRef = useRef<Promise<AIResults> | null>(null);
 
   const go = useCallback((s: number) => setTimeout(() => setStep(s), 250), []);
@@ -143,20 +193,14 @@ export function Inspirator({ onClose }: Props) {
     setMoreLoading(false);
   }, [industry, processCtx, selectedProblems, selectedCosts, size, prevIdeas]);
 
-  const shareUrl = useMemo(() => {
-    if (!results) return '';
-    try { return encodeResults({ industry, processes: selectedProcesses.map(p => p.name), outcome: selectedCosts.join(', '), size, results }); }
-    catch { return ''; }
-  }, [results, industry, selectedProcesses, selectedCosts, size]);
-
-  const sendSms = useCallback(() => {
+  const sendContact = useCallback(() => {
     const clean = phone.replace(/[^0-9+]/g, '');
     if (clean.length < 11) return;
     const session = {
       timestamp: new Date().toISOString(), industry,
       processes: selectedProcesses.map(p => p.name), problems: selectedProblems,
       costs: selectedCosts, company_size: size, ai_diagnosis: results?.diagnosis.insight,
-      ai_ideas: results?.ideas.map(i => i.title), phone: clean, share_url: shareUrl,
+      ai_ideas: results?.ideas.map(i => i.title), phone: clean,
     };
     const sessions = JSON.parse(localStorage.getItem('inspirator_sessions') || '[]');
     sessions.push(session);
@@ -165,15 +209,14 @@ export function Inspirator({ onClose }: Props) {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(session),
     }).catch(() => {});
-    setSmsSent(true);
-    setTimeout(() => onClose(), 8000);
-  }, [industry, selectedProcesses, selectedProblems, selectedCosts, size, results, phone, shareUrl, onClose]);
+    setContactSent(true);
+  }, [industry, selectedProcesses, selectedProblems, selectedCosts, size, results, phone]);
 
   const restart = useCallback(() => {
     setStep(0); setIndustry(''); setSelectedProcesses([]);
     setSelectedProblems([]); setSelectedCosts([]); setSize('');
     setResults(null); setPrevIdeas([]); setLoadingIdx(0);
-    setPhone('+48'); setSmsSent(false);
+    setPhone('+48'); setContactSent(false);
   }, []);
 
   const stepNames = ['Branża', 'Proces', 'Problemy', 'Koszt', 'Skala', 'Analiza', 'Wyniki', 'Udostępnij'];
@@ -237,23 +280,29 @@ export function Inspirator({ onClose }: Props) {
           </motion.div>
         )}
 
-        {/* 2 — Problemy */}
+        {/* 2 — Problemy (per-process) */}
         {step === 2 && (
           <motion.div className="insp-body" key="s2" {...fade}>
             <div className="insp-inner">
-              <span className="insp-ctx">{selectedProcesses.map(p => p.name).join(', ')}</span>
-              <h1 className="insp-q">Co w tych procesach nie działa?</h1>
-              <p className="insp-hint">Zaznacz wszystko, co pasuje</p>
-              <div className="insp-opts">
-                {problems.map(p => {
-                  const on = selectedProblems.includes(p);
-                  return (
-                    <button key={p} className={`insp-opt insp-opt--sm ${on ? 'on' : ''}`} onClick={() => toggleProblem(p)}>
-                      <span className="insp-chk">{on && <Icon name="check-circle" size={14} strokeWidth={2.5} />}</span>
-                      <span>{p}</span>
-                    </button>
-                  );
-                })}
+              <h1 className="insp-q">Co konkretnie nie działa?</h1>
+              <p className="insp-hint">Zaznacz wszystko, co pasuje — im więcej, tym lepsza diagnoza</p>
+              <div className="insp-problem-groups">
+                {getProblemsForProcesses(selectedProcesses).map(group => (
+                  <div key={group.process} className="insp-problem-group">
+                    <span className="insp-problem-group-label">{group.process}</span>
+                    <div className="insp-opts">
+                      {group.problems.map(p => {
+                        const on = selectedProblems.includes(p);
+                        return (
+                          <button key={p} className={`insp-opt insp-opt--sm ${on ? 'on' : ''}`} onClick={() => toggleProblem(p)}>
+                            <span className="insp-chk">{on && <Icon name="check-circle" size={14} strokeWidth={2.5} />}</span>
+                            <span>{p}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </motion.div>
@@ -381,37 +430,34 @@ export function Inspirator({ onClose }: Props) {
                 </button>
               </div>
 
-              {/* Share — QR inline */}
-              <div className="res-share">
-                <h2 className="res-section-title">Zabierz pomysły ze sobą</h2>
-                <div className="res-share-row">
-                  <div className="res-share-qr">
-                    {shareUrl ? (
-                      <QRCodeSVG value={shareUrl} size={140} bgColor="#ffffff" fgColor="#1a1a1a" level="L" />
-                    ) : (
-                      <span style={{ color: '#ccc', fontSize: 12 }}>Generuję...</span>
-                    )}
+              {/* Contact CTA */}
+              <div className="res-contact">
+                <h2 className="res-contact-title">Porozmawiajmy, co możemy z tym zrobić</h2>
+                <p className="res-contact-text">
+                  To wygenerował AI w kilka sekund. Wyobraź sobie, co zrobimy gdy naprawdę poznamy Twoje procesy.
+                </p>
+                {contactSent ? (
+                  <div className="res-contact-done">
+                    <Icon name="check-circle" size={20} strokeWidth={2} />
+                    <span>Dziękujemy! Oddzwonimy najszybciej jak to możliwe.</span>
                   </div>
-                  <div className="res-share-info">
-                    <p className="res-share-text">Zeskanuj kod QR telefonem — otworzysz stronę z Twoimi pomysłami</p>
-                    <div className="res-share-sms">
-                      <span className="res-share-sms-label">lub wyślij link SMS-em</span>
-                      <div className="res-share-sms-row">
-                        <input type="tel" className="res-share-input" value={phone}
-                          onChange={e => setPhone(e.target.value)} placeholder="+48 numer" />
-                        <button className="insp-btn" onClick={sendSms}
-                          disabled={smsSent || phone.replace(/[^0-9]/g, '').length < 11}>
-                          {smsSent ? 'Wysłano!' : 'Wyślij'}
-                        </button>
-                      </div>
+                ) : (
+                  <div className="res-contact-form">
+                    <span className="res-contact-label">Zostaw numer — oddzwonimy</span>
+                    <div className="res-contact-row">
+                      <input type="tel" className="res-contact-input" value={phone}
+                        onChange={e => setPhone(e.target.value)} placeholder="+48 numer telefonu" />
+                      <button className="res-contact-btn" onClick={sendContact}
+                        disabled={phone.replace(/[^0-9]/g, '').length < 11}>
+                        Oddzwońcie do mnie
+                      </button>
                     </div>
                   </div>
-                </div>
+                )}
               </div>
 
-              {/* Bottom */}
-              <div className="res-bottom">
-                <p className="res-bottom-text">{results.cta}</p>
+              {/* Restart */}
+              <div className="res-restart">
                 <button className="res-bottom-link" onClick={restart}>
                   <Icon name="refresh-cw" size={13} strokeWidth={2} />
                   Zacznij od nowa
