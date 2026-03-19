@@ -83,6 +83,7 @@
   line-height: 1.1;
   letter-spacing: -0.03em;
   color: #1a1a1a;
+  margin: 0;
 }
 
 .sw-title-accent {
@@ -98,6 +99,7 @@
   color: #888;
   line-height: 1.55;
   max-width: 420px;
+  margin: 0;
 }
 
 /* Gradient accent line below header */
