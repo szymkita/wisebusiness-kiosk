@@ -13,12 +13,6 @@ const variants = {
   exit: { opacity: 0, x: -50 },
 };
 
-const difficultyMeta: Record<string, { label: string; color: string }> = {
-  easy: { label: 'Quick Win', color: '#10b981' },
-  medium: { label: 'Solidna zmiana', color: '#f59e0b' },
-  advanced: { label: 'Game Changer', color: '#8b5cf6' },
-};
-
 export function InspirationMap() {
   const [industry, setIndustry] = useState<InspIndustry | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -51,7 +45,7 @@ export function InspirationMap() {
           <span className="imap-breadcrumb">
             {industry
               ? `${totalIdeas} pomysłów na automatyzację`
-              : 'Wybierz branżę i odkryj gotowe pomysły'}
+              : 'Wybierz branżę i zobacz, co można zautomatyzować'}
           </span>
         </div>
       </div>
@@ -107,7 +101,6 @@ export function InspirationMap() {
                       <Icon name={section.icon} size={16} strokeWidth={2} />
                     </div>
                     <span className="imap-section-name">{section.name}</span>
-                    <span className="imap-section-count">{section.ideas.length}</span>
                   </motion.div>
 
                   <div className="imap-ideas">
@@ -115,7 +108,6 @@ export function InspirationMap() {
                       <IdeaCard
                         key={idea.title}
                         idea={idea}
-                        index={ii}
                         globalIndex={si * 10 + ii}
                         color={industry.color}
                       />
@@ -143,32 +135,23 @@ export function InspirationMap() {
 
 /* ── Idea Card ── */
 
-function IdeaCard({ idea, index: _index, globalIndex, color }: {
+function IdeaCard({ idea, globalIndex, color }: {
   idea: AutomationIdea;
-  index: number;
   globalIndex: number;
   color: string;
 }) {
-  const meta = difficultyMeta[idea.difficulty];
-
   return (
     <motion.div className="imap-idea"
       style={{ '--c': color, '--c-l': `${color}10` } as React.CSSProperties}
       initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay: 0.05 + globalIndex * 0.03, ease }}>
 
-      <div className="imap-idea-top">
-        <h3 className="imap-idea-title">{idea.title}</h3>
-        <span className="imap-idea-badge" style={{ background: `${meta.color}15`, color: meta.color }}>
-          {meta.label}
-        </span>
-      </div>
-
+      <h3 className="imap-idea-title">{idea.title}</h3>
       <p className="imap-idea-desc">{idea.desc}</p>
 
-      <div className="imap-idea-impact">
-        <Icon name="zap" size={12} strokeWidth={2.5} />
-        <span>{idea.impact}</span>
+      <div className="imap-idea-outcome">
+        <Icon name="chevron-right" size={11} strokeWidth={2.5} />
+        <span>{idea.outcome}</span>
       </div>
     </motion.div>
   );

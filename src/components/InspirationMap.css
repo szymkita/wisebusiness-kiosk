@@ -232,13 +232,6 @@
   transition: transform 0.12s ease;
 }
 
-.imap-idea-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 10px;
-}
-
 .imap-idea-title {
   font-size: clamp(14px, 0.9vw, 17px);
   font-weight: 800;
@@ -246,20 +239,6 @@
   color: #1a1a1a;
   line-height: 1.25;
   margin: 0;
-  flex: 1;
-}
-
-.imap-idea-badge {
-  display: inline-flex;
-  align-self: flex-start;
-  padding: 3px 9px;
-  border-radius: 6px;
-  font-size: clamp(8px, 0.52vw, 10px);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  white-space: nowrap;
-  flex-shrink: 0;
 }
 
 .imap-idea-desc {
@@ -269,15 +248,21 @@
   margin: 0;
 }
 
-.imap-idea-impact {
+.imap-idea-outcome {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 6px;
   font-size: clamp(11px, 0.7vw, 13px);
-  font-weight: 700;
+  font-weight: 600;
   color: var(--c);
-  padding-top: clamp(4px, 0.4vh, 8px);
+  padding-top: clamp(6px, 0.5vh, 10px);
   border-top: 1px solid rgba(0,0,0,0.04);
+  line-height: 1.45;
+}
+
+.imap-idea-outcome svg {
+  flex-shrink: 0;
+  margin-top: 2px;
 }
 
 /* ── Footer ── */
