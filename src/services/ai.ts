@@ -61,7 +61,6 @@ FORMAT: Odpowiedz WYŁĄCZNIE poprawnym JSON-em, bez dodatkowego tekstu, bez mar
 }`;
 
 function buildUserPrompt(industry: string, context: string[], size: string, excludeIdeas?: string[]): string {
-  // context: ["Proces do usprawnienia: X (desc)", ...problems, "Cel: X"]
   const processLine = context[0];
   const problemLines = context.slice(1, -1);
   const goalLine = context[context.length - 1];
@@ -86,7 +85,7 @@ WAŻNE:
   if (excludeIdeas && excludeIdeas.length > 0) {
     prompt += `
 
-WAŻNE: Wygeneruj 3 NOWE, INNE pomysły niż te:
+WAŻNE: Wygeneruj 5 NOWYCH, INNYCH pomysłów niż te:
 ${excludeIdeas.map(t => `- ${t}`).join('\n')}
 Szukaj zupełnie innych kątów i aspektów procesu.`;
   }
@@ -103,7 +102,7 @@ function parseAIResponse(text: string): AIResults {
   if (!parsed.diagnosis?.core_process || !parsed.diagnosis?.insight) {
     throw new Error('Missing diagnosis');
   }
-  if (!Array.isArray(parsed.ideas) || parsed.ideas.length < 3) { // accept 3+ in case model returns fewer
+  if (!Array.isArray(parsed.ideas) || parsed.ideas.length < 3) {
     throw new Error('Missing ideas');
   }
 
@@ -117,36 +116,35 @@ export async function generateIdeas(
   excludeIdeas?: string[],
   retryCount = 0,
 ): Promise<AIResults> {
-  const apiKey = import.meta.env.VITE_ANTHROPIC_API_KEY;
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
   if (!apiKey) {
-    console.warn('No ANTHROPIC_API_KEY set, using fallback');
+    console.warn('No GEMINI_API_KEY set, using fallback');
     return getFallback();
   }
 
   const userPrompt = buildUserPrompt(industry, challenges, size, excludeIdeas);
+  const fullPrompt = `${SYSTEM_PROMPT}\n\n${userPrompt}`;
 
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 20000);
 
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true',
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: fullPrompt }] }],
+          generationConfig: {
+            temperature: 0.9,
+            maxOutputTokens: 2500,
+          },
+        }),
+        signal: controller.signal,
       },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 2500,
-        temperature: 0.9,
-        system: SYSTEM_PROMPT,
-        messages: [{ role: 'user', content: userPrompt }],
-      }),
-      signal: controller.signal,
-    });
+    );
 
     clearTimeout(timeout);
 
@@ -156,7 +154,7 @@ export async function generateIdeas(
     }
 
     const data = await res.json();
-    const text = data.content?.[0]?.text;
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
     if (!text) throw new Error('Empty response');
 
     return parseAIResponse(text);
