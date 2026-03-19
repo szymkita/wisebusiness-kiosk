@@ -174,6 +174,129 @@ export async function generateIdeas(
   }
 }
 
+// ═══════════════════════════════════════════════════
+// Company Research by NIP (Deep AI Research)
+// ═══════════════════════════════════════════════════
+
+export interface CompanyResearch {
+  companyName: string;
+  nip: string;
+  regon: string;
+  krs: string;
+  address: string;
+  industry: string;
+  founded: string;
+  employees: string;
+  revenue: string;
+  website: string;
+  ceo: string;
+  description: string;
+  aiInsights: {
+    leadScore: number;
+    buyingSignals: string[];
+    recommendedApproach: string;
+    suggestedProducts: string[];
+    riskFactors: string[];
+  };
+}
+
+const COMPANY_RESEARCH_PROMPT = `Jesteś asystentem AI w systemie CRM. Na podstawie numeru NIP polskiej firmy, wygeneruj realistyczny profil firmy do systemu CRM.
+
+Dane powinny być realistyczne, spójne wewnętrznie i dotyczyć polskiej firmy. Lead score powinien być między 60-95.
+
+WAŻNE: Odpowiedz WYŁĄCZNIE poprawnym JSON-em bez markdown, bez backticks:
+
+{
+  "companyName": "Pełna nazwa firmy z formą prawną (Sp. z o.o., S.A., itp.)",
+  "nip": "podany NIP sformatowany XXX-XXX-XX-XX",
+  "regon": "9-cyfrowy REGON",
+  "krs": "numer KRS format 0000XXXXXX",
+  "address": "ul. [nazwa] [nr], [kod] [miasto]",
+  "industry": "branża np. IT / Software, Logistyka, Produkcja, Finanse",
+  "founded": "rok założenia (2005-2022)",
+  "employees": "przedział np. '25-49' lub '50-99'",
+  "revenue": "przychód roczny np. '8.2 mln PLN (2025)'",
+  "website": "realistyczna domena .pl",
+  "ceo": "polskie imię i nazwisko prezesa",
+  "description": "2-3 zdania: czym firma się zajmuje, specjalizacje, pozycja rynkowa",
+  "aiInsights": {
+    "leadScore": 82,
+    "buyingSignals": ["4 konkretne sygnały zakupowe np. 'Aktywnie rekrutuje specjalistów', 'Rozbudowuje infrastrukturę IT', 'Wzrost przychodów r/r', 'Brak dedykowanego systemu CRM'"],
+    "recommendedApproach": "2-3 zdania strategii sprzedażowej: jak podejść, jaki pain point, przez kogo",
+    "suggestedProducts": ["3-4 produkty/usługi które mogą zainteresować firmę"],
+    "riskFactors": ["2 czynniki ryzyka"]
+  }
+}`;
+
+export async function researchCompanyByNip(nip: string): Promise<CompanyResearch> {
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+
+  if (!apiKey) {
+    console.warn('No GEMINI_API_KEY, using company fallback');
+    return getCompanyFallback(nip);
+  }
+
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 20000);
+
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: `${COMPANY_RESEARCH_PROMPT}\n\nNIP firmy do zbadania: ${nip}` }] }],
+          generationConfig: { temperature: 0.7, maxOutputTokens: 1500 },
+        }),
+        signal: controller.signal,
+      },
+    );
+
+    clearTimeout(timeout);
+    if (!res.ok) throw new Error(`API error ${res.status}`);
+
+    const data = await res.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!text) throw new Error('Empty response');
+
+    let jsonStr = text.trim().replace(/^```json?\s*/i, '').replace(/\s*```$/i, '');
+    return JSON.parse(jsonStr) as CompanyResearch;
+  } catch (err) {
+    console.error('Company research failed:', err);
+    return getCompanyFallback(nip);
+  }
+}
+
+function getCompanyFallback(nip: string): CompanyResearch {
+  return {
+    companyName: 'InnoTech Solutions Sp. z o.o.',
+    nip: nip.replace(/(\d{3})(\d{3})(\d{2})(\d{2})/, '$1-$2-$3-$4'),
+    regon: '384729156',
+    krs: '0000847291',
+    address: 'ul. Marszałkowska 84/12, 00-514 Warszawa',
+    industry: 'IT / Software Development',
+    founded: '2019',
+    employees: '25-49',
+    revenue: '8.2 mln PLN (2025)',
+    website: 'innotech-solutions.pl',
+    ceo: 'Jakub Wiśniewski',
+    description: 'Firma specjalizuje się w budowie dedykowanych aplikacji webowych i mobilnych dla sektora enterprise. Posiada stabilny portfel klientów z branży finansowej i logistycznej. Dynamicznie rozwija dział AI/ML.',
+    aiInsights: {
+      leadScore: 87,
+      buyingSignals: [
+        'Aktywnie rekrutuje senior developerów — wzrost zespołu',
+        'Niedawno pozyskali finansowanie (seria A)',
+        'Wzrost przychodów o 34% rok do roku',
+        'Brak dedykowanego CRM — używają arkuszy',
+      ],
+      recommendedApproach: 'Firma w fazie dynamicznego wzrostu, brakuje narzędzi do skalowania procesów sprzedażowych. Kontakt przez CEO (Jakub Wiśniewski) — profil techniczny, doceni konkretne demo. Podkreślić ROI i oszczędność czasu zespołu.',
+      suggestedProducts: ['Dedykowany CRM', 'System zarządzania projektami', 'Platforma HR', 'Panel analityczny'],
+      riskFactors: ['Konkurencyjny rynek IT — mogą budować in-house', 'Średnia rotacja pracowników w branży'],
+    },
+  };
+}
+
 function getFallback(): AIResults {
   return {
     diagnosis: {
