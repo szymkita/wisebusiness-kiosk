@@ -25,7 +25,7 @@
   z-index: 0;
 }
 
-.sw-panel > * { position: relative; z-index: 1; }
+.sw-left, .sw-right { position: relative; z-index: 1; }
 
 /* ── Left column ── */
 .sw-left {
