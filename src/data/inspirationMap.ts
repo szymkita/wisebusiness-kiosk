@@ -38,6 +38,7 @@ export const inspirationIndustries: InspIndustry[] = [
           { title: 'Panel klienta B2B do składania zamówień', desc: 'Zamiast maili i telefonów — klient loguje się do panelu, widzi Twój katalog, składa zamówienie z właściwą specyfikacją i widzi jego status na żywo. Zamówienie automatycznie tworzy zlecenie w produkcji. Handlowiec nie przepisuje, produkcja nie czeka.', outcome: 'Klient zamawia sam — Ty dostajesz gotowe zlecenie', icon: 'globe' },
           { title: 'Zlecenia, harmonogram i statusy w jednym miejscu', desc: 'Jedno narzędzie zamiast Excela, tablicy i WhatsAppa. Zlecenie wchodzi → system planuje kolejność (przezbrojenia, priorytety, terminy) → operator widzi co ma robić → kierownik widzi, co się dzieje. Zmiana priorytetu? Przeciągasz — harmonogram przelicza się sam.', outcome: 'Koniec z "kto robi co?" — jedno źródło prawdy dla całej produkcji', icon: 'monitor' },
           { title: 'Automatyczne powiadomienia o statusie zlecenia', desc: 'Zlecenie przechodzi przez etapy (cięcie → montaż → kontrola → wysyłka). Przy każdej zmianie statusu klient dostaje informację. Nie musi dzwonić z pytaniem "kiedy będzie gotowe?" — wie.', outcome: 'Klient poinformowany na bieżąco, biuro odciążone', icon: 'bell' },
+          { title: 'Konfigurator produktu online', desc: 'Klient sam składa specyfikację: wymiary, materiał, kolor, ilość. System od razu kalkuluje cenę i termin realizacji. Zamówienie wpada gotowe — bez maili "a ile by kosztowało, gdyby 5mm grubsze?". Szczególnie skuteczne przy produkcji na zamówienie.', outcome: 'Klient konfiguruje i zamawia sam — handlowiec wchodzi tylko gdy trzeba', icon: 'settings' },
         ],
       },
       {
@@ -45,6 +46,7 @@ export const inspirationIndustries: InspIndustry[] = [
         ideas: [
           { title: 'Cyfrowe karty kontroli jakości', desc: 'Pracownik skanuje partię, wypełnia checklistę na tablecie — pomiary, zdjęcia, status. Wyniki trafiają do systemu, a nie do segregatora. Przy audycie ISO wyciągasz pełną historię jednym kliknięciem. Przy reklamacji — wiesz dokładnie, co się stało z tą partią.', outcome: 'Jakość udokumentowana i przeszukiwalna — audyt-ready', icon: 'file-text' },
           { title: 'Pełne śledzenie partii od surowca do wysyłki', desc: 'Skąd surowiec, kto go przetwarzał, na jakiej maszynie, kiedy, jaki wynik kontroli — pełna genealogia produktu. Coraz więcej klientów tego wymaga. Przy wycofaniu partii wiesz natychmiast, co jest dotknięte.', outcome: 'Traceability, którego wymagają Twoi klienci i audytorzy', icon: 'search' },
+          { title: 'System obsługi reklamacji z powiązaniem do partii', desc: 'Klient zgłasza reklamację → system łączy ją z konkretną partią, zleceniem i wynikami kontroli jakości. Widać od razu, czy problem był po Twojej stronie. Odpowiedź do klienta z konkretnymi danymi, nie z "sprawdzimy i wrócimy".', outcome: 'Reklamacje obsługiwane merytorycznie i szybko — z danymi, nie z domysłami', icon: 'shield' },
         ],
       },
       {
@@ -80,6 +82,7 @@ export const inspirationIndustries: InspIndustry[] = [
           { title: 'Wszystkie zlecenia w jednym systemie — nie w mailach', desc: 'Zlecenie od klienta trafia do systemu (z maila, portalu, integracji). Dyspozytor widzi: co trzeba zaplanować, co jest w trasie, co wymaga dokumentów. Jedno miejsce zamiast Excela, maila i WhatsAppa. Zlecenie ma historię — kto je obsługiwał, co się działo, gdzie jest teraz.', outcome: 'Pełna widoczność operacji — od przyjęcia zlecenia do dostawy', icon: 'monitor' },
           { title: 'Portal klienta — zlecenia, tracking, dokumenty', desc: 'Stały klient sam składa zlecenie, śledzi status na żywo, pobiera POD i fakturę. Nie dzwoni, nie maila — ma wszystko w jednym panelu. System potwierdza przyjęcie i przekazuje do dyspozytora. Biuro obsługuje wyjątki, nie rutynę.', outcome: 'Klient samoobsługowy — Twój zespół zajmuje się trudniejszymi sprawami', icon: 'globe' },
           { title: 'Tracking przesyłek z automatycznym ETA dla klienta', desc: 'Kierowca rusza — klient dostaje SMS z linkiem do śledzenia i szacowanym czasem dostawy. ETA aktualizuje się na bieżąco. Opóźnienie? Klient wie pierwszy. Znika najczęstszy telefon w firmie transportowej: "gdzie jest moja przesyłka?".', outcome: 'Informacja zamiast telefonów — klient wie, biuro ma spokój', icon: 'truck' },
+          { title: 'Giełda ładunków i dopasowanie wolnych aut', desc: 'Masz wolne auto wracające puste z Gdańska? System pokazuje zlecenia na trasie powrotnej od Twoich klientów lub z giełdy. Dyspozytor widzi opcje i decyduje. Mniej pustych kursów, lepszy load factor.', outcome: 'Wykorzystanie floty, której już masz — zamiast jeżdżenia na pusto', icon: 'map-pin' },
         ],
       },
       {
@@ -115,6 +118,7 @@ export const inspirationIndustries: InspIndustry[] = [
           { title: 'Jeden system dla wszystkich kanałów sprzedaży', desc: 'Allegro, własny sklep, zamówienia B2B mailem — wszystko wpada do jednego systemu. Weryfikacja płatności, rezerwacja towaru, etykieta kurierska, tracking do klienta. Jeden flow zamiast trzech. Stany zsynchronizowane w real-time — sprzedałeś na Allegro, stan spada wszędzie.', outcome: 'Jeden proces obsługi niezależnie od kanału — koniec z chaosem wielu narzędzi', icon: 'zap' },
           { title: 'Panel hurtowy / B2B z cenami kontraktowymi', desc: 'Klient biznesowy loguje się do panelu, widzi swoje ceny, składa zamówienie, śledzi realizację, pobiera faktury. Nie dzwoni, nie maila z pytaniem o cenę. Zamówienie trafia do systemu i dalej — na magazyn, do wysyłki. Obsługa klienta hurtowego bez angażowania handlowca przy każdym zamówieniu.', outcome: 'Klienci B2B obsługują się sami — handlowiec buduje relacje, nie wbija zamówienia', icon: 'globe' },
           { title: 'Inteligentne zarządzanie stanami magazynowymi', desc: 'System zna tempo sprzedaży per SKU i lead time dostawców. Bestseller się kończy? Zamówienie do dostawcy generuje się automatycznie z optymalną ilością. Slow mover zalega? Alert — może pora na promocję albo wyprzedaż. Nie pilujesz 500 pozycji w głowie ani w Excelu.', outcome: 'Właściwe produkty na stanie — bez braków na bestsellerach i śmietnika slow moverów', icon: 'package' },
+          { title: 'System obsługi zwrotów i reklamacji', desc: 'Klient zgłasza zwrot przez formularz → system generuje etykietę, śledzi paczkę, po przyjęciu na magazyn weryfikuje stan. Refund lub wymiana — automatycznie. Klient widzi status i nie musi dopytywać. Dane o zwrotach zbierane w jednym miejscu — widzisz, które produkty mają problem.', outcome: 'Zwroty jako sprawny proces — nie czarna dziura, z której nic nie wynika', icon: 'refresh-cw' },
         ],
       },
       {
@@ -149,6 +153,7 @@ export const inspirationIndustries: InspIndustry[] = [
         ideas: [
           { title: 'CRM, który żyje — nie tylko "do wypełnienia"', desc: 'Maile, spotkania z kalendarza, notatki — logują się w CRM automatycznie. Handlowiec sprzedaje, nie "uzupełnia system". Deal przechodzi przez etapy, follow-upy wysyłają się same w odpowiednich momentach. Manager widzi pipeline i prognozę bez pytania "jak tam tamten deal?".', outcome: 'Sprzedaż jako uporządkowany proces — nie zbiór przypadkowych działań', icon: 'monitor' },
           { title: 'Generator ofert z szablonów i danych CRM', desc: 'Zamiast zaczynać od pustego Google Docs — wybierasz klienta, zakres, stawkę. System generuje spersonalizowaną ofertę z właściwymi case studies i warunkami. Format profesjonalny, dane aktualne, czas przygotowania — kilka minut zamiast godzin.', outcome: 'Szybka i profesjonalna odpowiedź na każde zapytanie', icon: 'file-text' },
+          { title: 'Scoring leadów — handlowiec pracuje z najgorętszymi', desc: 'Lead z formularza, LinkedIn, webinaru — system zbiera kontekst (branża, wielkość firmy, co przeglądał na stronie) i ocenia, jak bardzo jest gotowy do rozmowy. Gorący leci do handlowca od razu, reszta idzie do automatycznej sekwencji edukacyjnej.', outcome: 'Handlowcy sprzedają tym, którzy chcą kupić — nie dzwonią na ślepo', icon: 'users' },
         ],
       },
       {
@@ -164,6 +169,7 @@ export const inspirationIndustries: InspIndustry[] = [
         ideas: [
           { title: 'Onboarding nowej osoby z checklistą, nie z chaosu', desc: 'Nowy człowiek → system generuje zadania: IT daje dostępy, HR wysyła dokumenty, buddy planuje spotkania, manager przygotowuje kontekst. Każdy wie co ma zrobić. Nikt nie siedzi 3 dni czekając, aż "ktoś się nim zajmie".', outcome: 'Nowa osoba produktywna szybko — bo proces jest poukładany', icon: 'check-circle' },
           { title: 'Baza wiedzy zamiast "zapytaj Marka, on to ogarnia"', desc: 'Procedury, szablony, know-how, case studies — w jednym miejscu z wyszukiwarką. "Jak robimy audyt SEO?" — jest procedura. "Jak rozliczamy T&M?" — jest wzór. Wiedza firmy nie znika z odejściem kluczowej osoby.', outcome: 'Wiedza organizacyjna dostępna zawsze — niezależna od rotacji', icon: 'search' },
+          { title: 'Portal klienta — projekty, pliki, komunikacja', desc: 'Klient loguje się do swojego panelu: widzi status projektów, pobiera deliverables, zgłasza feedback, widzi faktury. Cała komunikacja w jednym miejscu — nie w 40 wątkach mailowych. Klient czuje się zaopiekowany, Ty masz porządek.', outcome: 'Relacja z klientem w jednym miejscu — nie w rozproszonych mailach', icon: 'globe' },
         ],
       },
     ],
@@ -198,6 +204,7 @@ export const inspirationIndustries: InspIndustry[] = [
         ideas: [
           { title: 'Dashboard finansowy w czasie rzeczywistym', desc: 'Przychody, koszty, marża, cash flow — aktualizowane na bieżąco z danych księgowych. Zarząd nie czeka na zamknięcie miesiąca. Widzi, jak idzie — teraz. Alert, gdy KPI odbiega od planu. Poranny digest z najważniejszymi liczbami na maila.', outcome: 'Obraz finansowy firmy zawsze aktualny — decyzje na danych', icon: 'monitor' },
           { title: 'Prognoza cash flow na 2-3 miesiące do przodu', desc: 'System zestawia zaplanowane wpływy (z faktur, kontraktów) i zobowiązania (pensje, ZUS, koszty stałe). Rysuje prognozę i pokazuje, kiedy na koncie może być ciasno. Nie chodzi o dokładność co do złotówki — chodzi o brak niespodzianek.', outcome: 'Planowanie finansowe zamiast gaszenia pożarów', icon: 'trending-up' },
+          { title: 'Konsolidacja danych z wielu źródeł', desc: 'Dane sprzedażowe w jednym systemie, koszty w innym, bank w trzecim, Excel z prognozami w czwartym. System zbiera to razem, czyści, transformuje i pokazuje w jednym dashboardzie. Koniec z "daj mi raport" który ktoś klei ręcznie z 5 plików.', outcome: 'Jedno źródło prawdy finansowej — z danych, które już masz', icon: 'layers' },
         ],
       },
       {
@@ -232,6 +239,7 @@ export const inspirationIndustries: InspIndustry[] = [
         ideas: [
           { title: 'Publikacja ofert na wszystkich portalach jednym kliknięciem', desc: 'Otodom, OLX, Gratka — i kolejne. Tworzysz ofertę raz, publikujesz wszędzie. Zmiana ceny? Aktualizuje się wszędzie. Nowe zdjęcia? Synchronizuje. Sprzedane? Zdejmuje. Nowa oferta w portfolio? System automatycznie dopasowuje ją do klientów z bazy i wysyła mailing.', outcome: 'Oferta widoczna wszędzie bez powielania pracy — klienci dostają ją automatycznie', icon: 'globe' },
           { title: 'CRM agenta z pełną historią kontaktu', desc: 'Każdy telefon, mail, prezentacja, oferta — zalogowane. Agent widzi kontekst zanim podniesie słuchawkę. Gdy odchodzi z firmy — wiedza o kliencie zostaje. System pilnuje follow-upów i zadań. Relacja z klientem jest własnością firmy, nie agenta.', outcome: 'Sprzedaż uporządkowana — żaden kontakt się nie gubi', icon: 'monitor' },
+          { title: 'Tablica inwestycji deweloperskiej z postępem sprzedaży', desc: 'Wszystkie lokale w inwestycji na jednym ekranie: wolne, zarezerwowane, sprzedane. Przy każdym — cena, metraż, piętro, status umowy. Klient deweloperski widzi dostępność online. Handlowiec widzi, co zostało i jakie warunki oferować.', outcome: 'Pełen obraz inwestycji — sprzedaż i postępy budowy w jednym', icon: 'bar-chart' },
         ],
       },
       {
@@ -273,6 +281,7 @@ export const inspirationIndustries: InspIndustry[] = [
         ideas: [
           { title: 'Rezerwacje online z zarządzaniem stolikami', desc: 'Gość rezerwuje 24/7 — ze strony, Google\'a, social media. Potwierdzenie SMS, przypomnienie 2h przed, auto-anulacja po 15 minutach. System pokazuje widok sali z dostępnością. Kelner widzi notatki do rezerwacji ("urodziny, tort o 20:00").', outcome: 'Rezerwacje zarządzane systemowo — personel skupiony na gościach', icon: 'globe' },
           { title: 'Automatyczny system opinii i lojalności', desc: 'Po wizycie — SMS z pytaniem o ocenę. Wysoka? Prośba o recenzję Google. Niska? Alert do managera i voucher przeprosinowy. Program lojalnościowy: kupony na urodziny, nagrody po N-tym zakupie, reaktywacja klientów. Komunikacja działa sama — Ty ustawiasz reguły.', outcome: 'Reputacja i lojalność budowane systematycznie — nie kiedy ktoś pamiętał', icon: 'heart' },
+          { title: 'Menu engineering — co zarabia, co traci', desc: 'Matryca popularność × marża dla każdego dania. System pokazuje: co warto promować (popularne i marżowe), co wycenić inaczej (popularne, ale nisko marżowe), co usunąć z karty (niepopularne i nisko marżowe). Decyzje o menu oparte na danych z kasy, nie na intuicji szefa kuchni.', outcome: 'Karta menu, która zarabia — bo wiesz, co na niej trzymać', icon: 'bar-chart' },
         ],
       },
     ],
@@ -328,6 +337,7 @@ export const inspirationIndustries: InspIndustry[] = [
         ideas: [
           { title: 'Wsparcie dokumentacji medycznej', desc: 'Lekarz prowadzi wizytę — system pomaga ustrukturyzować notatkę: objawy, diagnoza, zalecenia. E-recepta i e-skierowanie z automatycznym kodowaniem ICD-10 — lekarz zatwierdza, pacjent dostaje SMS z kodem. Wyniki badań z laboratorium trafiają do profilu pacjenta automatycznie — lekarz ma je przy ręce na następnej wizycie.', outcome: 'Lekarz leczy, dokumentacja nadąża — bez godziny pisania po zmianie', icon: 'cpu' },
           { title: 'Zunifikowany profil pacjenta', desc: 'Wizyty, wyniki badań, leki, alergie, skierowania — wszystko w jednym profilu, dostępnym z każdego gabinetu. Lekarz widzi pełen obraz przed wizytą. Pacjent nie jest listonoszem noszącym kartki między gabinetami.', outcome: 'Pełen kontekst przy każdej wizycie — lepsze decyzje kliniczne', icon: 'users' },
+          { title: 'Portal pacjenta — wyniki, recepty, historia', desc: 'Pacjent loguje się do portalu: widzi historię wizyt, pobiera wyniki badań, sprawdza aktywne recepty, umawia się na kolejną wizytę. Nie dzwoni z pytaniem "czy wyniki już są?". Ma dostęp do swoich danych 24/7.', outcome: 'Pacjent samoobsługowy — mniej telefonów, wyższe zadowolenie', icon: 'globe' },
         ],
       },
       {
@@ -355,6 +365,7 @@ export const inspirationIndustries: InspIndustry[] = [
         ideas: [
           { title: 'Aplikacje przetwarzane i porównywane — nie czytane jedno po drugim', desc: 'CV wpada → system wyciąga kluczowe dane i porównuje z wymaganiami stanowiska. Rekruter widzi ranking dopasowania zamiast czytać 200 CV od deski do deski. Każdy kandydat widzi status swojej aplikacji w portalu — potwierdzenie, etap, feedback. Profesjonalne doświadczenie kandydata, nawet gdy nie dostanie pracy.', outcome: 'Szybszy screening, lepsze doświadczenie kandydata, silniejszy employer brand', icon: 'cpu' },
           { title: 'Automatyczne sekwencje sourcingowe', desc: 'Znalazłeś kandydata? System wysyła wiadomość. Brak odpowiedzi? Follow-up po 3 dniach. Kolejny po 7. Personalizowane, ludzkie treści — ale systematyczne. Recruiter ustawia kampanię raz, system pracuje. Stały napływ kandydatów bez ręcznego wysyłania wiadomości.', outcome: 'Sourcing jako ciągły proces — nie jednorazowa akcja', icon: 'mail' },
+          { title: 'Panel klienta — zlecenia rekrutacyjne, kandydaci, statusy', desc: 'Klient agencji HR loguje się do panelu: składa zlecenie rekrutacyjne, widzi przedstawionych kandydatów, daje feedback, śledzi postęp. Cała komunikacja w jednym miejscu — nie w mailach, nie przez telefon. Klient czuje kontrolę, agencja ma porządek.', outcome: 'Klient obsługuje się przez panel — agencja pracuje, nie raportuje', icon: 'globe' },
         ],
       },
       {

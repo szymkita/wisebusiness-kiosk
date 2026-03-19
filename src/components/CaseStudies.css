@@ -1,58 +1,109 @@
-.cs { height: 100%; }
+/* ═══════════════════════════════════════
+   CASE STUDIES — Split layout redesign
+   Follows imap-header + imap-body pattern
+   ═══════════════════════════════════════ */
 
-/* ═══ INDUSTRY GRID ═══ */
-.cs-grid {
-  height: 100%;
+.cs {
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
-.cs-grid-title {
-  font-size: clamp(11px, 0.7vw, 15px);
-  font-weight: 600;
-  color: var(--text3);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: clamp(8px, 0.8vh, 14px);
+/* ═══ HEADER — matches InspirationMap ═══ */
+.cs-header {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.2vw, 20px);
+  padding: clamp(14px, 1.5vh, 22px) clamp(20px, 2.5vw, 36px);
   flex-shrink: 0;
 }
 
-.cs-tiles {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: clamp(6px, 0.6vw, 10px);
+.cs-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px; height: 44px;
+  background: rgba(0,0,0,0.04);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  color: #1a1a1a;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.cs-back:active {
+  background: rgba(0,0,0,0.08);
+  transform: scale(0.95);
+}
+
+.cs-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cs-title {
+  font-size: clamp(18px, 1.3vw, 24px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #1a1a1a;
+}
+
+.cs-breadcrumb {
+  font-size: clamp(11px, 0.7vw, 13px);
+  font-weight: 500;
+  color: #aaa;
+}
+
+/* ═══ BODY ═══ */
+.cs-body {
   flex: 1;
   min-height: 0;
-  align-content: start;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+.cs-content {
+  padding: 0 clamp(16px, 2vw, 32px) clamp(16px, 2vh, 28px);
+}
+
+/* ═══ INDUSTRY GRID ═══ */
+.cs-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: clamp(8px, 0.8vw, 14px);
+  padding: clamp(4px, 0.5vh, 8px) 0;
 }
 
 .cs-tile {
-  display: flex;
-  align-items: center;
-  gap: clamp(10px, 0.9vw, 16px);
-  padding: clamp(14px, 1.4vh, 22px) clamp(14px, 1.2vw, 22px);
-  background: var(--bg-white);
-  border: 1.5px solid transparent;
-  border-radius: var(--rs);
-  cursor: pointer;
-  font-family: inherit;
-  text-align: left;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 1.8vh, 24px);
+  padding: clamp(18px, 2vh, 26px) clamp(16px, 1.5vw, 24px);
+  background: #fff;
+  border-radius: var(--r);
+  border: 1px solid rgba(0,0,0,0.04);
+  cursor: pointer;
+  outline: none;
+  text-align: left;
+  font-family: inherit;
   overflow: hidden;
-  transition: border-color 0.2s, transform 0.12s;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  transition: transform 0.12s ease;
 }
-.cs-tile:active { transform: scale(0.98); }
-.cs-tile::before {
-  content: '';
+.cs-tile:active { transform: scale(0.97); }
+
+.cs-tile-gradient {
   position: absolute; inset: 0;
   background: linear-gradient(135deg, var(--cs-cl), transparent 60%);
   pointer-events: none;
 }
 
 .cs-tile-icon {
-  width: clamp(40px, 3vw, 52px);
-  height: clamp(40px, 3vw, 52px);
+  width: clamp(42px, 3.2vw, 52px);
+  height: clamp(42px, 3.2vw, 52px);
   display: flex; align-items: center; justify-content: center;
   border-radius: 14px;
   background: var(--cs-cm);
@@ -61,248 +112,592 @@
   position: relative;
 }
 
-.cs-tile-text {
+.cs-tile-info {
   flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
   position: relative;
 }
 
 .cs-tile-name {
-  font-size: clamp(12px, 0.82vw, 17px);
+  font-size: clamp(14px, 1vw, 18px);
   font-weight: 800;
-  color: var(--text);
+  color: #1a1a1a;
   letter-spacing: -0.02em;
   line-height: 1.2;
 }
 
 .cs-tile-sub {
-  font-size: clamp(9px, 0.52vw, 11px);
+  font-size: clamp(10px, 0.65vw, 12px);
   font-weight: 500;
-  color: var(--text3);
-  line-height: 1.3;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: #999;
+  line-height: 1.4;
 }
 
-.cs-tile-count {
-  width: clamp(26px, 2vw, 34px);
-  height: clamp(26px, 2vw, 34px);
-  display: flex; align-items: center; justify-content: center;
-  border-radius: 10px;
-  background: var(--cs-cl);
-  color: var(--cs-c);
-  font-size: clamp(11px, 0.72vw, 15px);
-  font-weight: 800;
-  flex-shrink: 0;
+.cs-tile-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   position: relative;
 }
 
-/* ═══ CASE STUDIES VIEW ═══ */
-.cs-view {
+.cs-tile-count {
+  font-size: clamp(10px, 0.65vw, 12px);
+  font-weight: 700;
+  color: var(--cs-c);
+  background: var(--cs-cl);
+  padding: 3px 10px;
+  border-radius: 8px;
+}
+
+.cs-tile-arrow {
+  font-size: clamp(16px, 1.2vw, 22px);
+  color: #ccc;
+  font-weight: 300;
+}
+
+/* ═══ DETAIL VIEW — Split layout ═══ */
+.cs-detail {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: clamp(20px, 2.5vw, 40px);
   height: 100%;
+  padding: 0 clamp(16px, 2vw, 32px) clamp(16px, 2vh, 28px);
+}
+
+/* ── Left — mockup ── */
+.cs-detail-left {
   display: flex;
   flex-direction: column;
+  gap: 10px;
+  height: 100%;
+  min-height: 0;
+}
+
+.cs-mockup-caption {
+  font-size: clamp(9px, 0.6vw, 11px);
+  color: #bbb;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* ── Right — info ── */
+.cs-detail-right {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   overflow: hidden;
+  gap: clamp(8px, 1vh, 14px);
 }
 
-.cs-topbar {
-  display: flex;
-  align-items: center;
-  gap: clamp(10px, 1vw, 18px);
-  flex-shrink: 0;
-  margin-bottom: clamp(8px, 0.8vh, 14px);
-}
-
-.cs-back {
-  display: inline-flex;
-  align-items: center;
-  gap: clamp(3px, 0.25vw, 5px);
-  padding: clamp(5px, 0.5vh, 8px) clamp(10px, 0.8vw, 16px);
-  background: var(--bg-white);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  font-family: inherit;
-  font-size: clamp(10px, 0.62vw, 13px);
-  font-weight: 600;
-  color: var(--text2);
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: transform 0.1s;
-  min-height: 32px;
-}
-.cs-back:active { transform: scale(0.96); }
-
-.cs-topbar-info {
-  display: flex;
-  align-items: center;
-  gap: clamp(6px, 0.5vw, 10px);
-}
-
-.cs-topbar-icon {
-  width: clamp(30px, 2.2vw, 38px);
-  height: clamp(30px, 2.2vw, 38px);
-  display: flex; align-items: center; justify-content: center;
-  border-radius: 10px;
-  background: var(--cs-cm);
-  color: var(--cs-c);
-}
-
-.cs-topbar-name {
-  font-size: clamp(14px, 1vw, 20px);
-  font-weight: 800;
-  color: var(--text);
-  letter-spacing: -0.02em;
-}
-
-/* ═══ SCROLLABLE LIST ═══ */
-.cs-scroll {
+.cs-detail-scroll {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: clamp(10px, 1vw, 16px);
+  gap: clamp(12px, 1.5vh, 20px);
   padding-right: 4px;
-  padding-bottom: 4px;
   scrollbar-width: thin;
-  scrollbar-color: var(--cs-cm) transparent;
+  scrollbar-color: var(--cs-cm, rgba(0,0,0,0.08)) transparent;
 }
 
-/* ═══ CASE CARD ═══ */
-.cs-card {
-  background: var(--bg-white);
-  border-radius: var(--r);
-  overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.03);
-  flex-shrink: 0;
-}
-
-/* ── Card head: title + story + metric ── */
-.cs-card-head {
-  display: flex;
-  gap: clamp(16px, 1.5vw, 28px);
-  padding: clamp(16px, 1.6vh, 24px) clamp(18px, 1.6vw, 28px);
-  align-items: flex-start;
-}
-
-.cs-card-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.cs-card-title {
-  font-size: clamp(13px, 0.88vw, 18px);
+.cs-detail-title {
+  font-size: clamp(18px, 1.6vw, 28px);
   font-weight: 800;
-  color: var(--text);
-  letter-spacing: -0.025em;
-  line-height: 1.25;
-  margin-bottom: clamp(4px, 0.4vh, 8px);
+  color: #1a1a1a;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
 }
 
-.cs-card-story {
-  font-size: clamp(9px, 0.58vw, 12px);
-  color: var(--text2);
-  line-height: 1.55;
+.cs-detail-story {
+  font-size: clamp(11px, 0.72vw, 14px);
+  color: #888;
+  line-height: 1.6;
 }
 
-/* Metric block — right side of header */
-.cs-card-metric {
-  flex-shrink: 0;
+/* ── Big metric ── */
+.cs-detail-metric {
+  background: #fff;
+  border-radius: var(--rs, 14px);
+  padding: clamp(14px, 1.4vh, 22px) clamp(16px, 1.4vw, 24px);
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  gap: 3px;
-  padding: clamp(10px, 1vh, 16px) clamp(12px, 1vw, 20px);
-  background: var(--cs-cl);
-  border-radius: var(--rs);
-  min-width: clamp(120px, 11vw, 200px);
+  gap: clamp(6px, 0.6vh, 10px);
+  border: 1px solid rgba(0,0,0,0.04);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
 }
 
-.cs-card-nums {
+.cs-detail-metric-nums {
   display: flex;
-  align-items: baseline;
-  gap: clamp(5px, 0.4vw, 8px);
+  align-items: center;
+  gap: clamp(12px, 1.2vw, 20px);
 }
 
-.cs-card-was {
-  font-size: clamp(16px, 1.2vw, 26px);
-  font-weight: 900;
-  color: var(--text);
-  letter-spacing: -0.04em;
+.cs-detail-metric-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cs-detail-metric-tag {
+  font-size: clamp(8px, 0.5vw, 10px);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #aaa;
+}
+
+.cs-detail-metric-val {
   line-height: 1;
-  opacity: 0.22;
+  letter-spacing: -0.04em;
+}
+
+.cs-detail-metric-val--old {
+  font-size: clamp(20px, 1.8vw, 32px);
+  font-weight: 900;
+  color: #1a1a1a;
+  opacity: 0.18;
   text-decoration: line-through;
   text-decoration-thickness: 2px;
 }
 
-.cs-card-arrow {
-  color: var(--cs-c);
-  flex-shrink: 0;
-  opacity: 0.5;
+.cs-detail-metric-val--new {
+  font-size: clamp(24px, 2.2vw, 38px);
+  font-weight: 900;
+  color: var(--cs-c, #10b981);
 }
 
-.cs-card-now {
-  font-size: clamp(20px, 1.6vw, 32px);
+.cs-detail-metric-arrow {
+  color: var(--cs-c, #10b981);
+  flex-shrink: 0;
+  opacity: 0.4;
+}
+
+.cs-detail-metric-label {
+  font-size: clamp(10px, 0.65vw, 13px);
+  font-weight: 600;
+  color: #aaa;
+  line-height: 1.3;
+}
+
+/* ── Process list ── */
+.cs-detail-procs {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4px, 0.4vh, 6px);
+}
+
+.cs-detail-proc {
+  background: #fff;
+  border-radius: 10px;
+  padding: clamp(10px, 1vh, 14px) clamp(12px, 1vw, 16px);
+  border: 1px solid rgba(0,0,0,0.04);
+  transition: border-color 0.15s;
+}
+.cs-detail-proc:hover {
+  border-color: var(--cs-cm, rgba(0,0,0,0.08));
+}
+
+.cs-detail-proc-header {
+  display: flex;
+  align-items: center;
+  gap: clamp(6px, 0.5vw, 10px);
+  margin-bottom: clamp(4px, 0.3vh, 6px);
+}
+
+.cs-detail-proc-num {
+  font-size: clamp(9px, 0.55vw, 11px);
+  font-weight: 800;
+  color: var(--cs-c, #10b981);
+  opacity: 0.5;
+  font-variant-numeric: tabular-nums;
+}
+
+.cs-detail-proc-name {
+  font-size: clamp(11px, 0.72vw, 14px);
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.2;
+}
+
+.cs-detail-proc-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(8px, 0.8vw, 14px);
+  padding-left: clamp(20px, 1.5vw, 28px);
+}
+
+.cs-detail-proc-was {
+  font-size: clamp(9px, 0.58vw, 12px);
+  font-weight: 500;
+  color: #bbb;
+  line-height: 1.4;
+}
+
+.cs-detail-proc-now {
+  font-size: clamp(9px, 0.62vw, 12px);
+  font-weight: 700;
+  color: var(--cs-c, #10b981);
+  line-height: 1.4;
+}
+
+/* ── Navigation ── */
+.cs-detail-nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 0.8vw, 14px);
+  flex-shrink: 0;
+  padding-top: clamp(6px, 0.6vh, 10px);
+  border-top: 1px solid rgba(0,0,0,0.04);
+}
+
+.cs-nav-btn {
+  width: clamp(32px, 2.4vw, 40px);
+  height: clamp(32px, 2.4vw, 40px);
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.06);
+  cursor: pointer;
+  font-family: inherit;
+  color: #555;
+  transition: transform 0.1s, opacity 0.15s;
+}
+.cs-nav-btn:active { transform: scale(0.94); }
+.cs-nav-btn:disabled { opacity: 0.25; cursor: default; }
+
+.cs-nav-dots {
+  display: flex;
+  gap: 5px;
+  flex: 1;
+  justify-content: center;
+}
+
+.cs-nav-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.1);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.15s, transform 0.1s;
+}
+.cs-nav-dot.active {
+  background: var(--cs-c, #10b981);
+  transform: scale(1.3);
+}
+.cs-nav-dot:hover:not(.active) {
+  background: rgba(0,0,0,0.2);
+}
+
+.cs-nav-counter {
+  font-size: clamp(10px, 0.62vw, 13px);
+  font-weight: 700;
+  color: #aaa;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ═══ SYSTEM MOCKUP ═══ */
+.cs-mockup {
+  flex: 1;
+  min-height: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.04),
+    0 4px 16px rgba(0,0,0,0.06),
+    0 12px 40px rgba(0,0,0,0.08);
+  border: 1px solid rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+  background: #fafaf8;
+}
+
+/* Chrome */
+.cs-mock-chrome {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px;
+  background: #f4f4f2;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  flex-shrink: 0;
+}
+
+.cs-mock-dots {
+  display: flex;
+  gap: 5px;
+}
+.cs-mock-dots span {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+}
+.cs-mock-dots span:nth-child(1) { background: #ff5f57; }
+.cs-mock-dots span:nth-child(2) { background: #ffbd2e; }
+.cs-mock-dots span:nth-child(3) { background: #28c840; }
+
+.cs-mock-tab {
+  font-size: 9px;
+  font-weight: 600;
+  color: #888;
+  background: #fff;
+  padding: 4px 14px;
+  border-radius: 6px;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+/* App layout */
+.cs-mock-app {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  overflow: hidden;
+}
+
+/* Sidebar */
+.cs-mock-sidebar {
+  width: clamp(100px, 9vw, 140px);
+  background: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 8px;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.cs-mock-sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+}
+
+.cs-mock-logo-circle {
+  width: 20px; height: 20px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, var(--cs-c), color-mix(in srgb, var(--cs-c) 60%, #fff));
+  flex-shrink: 0;
+}
+
+.cs-mock-logo-text {
+  height: 7px;
+  width: 50px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 3px;
+}
+
+.cs-mock-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.cs-mock-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 9px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.4);
+}
+.cs-mock-nav-item.active {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+
+.cs-mock-nav-icon {
+  width: 12px; height: 12px;
+  border-radius: 3px;
+  background: currentColor;
+  opacity: 0.35;
+  flex-shrink: 0;
+}
+.cs-mock-nav-item.active .cs-mock-nav-icon {
+  opacity: 0.6;
+  background: var(--cs-c);
+}
+
+/* Main content */
+.cs-mock-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: #fafaf8;
+  overflow: hidden;
+}
+
+/* Hero metric */
+.cs-mock-hero {
+  padding: clamp(12px, 1.2vh, 18px) clamp(14px, 1.2vw, 20px);
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+  flex-shrink: 0;
+}
+
+.cs-mock-hero-label {
+  font-size: clamp(8px, 0.5vw, 10px);
+  font-weight: 600;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: clamp(6px, 0.6vh, 10px);
+}
+
+.cs-mock-hero-row {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1vw, 18px);
+}
+
+.cs-mock-hero-old,
+.cs-mock-hero-new {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cs-mock-hero-val-old {
+  font-size: clamp(18px, 1.6vw, 28px);
+  font-weight: 900;
+  color: #1a1a1a;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  opacity: 0.15;
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+}
+
+.cs-mock-hero-val-new {
+  font-size: clamp(22px, 2vw, 34px);
   font-weight: 900;
   color: var(--cs-c);
   letter-spacing: -0.04em;
   line-height: 1;
 }
 
-.cs-card-mlabel {
-  font-size: clamp(8px, 0.48vw, 10px);
-  font-weight: 500;
-  color: var(--text3);
-  line-height: 1.3;
-  text-align: right;
-  max-width: clamp(100px, 10vw, 180px);
+.cs-mock-hero-tag {
+  font-size: 7px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #bbb;
 }
 
-/* ── Process breakdown — table rows ── */
-.cs-procs {
-  display: grid;
-  grid-template-columns: 1fr;
-  border-top: 1px solid rgba(0,0,0,0.05);
+.cs-mock-hero-arrow {
+  flex-shrink: 0;
+  opacity: 0.6;
 }
 
-.cs-proc {
-  display: grid;
-  grid-template-columns: clamp(140px, 14vw, 260px) 1fr 1fr;
-  gap: clamp(8px, 0.7vw, 14px);
-  padding: clamp(7px, 0.7vh, 11px) clamp(18px, 1.6vw, 28px);
-  align-items: baseline;
-  border-bottom: 1px solid rgba(0,0,0,0.03);
+/* Process rows in mockup */
+.cs-mock-processes {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4px, 0.4vh, 6px);
+  padding: clamp(10px, 1vh, 16px) clamp(14px, 1.2vw, 20px);
+  overflow: hidden;
 }
 
-.cs-proc:nth-child(even) {
-  background: rgba(0,0,0,0.015);
+.cs-mock-proc {
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 0.7vw, 12px);
+  padding: clamp(8px, 0.7vh, 12px) clamp(10px, 0.8vw, 14px);
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.04);
 }
 
-.cs-proc:last-child {
-  border-bottom: none;
+.cs-mock-proc-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--cs-c);
+  flex-shrink: 0;
+  opacity: 0.6;
 }
 
-.cs-proc-name {
-  font-size: clamp(9px, 0.58vw, 12px);
+.cs-mock-proc-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.cs-mock-proc-name {
+  font-size: clamp(8px, 0.55vw, 11px);
   font-weight: 700;
-  color: var(--text);
-  line-height: 1.3;
+  color: #1a1a1a;
+  display: block;
+  line-height: 1.2;
+  margin-bottom: 2px;
 }
 
-.cs-proc-was {
-  font-size: clamp(9px, 0.55vw, 12px);
+.cs-mock-proc-compare {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cs-mock-proc-was {
+  font-size: clamp(7px, 0.45vw, 9px);
+  color: #bbb;
   font-weight: 500;
-  color: var(--text3);
-  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
 }
 
-.cs-proc-now {
-  font-size: clamp(9px, 0.58vw, 12px);
-  font-weight: 700;
+.cs-mock-proc-now {
+  font-size: clamp(7px, 0.48vw, 9px);
   color: var(--cs-c);
-  line-height: 1.3;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 140px;
+}
+
+.cs-mock-proc-bar {
+  width: clamp(40px, 4vw, 70px);
+  height: 4px;
+  background: rgba(0,0,0,0.04);
+  border-radius: 2px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.cs-mock-proc-bar-fill {
+  height: 100%;
+  background: var(--cs-c);
+  border-radius: 2px;
+  opacity: 0.6;
+}
+
+/* Status bar */
+.cs-mock-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-top: 1px solid rgba(0,0,0,0.04);
+  font-size: 7px;
+  font-weight: 500;
+  color: #bbb;
+  flex-shrink: 0;
+}
+
+.cs-mock-status-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #10b981;
+}
+
+.cs-mock-status-sep {
+  opacity: 0.3;
 }
