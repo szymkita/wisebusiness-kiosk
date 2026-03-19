@@ -11,8 +11,8 @@ export function SoftwarePanel() {
       {/* Left — categories */}
       <div className="sw-left">
         <motion.div className="sw-header"
-          initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.05 }}>
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+          transition={{ duration: 0.25 }}>
           <span className="sw-eyebrow">Co budujemy</span>
           <h2 className="sw-title">Dedykowane systemy<br />dla Twojej firmy</h2>
           <p className="sw-subtitle">Każdy system projektujemy pod konkretne procesy — nie sprzedajemy gotowców. Poniżej przykłady tego, co tworzymy najczęściej.</p>
@@ -22,9 +22,9 @@ export function SoftwarePanel() {
           {softwareTiles.map((t, i) => (
             <motion.div className="sw-card" key={t.id}
               style={{ '--c': t.color, '--c-l': `${t.color}14`, '--c-m': `${t.color}28` } as React.CSSProperties}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, delay: 0.08 + i * 0.03 }}>
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.2, delay: i * 0.02 }}>
               <div className="sw-card-icon">
                 <Icon name={t.icon} size={16} strokeWidth={2} />
               </div>
@@ -39,8 +39,8 @@ export function SoftwarePanel() {
 
       {/* Right — realistic dashboard mockup */}
       <motion.div className="sw-right"
-        initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}>
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+        transition={{ duration: 0.3, delay: 0.1 }}>
         <div className="sw-mockup">
           {/* Window chrome */}
           <div className="sw-mock-chrome">

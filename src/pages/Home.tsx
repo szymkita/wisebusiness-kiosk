@@ -117,50 +117,58 @@ export function Home() {
       {/* Content panels (all views except home/inspirator) */}
       <AnimatePresence>
         {openPanel && (
-          <motion.div className="home-panel" key={openPanel}
-            initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 30 }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}>
+          <motion.div className="home-panel"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}>
 
             <div className="home-panel-header home-panel-header--logo">
               <Logo className="home-panel-logo" />
             </div>
 
             <div className="home-panel-body">
-              {openPanel === 'contact' ? <ContactView />
-                : openPanel === 'cases' ? <CaseStudies />
-                : openPanel === 'inspiration' ? <InspirationMap />
-                : openPanel === 'software' ? <SoftwarePanel />
-                : tileTab ? (
-                  <div className="grid">
-                    {tileTab.tiles.map((t, i) => (
-                      <motion.button className={`tile ${t.demoId ? 'tile--demo' : ''}`}
-                        key={t.id}
-                        style={{ '--c': t.color, '--c-l': `${t.color}18`, '--c-m': `${t.color}30` } as React.CSSProperties}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.4, delay: i * 0.04, ease: [0.16, 1, 0.3, 1] }}
-                        onClick={() => onTile(t, openPanel)}>
-                        <div className="tile-gradient" />
-                        <div className="tile-head">
-                          <div className="tile-icon">
-                            <Icon name={t.icon} size={18} strokeWidth={1.8} />
-                          </div>
-                          {t.demoId && (
-                            <span className="tile-arrow">
-                              <Icon name="arrow-up-right" size={14} strokeWidth={2.5} />
-                            </span>
-                          )}
-                        </div>
-                        <div className="tile-info">
-                          <span className="tile-name">{t.name}</span>
-                          <span className="tile-desc">{t.desc}</span>
-                        </div>
-                        {t.demoId && <span className="tile-badge">Demo</span>}
-                      </motion.button>
-                    ))}
-                  </div>
-                ) : null}
+              <AnimatePresence mode="wait">
+                <motion.div key={openPanel} className="home-panel-inner"
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.2, ease: 'easeOut' }}>
+                  {openPanel === 'contact' ? <ContactView />
+                    : openPanel === 'cases' ? <CaseStudies />
+                    : openPanel === 'inspiration' ? <InspirationMap />
+                    : openPanel === 'software' ? <SoftwarePanel />
+                    : tileTab ? (
+                      <div className="grid">
+                        {tileTab.tiles.map((t, i) => (
+                          <motion.button className={`tile ${t.demoId ? 'tile--demo' : ''}`}
+                            key={t.id}
+                            style={{ '--c': t.color, '--c-l': `${t.color}18`, '--c-m': `${t.color}30` } as React.CSSProperties}
+                            initial={{ opacity: 0, y: 8 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.25, delay: i * 0.02, ease: 'easeOut' }}
+                            onClick={() => onTile(t, openPanel)}>
+                            <div className="tile-gradient" />
+                            <div className="tile-head">
+                              <div className="tile-icon">
+                                <Icon name={t.icon} size={18} strokeWidth={1.8} />
+                              </div>
+                              {t.demoId && (
+                                <span className="tile-arrow">
+                                  <Icon name="arrow-up-right" size={14} strokeWidth={2.5} />
+                                </span>
+                              )}
+                            </div>
+                            <div className="tile-info">
+                              <span className="tile-name">{t.name}</span>
+                              <span className="tile-desc">{t.desc}</span>
+                            </div>
+                            {t.demoId && <span className="tile-badge">Demo</span>}
+                          </motion.button>
+                        ))}
+                      </div>
+                    ) : null}
+                </motion.div>
+              </AnimatePresence>
             </div>
 
             {/* Dock-style switcher */}
