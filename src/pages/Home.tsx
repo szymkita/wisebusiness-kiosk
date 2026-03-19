@@ -7,14 +7,15 @@ import { ContactView } from '../components/ContactView';
 import { CaseStudies } from '../components/CaseStudies';
 import { Inspirator } from '../components/Inspirator';
 import { InspirationMap } from '../components/InspirationMap';
+import { SoftwarePanel } from '../components/SoftwarePanel';
 import { tabs } from '../data/tiles';
 import type { TileData } from '../data/tiles';
 import './Home.css';
 
 const dockItems = [
   { id: 'home', label: 'Home', icon: 'home' },
-  { id: 'inspiration', label: 'Mapa inspiracji', icon: 'target' },
-  { id: 'software', label: 'Oprogramowanie', icon: 'code', count: tabs[1]?.tiles.length },
+  { id: 'inspiration', label: 'Inspiracje', icon: 'target' },
+  { id: 'software', label: 'Co budujemy', icon: 'code', count: tabs[1]?.tiles.length },
   { id: 'cases', label: 'Case Studies', icon: 'trending-up', count: 35 },
   { id: 'contact', label: 'Kontakt', icon: 'map-pin' },
 ];
@@ -129,6 +130,7 @@ export function Home() {
               {openPanel === 'contact' ? <ContactView />
                 : openPanel === 'cases' ? <CaseStudies />
                 : openPanel === 'inspiration' ? <InspirationMap />
+                : openPanel === 'software' ? <SoftwarePanel />
                 : tileTab ? (
                   <div className="grid">
                     {tileTab.tiles.map((t, i) => (

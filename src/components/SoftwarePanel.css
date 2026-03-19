@@ -1,0 +1,578 @@
+/* ═══════════════════════════════════════
+   SOFTWARE PANEL — Split layout
+   ═══════════════════════════════════════ */
+
+.sw-panel {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: clamp(20px, 2.5vw, 40px);
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ── Left column ── */
+.sw-left {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2vh, 24px);
+  overflow-y: auto;
+  padding-right: 8px;
+  padding-bottom: 12px;
+}
+
+.sw-left::-webkit-scrollbar { width: 3px; }
+.sw-left::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.08); border-radius: 3px; }
+
+.sw-header { display: flex; flex-direction: column; gap: 8px; }
+
+.sw-eyebrow {
+  font-size: clamp(10px, 0.65vw, 12px);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #10b981;
+}
+
+.sw-title {
+  font-size: clamp(22px, 2vw, 34px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: #1a1a1a;
+}
+
+.sw-subtitle {
+  font-size: clamp(12px, 0.8vw, 14px);
+  color: #888;
+  line-height: 1.55;
+  max-width: 400px;
+}
+
+/* ── Cards grid ── */
+.sw-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(6px, 0.6vw, 10px);
+}
+
+.sw-card {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(8px, 0.7vw, 12px);
+  padding: clamp(10px, 1vh, 14px) clamp(10px, 0.9vw, 14px);
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.04);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.sw-card:hover {
+  border-color: var(--c-m);
+  box-shadow: 0 2px 12px var(--c-l);
+}
+
+.sw-card-icon {
+  width: clamp(28px, 2.2vw, 34px);
+  height: clamp(28px, 2.2vw, 34px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  background: var(--c-l);
+  color: var(--c);
+  flex-shrink: 0;
+}
+
+.sw-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.sw-card-name {
+  font-size: clamp(11px, 0.78vw, 14px);
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.sw-card-desc {
+  font-size: clamp(9px, 0.6vw, 11px);
+  color: #999;
+  line-height: 1.4;
+}
+
+/* ── Right column — dashboard mockup ── */
+.sw-right {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+  min-height: 0;
+}
+
+.sw-mockup {
+  flex: 1;
+  min-height: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.04),
+    0 4px 16px rgba(0,0,0,0.06),
+    0 12px 40px rgba(0,0,0,0.08);
+  border: 1px solid rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+  background: #fafaf8;
+}
+
+.sw-mockup-caption {
+  font-size: clamp(9px, 0.6vw, 11px);
+  color: #bbb;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* ── Window chrome ── */
+.sw-mock-chrome {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px;
+  background: #f4f4f2;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  flex-shrink: 0;
+}
+
+.sw-mock-dots {
+  display: flex;
+  gap: 5px;
+}
+
+.sw-mock-dots span {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+}
+
+.sw-mock-dots span:nth-child(1) { background: #ff5f57; }
+.sw-mock-dots span:nth-child(2) { background: #ffbd2e; }
+.sw-mock-dots span:nth-child(3) { background: #28c840; }
+
+.sw-mock-tab {
+  font-size: 9px;
+  font-weight: 600;
+  color: #888;
+  background: #fff;
+  padding: 4px 14px;
+  border-radius: 6px;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+/* ── App layout ── */
+.sw-mock-app {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  overflow: hidden;
+}
+
+/* ── Sidebar ── */
+.sw-mock-sidebar {
+  width: clamp(120px, 11vw, 160px);
+  background: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 8px;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.sw-mock-sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+}
+
+.sw-mock-logo-circle {
+  width: 22px; height: 22px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, #10b981, #06b6d4);
+  flex-shrink: 0;
+}
+
+.sw-mock-logo-text {
+  height: 8px;
+  width: 60px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 3px;
+}
+
+.sw-mock-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.sw-mock-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.45);
+  transition: all 0.15s;
+}
+
+.sw-mock-nav-item.active {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+
+.sw-mock-nav-icon {
+  width: 14px; height: 14px;
+  border-radius: 4px;
+  background: currentColor;
+  opacity: 0.35;
+  flex-shrink: 0;
+}
+
+.sw-mock-nav-item.active .sw-mock-nav-icon {
+  opacity: 0.6;
+  background: #10b981;
+}
+
+.sw-mock-sidebar-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 6px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.sw-mock-avatar {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f59e0b, #ec4899);
+  flex-shrink: 0;
+}
+
+.sw-mock-user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.sw-mock-user-name {
+  width: 52px; height: 6px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 2px;
+}
+
+.sw-mock-user-role {
+  width: 36px; height: 5px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+}
+
+/* ── Main content ── */
+.sw-mock-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: #fafaf8;
+  overflow: hidden;
+}
+
+/* Topbar */
+.sw-mock-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+  flex-shrink: 0;
+}
+
+.sw-mock-breadcrumb {
+  font-size: 10px;
+  font-weight: 600;
+  color: #1a1a1a;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.sw-mock-bc-dim { color: #bbb; }
+.sw-mock-bc-sep { color: #ddd; }
+
+.sw-mock-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sw-mock-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: rgba(0,0,0,0.03);
+  border-radius: 6px;
+  font-size: 9px;
+  color: #bbb;
+}
+
+.sw-mock-notif-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #ef4444;
+  position: relative;
+}
+
+.sw-mock-notif-dot::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 2px solid #fafaf8;
+}
+
+/* Stats row */
+.sw-mock-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding: 12px 16px;
+  flex-shrink: 0;
+}
+
+.sw-mock-stat {
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px 12px;
+  border: 1px solid rgba(0,0,0,0.04);
+}
+
+.sw-mock-stat-label {
+  font-size: 8px;
+  font-weight: 600;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.sw-mock-stat-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.sw-mock-stat-value {
+  font-size: clamp(14px, 1.2vw, 20px);
+  font-weight: 800;
+  color: #1a1a1a;
+  letter-spacing: -0.02em;
+}
+
+.sw-mock-stat-change {
+  font-size: 8px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.sw-mock-stat-change.up {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.sw-mock-stat-change.down {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* Content area */
+.sw-mock-content {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 8px;
+  padding: 0 16px 12px;
+  overflow: hidden;
+}
+
+/* Chart card */
+.sw-mock-chart-card {
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.04);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sw-mock-chart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.sw-mock-chart-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.sw-mock-chart-tabs {
+  display: flex;
+  gap: 2px;
+  background: rgba(0,0,0,0.03);
+  border-radius: 6px;
+  padding: 2px;
+}
+
+.sw-mock-chart-tabs span {
+  font-size: 8px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 5px;
+  color: #999;
+}
+
+.sw-mock-chart-tabs span.active {
+  background: #fff;
+  color: #1a1a1a;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.sw-mock-chart {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.sw-mock-chart-svg {
+  flex: 1;
+  width: 100%;
+}
+
+.sw-mock-chart-labels {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0 0;
+  font-size: 7px;
+  color: #ccc;
+  font-weight: 600;
+}
+
+/* Table card */
+.sw-mock-table-card {
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.04);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sw-mock-table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.sw-mock-table-badge {
+  font-size: 8px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 5px;
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.sw-mock-table {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  overflow: hidden;
+}
+
+.sw-mock-table-row {
+  display: grid;
+  grid-template-columns: 1.5fr 0.8fr 0.8fr 0.5fr;
+  gap: 6px;
+  padding: 6px 4px;
+  align-items: center;
+  border-radius: 6px;
+}
+
+.sw-mock-table-row.head {
+  font-size: 7px;
+  font-weight: 700;
+  color: #bbb;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+}
+
+.sw-mock-table-row:not(.head):hover {
+  background: rgba(0,0,0,0.015);
+}
+
+.sw-mock-deal-name {
+  font-size: 9px;
+  font-weight: 600;
+  color: #1a1a1a;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sw-mock-deal-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.sw-mock-deal-val {
+  font-size: 9px;
+  font-weight: 600;
+  color: #555;
+}
+
+.sw-mock-deal-stage {
+  font-size: 7px;
+  font-weight: 700;
+  color: var(--sc);
+  background: color-mix(in srgb, var(--sc) 10%, transparent);
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.sw-mock-deal-pct {
+  font-size: 9px;
+  font-weight: 700;
+  color: #1a1a1a;
+  text-align: right;
+}

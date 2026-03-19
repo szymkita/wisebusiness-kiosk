@@ -40,12 +40,12 @@ export function InspirationMap() {
         )}
         <div className="imap-header-text">
           <span className="imap-title">
-            {industry ? industry.name : 'Mapa inspiracji'}
+            {industry ? industry.name : 'Inspiracje'}
           </span>
           <span className="imap-breadcrumb">
             {industry
-              ? `${totalIdeas} pomysłów na automatyzację`
-              : 'Wybierz branżę i zobacz, co można zautomatyzować'}
+              ? `${totalIdeas} pomysłów — co możemy dla Ciebie zbudować`
+              : 'Wybierz branżę i zobacz, jak pracować mądrzej'}
           </span>
         </div>
       </div>
