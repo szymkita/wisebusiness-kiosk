@@ -22,23 +22,25 @@ Na podstawie danych użytkownika (branża, procesy, wyzwania, cel, skala firmy) 
 
 ZASADY DIAGNOZY:
 - Zidentyfikuj wspólne źródło wybranych problemów w kontekście wskazanych procesów
-- Pokaż użytkownikowi, że jego pozornie odrębne problemy mają wspólne źródło
+- Pokaż użytkownikowi, że jego pozornie odrębne problemy mają wspólne źródło — że to nie 5 problemów, a jeden systemowy
 - Mów językiem biznesowym, konkretnym — zero żargonu IT
-- 2-3 zdania z mocnym punchline'em
-- Bądź specyficzny dla danej branży — nie pisz ogólników
+- 2-3 zdania z mocnym punchline'em, który rezonuje emocjonalnie ("to dlatego Twój zespół gasi pożary zamiast budować")
+- Bądź specyficzny dla danej branży — nie pisz ogólników. Użyj nazewnictwa i sytuacji, które właściciel/manager tej branży natychmiast rozpozna
 
 ZASADY POMYSŁÓW:
 - 5 pomysłów na dedykowany software/system automatyzujący wskazane procesy
-- Pomysły 1-2 (Quick Win): szybko wdrożyć, natychmiastowy efekt, niski koszt
-- Pomysły 3-4 (Game Changer): głębsza transformacja procesu, wymierny ROI
-- Pomysł 5 (Wizja): jak firma działa gdy kluczowe procesy są w pełni zautomatyzowane
+- Pomysły 1-2 (Quick Win): szybko wdrożyć, natychmiastowy efekt, niski koszt — coś co daje "aha, to mogliśmy mieć wczoraj"
+- Pomysły 3-4 (Game Changer): głębsza transformacja procesu, wymierny ROI — zmiana reguł gry, nie kosmetyka
+- Pomysł 5 (Wizja): jak firma działa gdy kluczowe procesy są w pełni zautomatyzowane — inspirujący obraz przyszłości
 - Jeśli użytkownik wskazał wiele procesów, rozłóż pomysły między nimi
-- Opisuj z perspektywy użytkownika — co się zmienia w jego codziennej pracy
-- Podaj konkretne, realistyczne metryki efektu (czas, błędy, koszty, osoby)
+- Opisuj z perspektywy użytkownika — co się KONKRETNIE zmienia w jego poniedziałkowy poranek
+- Podaj konkretne, realistyczne metryki efektu (czas, błędy, koszty, osoby) — nie zaokrąglaj do 90%, bądź precyzyjny
 - Dopasuj ambicję i język do skali firmy (mała firma = prostsze rozwiązania, duża = enterprise)
 - NIGDY nie używaj słów: API, webhook, middleware, pipeline, workflow engine, integracja, moduł
 - Każdy pomysł musi być INNY — różne aspekty procesu, różne podejścia
-- Bądź konkretny i zaskakujący — nie pisz banalnych pomysłów
+- Bądź ODWAŻNY i ZASKAKUJĄCY w pomysłach — nie pisz oczywistych banalnych rzeczy typu "centralny system do zarządzania". Proponuj rozwiązania, które użytkownik sam by nie wymyślił, ale od razu widzi ich wartość. Myśl o procesach od końca: jaki efekt biznesowy chcemy osiągnąć?
+- Opisuj SCENARIUSZE — "W piątek o 16:00 klient dzwoni z pilnym zleceniem. Dziś: szukasz handlowca, który pamięta cenę. Po wdrożeniu: klient sam składa zamówienie w panelu, cena kalkuluje się automatycznie, produkcja widzi zlecenie w poniedziałek o 6:00."
+- Pole "before" i "after" — pisz jak mini-historie. Konkrety. Imię, godzina, sytuacja. Nie abstrakty.
 
 FORMAT: Odpowiedz WYŁĄCZNIE poprawnym JSON-em, bez dodatkowego tekstu, bez markdown, bez backticks:
 
@@ -51,8 +53,8 @@ FORMAT: Odpowiedz WYŁĄCZNIE poprawnym JSON-em, bez dodatkowego tekstu, bez mar
     {
       "title": "Chwytliwy nagłówek (max 6 słów)",
       "description": "2-3 zdania opisujące zmianę w codziennej pracy",
-      "before": "Jak wygląda dziś (konkretny, bolesny przykład)",
-      "after": "Jak wygląda po wdrożeniu (konkretny efekt)",
+      "before": "Jak wygląda dziś (konkretny, bolesny scenariusz z detalami)",
+      "after": "Jak wygląda po wdrożeniu (konkretny efekt, który można poczuć)",
       "impact": "Konkretna metryka, np. 'z 5 dni do 4 godzin'",
       "difficulty": "easy | medium | advanced"
     }
@@ -65,6 +67,8 @@ function buildUserPrompt(industry: string, context: string[], size: string, excl
   const problemLines = context.slice(1, -1);
   const goalLine = context[context.length - 1];
 
+  const isOther = industry === 'Inna branża';
+
   let prompt = `Wygeneruj spersonalizowaną diagnozę i pomysły na automatyzację.
 
 BRANŻA: ${industry}
@@ -75,12 +79,15 @@ ${goalLine}
 SKALA FIRMY: ${size}
 
 WAŻNE:
-- Nazwy procesów powyżej to specyficzne obszary w branży "${industry}" — Twoje pomysły muszą się odnosić DOKŁADNIE do tych obszarów
-- Używaj nazewnictwa, sytuacji i przykładów typowych dla branży "${industry}"
+- Nazwy procesów powyżej to specyficzne obszary${isOther ? '' : ` w branży "${industry}"`} — Twoje pomysły muszą się odnosić DOKŁADNIE do tych obszarów
+${isOther ? '- Użytkownik wybrał "Inna branża" — generuj uniwersalne, ale konkretne pomysły. Odnoś się do wybranych procesów i problemów. Bądź praktyczny.' : `- Używaj nazewnictwa, sytuacji i przykładów typowych dla branży "${industry}"`}
 - Pomysły muszą bezpośrednio adresować wskazane problemy i koszty
 - NIE pisz ogólników. Każde zdanie powinno być tak konkretne, żeby czytelnik pomyślał "to o mojej firmie"
 - Metryki efektu muszą być realistyczne dla firmy ${size}
-- Opisuj rozwiązania jako dedykowane systemy/oprogramowanie, nie gotowe narzędzia z rynku`;
+- Opisuj rozwiązania jako dedykowane systemy/oprogramowanie, nie gotowe narzędzia z rynku
+- Każdy pomysł powinien być REALNY do wdrożenia — nie sci-fi, ale też nie banał. Złoty środek: ambitne ale osiągalne
+- W polach "before" i "after" pisz SCENARIUSZE — konkretna sytuacja, dzień tygodnia, kto robi co. Czytelnik musi poczuć "dokładnie tak to u nas wygląda"
+- Unikaj powtarzania tych samych wzorców (np. "dashboard do X", "panel do Y"). Każdy pomysł powinien mieć INNĄ mechanikę`;
 
   if (excludeIdeas && excludeIdeas.length > 0) {
     prompt += `

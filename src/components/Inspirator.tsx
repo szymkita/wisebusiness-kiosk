@@ -127,6 +127,16 @@ const processesByIndustry: Record<string, string[]> = {
     'Komunikacja z uczestnikami',
     'Ewaluacja i zbieranie feedbacku',
   ],
+  other: [
+    'Obsługa klientów i sprzedaż',
+    'Zarządzanie zamówieniami / zleceniami',
+    'Fakturowanie i rozliczenia',
+    'Zarządzanie zespołem i grafikami',
+    'Raportowanie i analityka',
+    'Obieg dokumentów i umów',
+    'Komunikacja wewnętrzna i zewnętrzna',
+    'Inne procesy specyficzne dla mojej firmy',
+  ],
 };
 
 function getProcessesForIndustry(industryId: string): string[] {
@@ -146,6 +156,7 @@ const step2Questions: Record<string, string> = {
   healthcare: 'Co blokuje działanie Twojej placówki?',
   hr: 'Co nie działa w Twoim HR i rekrutacji?',
   education: 'Co hamuje Twoją działalność szkoleniową?',
+  other: 'Co nie działa tak, jak powinno?',
 };
 
 function getStep2Hint(selectedProcesses: string[]): string {
@@ -368,6 +379,11 @@ export function Inspirator({ onClose, onNavigate }: Props) {
               <span className="insp-ctx">{industry}</span>
               <h1 className="insp-q">{step2Questions[industryId] || 'Co konkretnie nie działa?'}</h1>
               <p className="insp-hint">{getStep2Hint(selectedProcesses)}</p>
+              {industryId === 'other' && (
+                <p className="insp-hint" style={{ color: '#f59e0b', fontStyle: 'italic' }}>
+                  Wyniki będą bardziej ogólne niż dla konkretnej branży — ale wciąż użyteczne jako punkt wyjścia.
+                </p>
+              )}
               <div className="insp-problem-groups">
                 {getProblemsForSelection(industryId, selectedProcesses).map(group => (
                   <div key={group.process} className="insp-problem-group">
@@ -564,25 +580,24 @@ export function Inspirator({ onClose, onNavigate }: Props) {
               </div>
 
             </div>
-
-            {/* Bottom navigation */}
-            {onNavigate && (
-              <nav className="insp-nav">
-                <div className="insp-nav-bar">
-                  {navItems.map(item => (
-                    <button key={item.id} className="insp-nav-item"
-                      onClick={() => onNavigate(item.id === 'home' ? 'attract' : item.id)}>
-                      <Icon name={item.icon} size={15} strokeWidth={2} />
-                      <span>{item.label}</span>
-                    </button>
-                  ))}
-                </div>
-              </nav>
-            )}
           </motion.div>
         )}
 
       </AnimatePresence>
+
+      {step === 6 && results && onNavigate && (
+        <nav className="insp-nav insp-nav--fixed">
+          <div className="insp-nav-bar">
+            {navItems.map(item => (
+              <button key={item.id} className="insp-nav-item"
+                onClick={() => onNavigate(item.id === 'home' ? 'attract' : item.id)}>
+                <Icon name={item.icon} size={15} strokeWidth={2} />
+                <span>{item.label}</span>
+              </button>
+            ))}
+          </div>
+        </nav>
+      )}
 
       {step === 1 && (
         <div className="insp-footer">

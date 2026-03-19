@@ -482,4 +482,24 @@ export const inspirationIndustries: InspIndustry[] = [
       },
     ],
   },
+
+  /* ═══════════════════════════════════════
+     INNE BRANŻE
+     ═══════════════════════════════════════ */
+  {
+    id: 'other',
+    name: 'Inna branża',
+    subtitle: 'Twoja branża nie jest na liście? Nie szkodzi!',
+    icon: 'plus-circle',
+    color: '#64748b',
+    sections: [
+      {
+        name: 'Ogólne procesy biznesowe', icon: 'zap',
+        ideas: [
+          { title: 'Centralny system do zarządzania firmą', desc: 'Jedno miejsce zamiast Exceli, maili i kartek — pełna widoczność nad tym, co się dzieje w firmie.', outcome: 'Wszystko w jednym miejscu — koniec z chaosem informacyjnym', icon: 'monitor' },
+          { title: 'Automatyzacja powtarzalnych zadań', desc: 'System przejmuje rutynowe czynności — przypomnienia, generowanie dokumentów, statusy.', outcome: 'Zespół pracuje nad tym, co ważne — reszta działa sama', icon: 'zap' },
+        ],
+      },
+    ],
+  },
 ];

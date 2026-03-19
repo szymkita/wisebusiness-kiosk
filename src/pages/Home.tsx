@@ -22,6 +22,7 @@ const dockItems = [
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function DemoPanel({ navigate }: { navigate: (path: string) => void }) {
   const demoCards = [
+    { id: 'custom-crm', icon: 'target', title: 'Dedykowane CRM', desc: 'Zarządzanie kontaktami, pipeline sprzedaży, aktywności i analityka w jednym miejscu.', color: '#ec4899', gradient: 'linear-gradient(135deg, #db2777, #ec4899)' },
     { id: 'hr', icon: 'users', title: 'Panel Klienta HR', desc: 'Śledzenie rekrutacji, pipeline kandydatów, raporty i komunikacja z agencją.', color: '#6366f1', gradient: 'linear-gradient(135deg, #4f46e5, #6366f1)' },
     { id: 'quoting', icon: 'file-text', title: 'System Ofertowania', desc: 'Konfigurator ofert, szablony, analityka sprzedaży — Swiss style design.', color: '#e11d48', gradient: 'linear-gradient(135deg, #be123c, #e11d48)' },
   ];
@@ -115,7 +116,7 @@ export function Home() {
         <motion.p className="hero-sub"
           initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.45 }}>
-          Odpowiedz na 3 pytania — AI przygotuje spersonalizowane pomysły na automatyzację dla Twojej firmy
+          Odpowiedz na 4 pytania — AI przygotuje spersonalizowane pomysły na automatyzację dla Twojej firmy
         </motion.p>
 
         <motion.button className="hero-cta"
@@ -161,7 +162,7 @@ export function Home() {
       {/* Inspirator flow */}
       <AnimatePresence>
         {view === 'inspirator' && (
-          <Inspirator onClose={() => setView('attract')} />
+          <Inspirator onClose={() => setView('attract')} onNavigate={(id) => setView(id)} />
         )}
       </AnimatePresence>
 

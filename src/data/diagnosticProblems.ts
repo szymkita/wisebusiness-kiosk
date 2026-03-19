@@ -643,6 +643,64 @@ const problems: Record<string, string[]> = {
     'Brak porównania ocen między prowadzącymi / edycjami kursu',
     'Szef pyta "jak oceniają nasze szkolenia?" — odpowiedź na wyczucie',
   ],
+
+  // ═══ INNA BRANŻA ═══
+  'other::Obsługa klientów i sprzedaż': [
+    'Leady wpadają z wielu źródeł — nikt nie pilnuje follow-upów',
+    'Handlowiec odchodzi — cała wiedza o klientach znika',
+    'Oferty wysyłamy w różnych formatach — brak spójności',
+    'Nie wiemy, ilu klientów mamy na jakim etapie',
+    'Obsługa posprzedażowa to chaos — klient dzwoni i nikt nie zna kontekstu',
+  ],
+  'other::Zarządzanie zamówieniami / zleceniami': [
+    'Zamówienia wpadają mailem, telefonem, osobiście — brak jednego miejsca',
+    'Nie wiemy na jakim etapie jest realizacja bez pytania trzech osób',
+    'Pilne zlecenie wchodzi — cały plan się sypie',
+    'Klient pyta o status — szukamy informacji po mailach i Excelach',
+    'Każdy realizuje zlecenia po swojemu — brak powtarzalnego procesu',
+  ],
+  'other::Fakturowanie i rozliczenia': [
+    'Fakturowanie ręczne — koniec miesiąca to maraton',
+    'Nie mamy pełnego obrazu kto ile jest winien i kto zalega',
+    'Rozliczenia kosztów per projekt / klient robione w Excelu',
+    'Terminy płatności pilnowane ręcznie — windykacja po fakcie',
+    'Duplikaty faktur, pomyłki w kwotach, brak automatycznej kontroli',
+  ],
+  'other::Zarządzanie zespołem i grafikami': [
+    'Grafik pracy w Excelu — ciągłe zmiany i zamieszanie',
+    'Ewidencja czasu pracy prowadzona ręcznie — spory o godziny',
+    'Nowa osoba wdrażana chaotycznie — miesiąc zanim jest produktywna',
+    'Nie wiadomo kto nad czym pracuje — brak widoczności obciążeń',
+    'Delegowanie zadań ustne — rzeczy wpadają w szczelinę',
+  ],
+  'other::Raportowanie i analityka': [
+    'Szef pyta "jak idzie biznes?" — nikt nie ma odpowiedzi od ręki',
+    'Raporty klejone ręcznie z kilku źródeł — zajmuje godziny',
+    'Dane są, ale rozproszone — nie da się ich łatwo analizować',
+    'Brak KPI — decyzje na wyczuciu, nie na danych',
+    'Każdy widzi inny obraz firmy — brak jednego źródła prawdy',
+  ],
+  'other::Obieg dokumentów i umów': [
+    'Umowy w mailach, na dysku, u prawnika — szukanie trwa',
+    'Wersjonowanie dokumentów to koszmar — który plik jest aktualny?',
+    'Podpisywanie dokumentów wymaga drukowania i skanowania',
+    'Terminarz umów w głowie jednej osoby — wygaśnięcie = zaskoczenie',
+    'Brak centralnego archiwum — RODO to dodatkowy stres',
+  ],
+  'other::Komunikacja wewnętrzna i zewnętrzna': [
+    'Informacje giną w mailach — nikt nie wie co jest aktualne',
+    'Klienci pytają o to samo — brak FAQ, szablonów odpowiedzi',
+    'Zespół używa 5 narzędzi do komunikacji — chaos informacyjny',
+    'Ważne decyzje podejmowane ustnie — brak zapisu i kontekstu',
+    'Nowy pracownik nie wie do kogo się zwrócić w jakiej sprawie',
+  ],
+  'other::Inne procesy specyficzne dla mojej firmy': [
+    'Mamy unikalne procesy, których żaden gotowy system nie obsługuje',
+    'Próbowaliśmy gotowych narzędzi — nie pasują do naszej specyfiki',
+    'Procesy oparte na Excelu i ręcznej pracy — rosną z firmą i nie skalują się',
+    'Wiedza o procesach w głowach kluczowych osób — ryzyko ciągłości',
+    'Chcielibyśmy zautomatyzować, ale nie wiemy od czego zacząć',
+  ],
 };
 
 /**
