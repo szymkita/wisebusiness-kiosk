@@ -65,8 +65,6 @@ const clientsList: Client[] = [
 
 const monthlyRevenue = [120, 95, 180, 145, 210, 175, 240, 195, 280, 320, 290, 350];
 const monthLabels = ['Kwi', 'Maj', 'Cze', 'Lip', 'Sie', 'Wrz', 'Paź', 'Lis', 'Gru', 'Sty', 'Lut', 'Mar'];
-const maxRevenue = Math.max(...monthlyRevenue);
-
 const statusLabels: Record<QuoteStatus, string> = {
   draft: 'Robocza', sent: 'Wysłana', negotiation: 'Negocjacje',
   accepted: 'Zamknięta', rejected: 'Odrzucona', expired: 'Wygasła',
@@ -293,7 +291,7 @@ function QuoteDetail({ quote, onBack, onStatusChange, onDuplicate, onSend }: {
       { date: '16.03.2026', text: 'Oferta zaakceptowana', status: 'done' as const },
     ] : []),
     ...(quote.status === 'rejected' ? [{ date: '12.03.2026', text: 'Oferta odrzucona', status: 'done' as const }] : []),
-    ...(['draft', 'sent'].includes(quote.status) ? [{ date: 'Oczekuje', text: 'Decyzja klienta', status: (quote.status === 'sent' ? 'current' : 'pending') as const }] : []),
+    ...(['draft', 'sent'].includes(quote.status) ? [{ date: 'Oczekuje', text: 'Decyzja klienta', status: quote.status === 'sent' ? 'current' as const : 'pending' as const }] : []),
     ...(!['accepted', 'rejected', 'expired'].includes(quote.status) ? [{ date: 'Planowane', text: 'Podpisanie umowy', status: 'pending' as const }] : []),
   ];
 
