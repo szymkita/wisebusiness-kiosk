@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
 import { Logo } from '../components/Logo';
 import { Icon } from '../components/Icon';
 import { decodeResults } from '../services/share';
@@ -12,8 +11,7 @@ const difficultyLabels: Record<string, string> = {
 };
 
 export function SharedResults() {
-  const location = useLocation();
-  const data = useMemo(() => decodeResults(location.hash), [location.hash]);
+  const data = useMemo(() => decodeResults(window.location.hash), []);
 
   if (!data) {
     return (

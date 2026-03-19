@@ -8,6 +8,10 @@
   font-family: 'Inter', system-ui, sans-serif;
   color: #1a1a1a;
   -webkit-font-smoothing: antialiased;
+  overflow-y: auto !important;
+  height: auto !important;
+  user-select: auto;
+  -webkit-user-select: auto;
 }
 
 .sr-empty {
