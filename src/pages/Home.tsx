@@ -13,9 +13,8 @@ import './Home.css';
 
 const dockItems = [
   { id: 'home', label: 'Home', icon: 'home' },
-  { id: 'industries', label: 'Branże', icon: 'grid', count: tabs[0]?.tiles.length },
-  { id: 'software', label: 'Oprogramowanie', icon: 'code', count: tabs[1]?.tiles.length },
   { id: 'inspiration', label: 'Mapa inspiracji', icon: 'target' },
+  { id: 'software', label: 'Oprogramowanie', icon: 'code', count: tabs[1]?.tiles.length },
   { id: 'cases', label: 'Case Studies', icon: 'trending-up', count: 35 },
   { id: 'contact', label: 'Kontakt', icon: 'map-pin' },
 ];
