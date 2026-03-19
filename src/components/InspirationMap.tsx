@@ -19,22 +19,13 @@ const difficultyMeta: Record<string, { label: string; color: string }> = {
   advanced: { label: 'Game Changer', color: '#8b5cf6' },
 };
 
-interface Props {
-  onClose: () => void;
-}
-
-export function InspirationMap({ onClose }: Props) {
+export function InspirationMap() {
   const [industry, setIndustry] = useState<InspIndustry | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const pickIndustry = useCallback((ind: InspIndustry) => {
     setIndustry(ind);
   }, []);
-
-  const goBack = useCallback(() => {
-    if (industry) setIndustry(null);
-    else onClose();
-  }, [industry, onClose]);
 
   useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollTop = 0;
@@ -45,16 +36,14 @@ export function InspirationMap({ onClose }: Props) {
     : 0;
 
   return (
-    <motion.div className="imap"
-      initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 30 }}
-      transition={{ duration: 0.35, ease }}>
-
+    <div className="imap">
       {/* Header */}
       <div className="imap-header">
-        <button className="imap-back" onClick={goBack}>
-          <Icon name="arrow-left" size={18} strokeWidth={2} />
-        </button>
+        {industry && (
+          <button className="imap-back" onClick={() => setIndustry(null)}>
+            <Icon name="arrow-left" size={18} strokeWidth={2} />
+          </button>
+        )}
         <div className="imap-header-text">
           <span className="imap-title">
             {industry ? industry.name : 'Mapa inspiracji'}
@@ -148,7 +137,7 @@ export function InspirationMap({ onClose }: Props) {
 
         </AnimatePresence>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
