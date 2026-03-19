@@ -310,6 +310,7 @@ export const inspirationIndustries: InspIndustry[] = [
           { title: 'Resource board — kto jest wolny, kto kończy kiedy', desc: 'Dashboard alokacji: kto nad czym pracuje, kto kończy projekt, kto jest dostępny, kto ma gap. Planowanie przydziału z wyprzedzeniem — nie w panice dzień przed kickoffem nowego projektu.', outcome: 'Optymalna alokacja ludzi — mniej bench, mniej przepalonych deadline\'ów', icon: 'users' },
           { title: 'Czas z narzędzi projektowych, nie z timesheetów', desc: 'System zbiera dane: czas ticketów w Jira, spotkania z kalendarza, aktywność w Gicie. Raport per klient per developer generuje się sam. Sprint report dla klienta — kompilowany automatycznie, PM robi review. Developerzy kodzą, nie logują.', outcome: 'Dane o czasie dokładniejsze niż timesheet — i nikt ich nie "wypełnia"', icon: 'clock' },
           { title: 'Rentowność per projekt i automatyczne fakturowanie', desc: 'Czas pracy × koszt wewnętrzny developera vs. stawka kliencka = marża na bieżąco. Dashboard: który projekt zarabia, który jest pod wodą. Faktura T&M generowana z danych. Fixed price — per milestone z auto-triggerem. Koniec miesiąca = faktury gotowe.', outcome: 'Pełna widoczność marży i fakturowanie w dniu zamknięcia', icon: 'dollar-sign' },
+          { title: 'Portal klienta — status projektu, deliverables, feedback', desc: 'Klient widzi: co jest w sprincie, co zrobione, co czeka. Pobiera buildy, daje feedback do konkretnych elementów, widzi burndown. Nie pyta "jak idzie?" — sam sprawdza. PM wysyła cotygodniowy digest jednym kliknięciem.', outcome: 'Klient z poczuciem kontroli — Ty z mniejszą liczbą spotkań statusowych', icon: 'globe' },
         ],
       },
     ],
@@ -414,6 +415,7 @@ export const inspirationIndustries: InspIndustry[] = [
         ideas: [
           { title: 'System egzaminacyjny z weryfikowalnymi certyfikatami', desc: 'Egzamin online z losowaniem pytań, timerem, zabezpieczeniami. Wynik natychmiast. Certyfikat z unikalnym numerem — pracodawca lub regulator weryfikuje ważność jednym kliknięciem (QR/link). Rejestr: kto zdał, kiedy, co wygasa. Automatyczne przypomnienia o odnowieniu.', outcome: 'Certyfikaty, które mają realną wartość — bo są weryfikowalne', icon: 'check-circle' },
           { title: 'Raportowanie do regulatorów z danych systemu', desc: 'SIO, UDT, ULC — raporty generowane z danych o kursantach, egzaminach i certyfikatach. Nie ręcznie z Excela — z danych, które już masz w systemie. Jedno kliknięcie zamiast godzin wypełniania arkuszy.', outcome: 'Raportowanie regulacyjne jako kliknięcie — nie projekt', icon: 'file-text' },
+          { title: 'Panel firmy szkoleniowej — klienci, szkolenia, dokumenty', desc: 'Klient korporacyjny loguje się: widzi swoich pracowników, zapisuje na szkolenia, pobiera certyfikaty, widzi historię. Dział HR w firmie klienta ma porządek — wie kto co ukończył. Ty masz dane do raportów i upsellingu kolejnych kursów.', outcome: 'Klient B2B obsługiwany przez panel — sprzedaż kolejnych szkoleń na danych', icon: 'globe' },
         ],
       },
     ],
