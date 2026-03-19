@@ -395,29 +395,44 @@ export function Inspirator({ onClose }: Props) {
         )}
 
         {/* 7 — QR + SMS */}
-        {step === 7 && !smsSent && (
-          <motion.div className="insp-body insp-body--center" key="s7" {...screenFade}>
-            <h1 className="insp-q">Zabierz pomysły ze sobą</h1>
-            <p className="insp-hint">Zeskanuj kod QR telefonem</p>
-            <div className="insp-qr-frame">
-              {shareUrl && (
-                <QRCodeSVG value={shareUrl} size={200} bgColor="#ffffff" fgColor="#1a1a1a" level="L"
-                  style={{ width: '100%', height: '100%' }} />
-              )}
-            </div>
-            <span className="insp-qr-caption">Otwórz aparat i zeskanuj kod</span>
-            <div className="insp-divider"><span>lub wyślij SMS-em</span></div>
-            <div className="insp-sms-row">
-              <input type="tel" className="insp-input insp-input--phone"
-                value={phone} onChange={e => setPhone(e.target.value)} placeholder="+48 123 456 789" />
-              <button className="insp-btn" onClick={sendSms}
-                disabled={phone.replace(/[^0-9]/g, '').length < 11}>
-                <Icon name="send" size={14} strokeWidth={2} /> Wyślij
-              </button>
-            </div>
-            <button className="insp-btn insp-btn--ghost" onClick={restart}>Zacznij od nowa</button>
-          </motion.div>
-        )}
+        {step === 7 && !smsSent && (() => {
+          // Generate URL right here so we can debug
+          let qrUrl = shareUrl;
+          if (!qrUrl && results) {
+            try {
+              qrUrl = encodeResults({ industry, processes: selectedProcesses.map(p => p.name), goal, size, results });
+            } catch (e) {
+              console.error('QR encode failed:', e);
+            }
+          }
+          return (
+            <motion.div className="insp-body" key="s7" {...screenFade}>
+              <div className="insp-screen-inner insp-screen-inner--narrow" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, paddingTop: 24 }}>
+                <h1 className="insp-q">Zabierz pomysły ze sobą</h1>
+                <p className="insp-hint">Zeskanuj kod QR telefonem</p>
+                {qrUrl ? (
+                  <div className="insp-qr-frame">
+                    <QRCodeSVG value={qrUrl} size={200} bgColor="#ffffff" fgColor="#1a1a1a" level="L"
+                      style={{ width: '100%', height: '100%' }} />
+                  </div>
+                ) : (
+                  <p className="insp-hint">Nie udało się wygenerować kodu QR</p>
+                )}
+                <span className="insp-qr-caption">Otwórz aparat i zeskanuj kod</span>
+                <div className="insp-divider"><span>lub wyślij SMS-em</span></div>
+                <div className="insp-sms-row">
+                  <input type="tel" className="insp-input insp-input--phone"
+                    value={phone} onChange={e => setPhone(e.target.value)} placeholder="+48 123 456 789" />
+                  <button className="insp-btn" onClick={sendSms}
+                    disabled={phone.replace(/[^0-9]/g, '').length < 11}>
+                    <Icon name="send" size={14} strokeWidth={2} /> Wyślij
+                  </button>
+                </div>
+                <button className="insp-btn insp-btn--ghost" onClick={restart}>Zacznij od nowa</button>
+              </div>
+            </motion.div>
+          );
+        })()}
 
         {step === 7 && smsSent && (
           <motion.div className="insp-body insp-body--center" key="thx"
