@@ -12,6 +12,14 @@
   overflow: hidden;
 }
 
+/* Touch: instant response, no 300ms delay */
+.insp button {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
 /* ── Header ── */
 .insp-header {
   display: flex;
@@ -135,8 +143,7 @@
 .insp-card-row:active { transform: scale(0.98); border-color: #10b981; }
 
 .insp-card-row--on { background: rgba(16,185,129,0.04); border-color: #10b981; }
-.insp-card-row--off { opacity: 0.2; cursor: default; }
-.insp-card-row:not(.insp-card-row--off):active { transform: scale(0.98); border-color: #10b981; }
+.insp-card-row:active { transform: scale(0.98); border-color: #10b981; }
 
 .insp-card-row-left {
   display: flex; align-items: center; gap: clamp(10px, 0.8vw, 14px);
@@ -177,8 +184,7 @@
   transition: all 0.12s;
 }
 .insp-check-row.on { background: rgba(16,185,129,0.04); border-color: #10b981; color: #1a1a1a; }
-.insp-check-row.off { opacity: 0.2; cursor: default; }
-.insp-check-row:not(.off):active { transform: scale(0.98); }
+.insp-check-row:active { transform: scale(0.98); }
 
 .insp-check-box {
   width: 20px; height: 20px;

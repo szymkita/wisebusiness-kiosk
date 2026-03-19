@@ -70,7 +70,7 @@ const difficultyLabels: Record<string, string> = {
   advanced: 'Wizja',
 };
 
-const MAX_PROBLEMS = 3;
+const MIN_PROBLEMS = 2;
 const LOADING_MIN_MS = 7000;
 
 const transition = { duration: 0.35, ease: 'easeOut' as const };
@@ -104,20 +104,15 @@ export function Inspirator({ onClose }: Props) {
 
   const pickIndustry = useCallback((name: string) => { setIndustry(name); go(1); }, [go]);
 
-  const MAX_PROCESSES = 3;
   const toggleProcess = useCallback((p: typeof processes[0]) => {
     setSelectedProcesses(prev =>
-      prev.some(x => x.id === p.id) ? prev.filter(x => x.id !== p.id)
-        : prev.length >= MAX_PROCESSES ? prev
-          : [...prev, p]
+      prev.some(x => x.id === p.id) ? prev.filter(x => x.id !== p.id) : [...prev, p]
     );
   }, []);
 
   const toggleProblem = useCallback((p: string) => {
     setSelectedProblems(prev =>
-      prev.includes(p) ? prev.filter(x => x !== p)
-        : prev.length >= MAX_PROBLEMS ? prev
-          : [...prev, p]
+      prev.includes(p) ? prev.filter(x => x !== p) : [...prev, p]
     );
   }, []);
 
@@ -232,16 +227,15 @@ export function Inspirator({ onClose }: Props) {
         {step === 1 && (
           <motion.div className="insp-body" key="s1" variants={variants} initial="enter" animate="center" exit="exit" transition={transition}>
             <h1 className="insp-q">Które procesy chcesz usprawnić?</h1>
-            <p className="insp-hint">Wybierz 1–3 procesy, które najbardziej wpływają na Wasz biznes</p>
+            <p className="insp-hint">Zaznacz wszystkie, które chcesz usprawnić</p>
             <div className="insp-list">
               {processes.map((p, i) => {
                 const on = selectedProcesses.some(x => x.id === p.id);
-                const off = !on && selectedProcesses.length >= MAX_PROCESSES;
                 return (
-                  <motion.button key={p.id} className={`insp-card-row ${on ? 'insp-card-row--on' : ''} ${off ? 'insp-card-row--off' : ''}`}
+                  <motion.button key={p.id} className={`insp-card-row ${on ? 'insp-card-row--on' : ''}`}
                     initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.25, delay: i * 0.035 }}
-                    onClick={() => !off && toggleProcess(p)}>
+                    onClick={() => toggleProcess(p)}>
                     <div className="insp-card-row-left">
                       <span className="insp-check-box">
                         {on && <Icon name="check-circle" size={14} strokeWidth={2.5} />}
@@ -262,16 +256,15 @@ export function Inspirator({ onClose }: Props) {
         {step === 2 && (
           <motion.div className="insp-body" key="s2" variants={variants} initial="enter" animate="center" exit="exit" transition={transition}>
             <h1 className="insp-q">Co w tym procesie nie działa?</h1>
-            <p className="insp-hint">Zaznacz 2–3 największe problemy</p>
+            <p className="insp-hint">Zaznacz wszystko, co pasuje</p>
             <div className="insp-list">
               {problems.map((p, i) => {
                 const on = selectedProblems.includes(p);
-                const off = !on && selectedProblems.length >= MAX_PROBLEMS;
                 return (
-                  <motion.button key={p} className={`insp-check-row ${on ? 'on' : ''} ${off ? 'off' : ''}`}
+                  <motion.button key={p} className={`insp-check-row ${on ? 'on' : ''}`}
                     initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.2, delay: i * 0.025 }}
-                    onClick={() => !off && toggleProblem(p)}>
+                    onClick={() => toggleProblem(p)}>
                     <span className="insp-check-box">
                       {on && <Icon name="check-circle" size={14} strokeWidth={2.5} />}
                     </span>
@@ -451,11 +444,11 @@ export function Inspirator({ onClose }: Props) {
 
       </AnimatePresence>
 
-      {/* Footer for step 1 (processes) and step 2 (problems) */}
+      {/* Footer for multi-select steps */}
       {step === 1 && (
         <div className="insp-footer">
           <span className="insp-counter">
-            <strong>{selectedProcesses.length}</strong> / {MAX_PROCESSES}
+            Wybrano: <strong>{selectedProcesses.length}</strong>
           </span>
           <button className="insp-btn" disabled={selectedProcesses.length < 1} onClick={() => setStep(2)}>
             {selectedProcesses.length < 1 ? 'Wybierz min. 1' : 'Dalej'}
@@ -466,10 +459,10 @@ export function Inspirator({ onClose }: Props) {
       {step === 2 && (
         <div className="insp-footer">
           <span className="insp-counter">
-            <strong>{selectedProblems.length}</strong> / {MAX_PROBLEMS}
+            Wybrano: <strong>{selectedProblems.length}</strong>
           </span>
-          <button className="insp-btn" disabled={selectedProblems.length < 2} onClick={() => setStep(3)}>
-            {selectedProblems.length < 2 ? `Jeszcze ${2 - selectedProblems.length}` : 'Dalej'}
+          <button className="insp-btn" disabled={selectedProblems.length < MIN_PROBLEMS} onClick={() => setStep(3)}>
+            {selectedProblems.length < MIN_PROBLEMS ? `Jeszcze ${MIN_PROBLEMS - selectedProblems.length}` : 'Dalej'}
             <Icon name="chevron-right" size={15} strokeWidth={2.5} />
           </button>
         </div>
