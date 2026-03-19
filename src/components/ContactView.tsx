@@ -62,7 +62,7 @@ export function ContactView() {
       <div className="cv-brand-col">
         <div className="cv-brand-top">
           <h2 className="cv-brand-headline">
-            Zeskanuj i<br />porozmawiajmy
+            Zeskanuj i porozmawiajmy<br />o automatyzacji Twojej firmy
           </h2>
           <p className="cv-brand-sub">Wybierz wygodny sposób kontaktu</p>
         </div>
