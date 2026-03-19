@@ -69,18 +69,18 @@ function buildUserPrompt(industry: string, context: string[], size: string, excl
 
 BRANŻA: ${industry}
 ${processLine}
-PROBLEMY W TYM PROCESIE:
+PROBLEMY:
 ${problemLines.map(s => `- ${s}`).join('\n')}
 ${goalLine}
 SKALA FIRMY: ${size}
 
 WAŻNE:
-- Diagnoza i pomysły MUSZĄ dotyczyć konkretnego procesu, który użytkownik wybrał
-- Pomysły muszą bezpośrednio adresować wskazane problemy
-- Cel użytkownika powinien być widoczny w każdym pomyśle
-- Bądź specyficzny dla branży "${industry}" — używaj przykładów, nazw, sytuacji typowych dla tej branży
+- Nazwy procesów powyżej to specyficzne obszary w branży "${industry}" — Twoje pomysły muszą się odnosić DOKŁADNIE do tych obszarów
+- Używaj nazewnictwa, sytuacji i przykładów typowych dla branży "${industry}"
+- Pomysły muszą bezpośrednio adresować wskazane problemy i koszty
 - NIE pisz ogólników. Każde zdanie powinno być tak konkretne, żeby czytelnik pomyślał "to o mojej firmie"
-- Metryki efektu muszą być realistyczne dla firmy ${size}`;
+- Metryki efektu muszą być realistyczne dla firmy ${size}
+- Opisuj rozwiązania jako dedykowane systemy/oprogramowanie, nie gotowe narzędzia z rynku`;
 
   if (excludeIdeas && excludeIdeas.length > 0) {
     prompt += `

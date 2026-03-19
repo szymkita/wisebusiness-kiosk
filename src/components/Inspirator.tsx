@@ -14,83 +14,32 @@ const industries = inspirationIndustries.map(ind => ({
   icon: ind.icon,
 }));
 
-const processes = [
-  { id: 'sales', name: 'Sprzedaż', desc: 'Od pierwszego kontaktu do zamknięcia dealu' },
-  { id: 'fulfillment', name: 'Realizacja zamówień', desc: 'Od zamówienia do dostarczenia klientowi' },
-  { id: 'client-service', name: 'Obsługa klienta', desc: 'Zapytania, reklamacje, serwis posprzedażowy' },
-  { id: 'projects', name: 'Projekty', desc: 'Planowanie, realizacja i rozliczenie projektów' },
-  { id: 'finance', name: 'Rozliczenia', desc: 'Fakturowanie, koszty, kontrola rentowności' },
-  { id: 'people', name: 'Ludzie', desc: 'Rekrutacja, wdrożenie, zarządzanie zespołem' },
-  { id: 'quality', name: 'Jakość', desc: 'Standardy, kontrola, zgodność, audyty' },
-  { id: 'operations', name: 'Operacje', desc: 'Magazyn, dostawy, codzienna koordynacja' },
-];
-
-/* Problems per process — contextual, specific */
-const problemsByProcess: Record<string, string[]> = {
-  sales: [
-    'Leady giną — nikt nie pilnuje follow-upów',
-    'Oferta przygotowywana od zera za każdym razem',
-    'Nie wiemy na jakim etapie jest klient i kto z nim rozmawiał',
-    'Handlowiec odchodzi i zabiera kontakty ze sobą',
-    'Brak prognoz — nie wiemy ile sprzedamy w tym miesiącu',
-  ],
-  fulfillment: [
-    'Zamówienia przepisywane ręcznie z maila do systemu',
-    'Obiecujemy terminy nie wiedząc czy mamy zasoby',
-    'Statusy zamówień trzeba sprawdzać na piechotę',
-    'Pomyłki w kompletacji — zły towar, zła ilość, zły adres',
-    'Faktura wystawiana ręcznie z opóźnieniem',
-  ],
-  'client-service': [
-    'Zgłoszenia przychodzą zewsząd — mail, telefon, czat — i giną',
-    'Nie wiemy czy ktoś już odpowiedział klientowi',
-    'Te same pytania pojawiają się co tydzień — brak bazy wiedzy',
-    'Reklamacja krąży między działami — nikt nie czuje się odpowiedzialny',
-    'Klient musi powtarzać swoją historię przy każdym kontakcie',
-  ],
-  projects: [
-    'Każdy projekt prowadzony inaczej — brak szablonu',
-    'Nie wiemy ile czasu zjada projekt vs. ile wyceniliśmy',
-    'Zarządzanie zadaniami w Excelu lub w głowie PM-a',
-    'Klient nie widzi postępu — robimy ręczne statusy',
-    'Przy kilku projektach naraz tracimy kontrolę nad priorytetami',
-  ],
-  finance: [
-    'Fakturowanie ręczne — opóźnienia i błędy w kwotach',
-    'Nie wiemy które projekty lub klienci są rentowni',
-    'Raport finansowy wymaga dwóch dni zbierania danych',
-    'Rozliczenia z podwykonawcami to chaos',
-    'Koszty śledzone w Excelu — nikt nie ma aktualnych danych',
-  ],
-  people: [
-    'Rekrutacja ciągnie się tygodniami — kandydaci uciekają',
-    'Wdrożenie nowej osoby wymaga osobistego oprowadzania krok po kroku',
-    'Nie wiemy kto ma jakie kompetencje i uprawnienia',
-    'Grafiki i urlopy zarządzane przez Excele',
-    'Oceny pracownicze raz do roku na papierze',
-  ],
-  quality: [
-    'Kontrola jakości "na oko" — bez checklisty, bez śladu',
-    'Niezgodności odkrywane dopiero po dostarczeniu klientowi',
-    'Brak zapisu kto, kiedy i co sprawdził',
-    'Audyt = panika i gorączkowe szukanie dokumentów',
-    'Procedury istnieją na papierze, ale nikt ich nie czyta',
-  ],
-  operations: [
-    'Stany magazynowe rozbieżne z tym co jest na półce',
-    'Planowanie dostaw w głowie jednej osoby',
-    'Kierowcy dzwonią pytając co, gdzie i do kiedy',
-    'Brak widoczności co jest gdzie w danym momencie',
-    'Koordynacja między działami wyłącznie przez telefon',
-  ],
-};
-
-function getProblemsForProcesses(selected: typeof processes[number][]): { process: string; problems: string[] }[] {
-  return selected.map(p => ({
-    process: p.name,
-    problems: problemsByProcess[p.id] || [],
-  }));
+interface ProcessOption {
+  id: string;
+  name: string;
+  icon: string;
 }
+
+/* Get processes (sections) for selected industry */
+function getProcessesForIndustry(industryId: string): ProcessOption[] {
+  const ind = inspirationIndustries.find(i => i.id === industryId);
+  if (!ind) return [];
+  return ind.sections.map((s, i) => ({ id: `${industryId}-${i}`, name: s.name, icon: s.icon }));
+}
+
+/* Universal problems that apply per-area — shown grouped by selected process */
+const universalProblems = [
+  'Ręczna praca — przepisywanie, kopiowanie, klikanie w wielu miejscach',
+  'Brak jednego źródła prawdy — dane w Excelach, mailach, głowach',
+  'Brak widoczności — nie wiadomo co jest na jakim etapie',
+  'Zależność od ludzi — jak ktoś odejdzie, proces się sypie',
+  'Powtarzające się błędy i pomyłki',
+  'Brak standaryzacji — każdy robi po swojemu',
+  'Nie skaluje się — przy wzroście chaos rośnie szybciej',
+  'Wdrożenie nowej osoby trwa tygodniami',
+  'Brak raportów — decyzje na wyczucie',
+  'Klient nie zna statusu — musi dzwonić',
+];
 
 const costs = [
   { id: 'clients', label: 'Tracimy klientów', desc: 'Odchodzą do szybszej konkurencji' },
@@ -128,8 +77,9 @@ interface Props { onClose: () => void; }
 
 export function Inspirator({ onClose }: Props) {
   const [step, setStep] = useState(0);
+  const [industryId, setIndustryId] = useState('');
   const [industry, setIndustry] = useState('');
-  const [selectedProcesses, setSelectedProcesses] = useState<typeof processes[0][]>([]);
+  const [selectedProcesses, setSelectedProcesses] = useState<ProcessOption[]>([]);
   const [selectedProblems, setSelectedProblems] = useState<string[]>([]);
   const [selectedCosts, setSelectedCosts] = useState<string[]>([]);
   const [size, setSize] = useState('');
@@ -157,8 +107,10 @@ export function Inspirator({ onClose }: Props) {
   const phoneDigits = typed.replace(/^\+48/, '').replace(/[^0-9]/g, '').length;
 
   const go = useCallback((s: number) => setTimeout(() => setStep(s), 250), []);
-  const pickIndustry = useCallback((n: string) => { setIndustry(n); go(1); }, [go]);
-  const toggleProcess = useCallback((p: typeof processes[0]) => {
+  const pickIndustry = useCallback((id: string, name: string) => { setIndustryId(id); setIndustry(name); go(1); }, [go]);
+
+  const availableProcesses = getProcessesForIndustry(industryId);
+  const toggleProcess = useCallback((p: ProcessOption) => {
     setSelectedProcesses(prev => prev.some(x => x.id === p.id) ? prev.filter(x => x.id !== p.id) : [...prev, p]);
   }, []);
   const toggleProblem = useCallback((p: string) => {
@@ -168,7 +120,7 @@ export function Inspirator({ onClose }: Props) {
     setSelectedCosts(prev => prev.includes(label) ? prev.filter(x => x !== label) : [...prev, label]);
   }, []);
 
-  const processCtx = selectedProcesses.map(p => `${p.name}: ${p.desc}`).join('; ');
+  const processCtx = selectedProcesses.map(p => p.name).join('; ');
 
   const pickSize = useCallback((label: string) => {
     setSize(label);
@@ -219,7 +171,7 @@ export function Inspirator({ onClose }: Props) {
   }, [industry, selectedProcesses, selectedProblems, selectedCosts, size, results, typed, phoneDigits]);
 
   const restart = useCallback(() => {
-    setStep(0); setIndustry(''); setSelectedProcesses([]);
+    setStep(0); setIndustryId(''); setIndustry(''); setSelectedProcesses([]);
     setSelectedProblems([]); setSelectedCosts([]); setSize('');
     setResults(null); setPrevIdeas([]); setLoadingIdx(0);
     setTyped('+48'); setContactSent(false);
@@ -251,7 +203,7 @@ export function Inspirator({ onClose }: Props) {
               <h1 className="insp-q">W jakiej branży działasz?</h1>
               <div className="insp-grid-3">
                 {industries.map(ind => (
-                  <button key={ind.id} className="insp-tile" onClick={() => pickIndustry(ind.name)}>
+                  <button key={ind.id} className="insp-tile" onClick={() => pickIndustry(ind.id, ind.name)}>
                     <div className="insp-tile-icon"><Icon name={ind.icon} size={18} strokeWidth={1.8} /></div>
                     <span className="insp-tile-label">{ind.name}</span>
                   </button>
@@ -269,14 +221,13 @@ export function Inspirator({ onClose }: Props) {
               <h1 className="insp-q">Które procesy chcesz usprawnić?</h1>
               <p className="insp-hint">Zaznacz wszystkie, które dotyczą Twojej firmy</p>
               <div className="insp-opts">
-                {processes.map(p => {
+                {availableProcesses.map(p => {
                   const on = selectedProcesses.some(x => x.id === p.id);
                   return (
                     <button key={p.id} className={`insp-opt ${on ? 'on' : ''}`} onClick={() => toggleProcess(p)}>
                       <span className="insp-chk">{on && <Icon name="check-circle" size={14} strokeWidth={2.5} />}</span>
                       <span className="insp-opt-body">
                         <span className="insp-opt-title">{p.name}</span>
-                        <span className="insp-opt-sub">{p.desc}</span>
                       </span>
                     </button>
                   );
@@ -292,23 +243,16 @@ export function Inspirator({ onClose }: Props) {
             <div className="insp-inner">
               <h1 className="insp-q">Co konkretnie nie działa?</h1>
               <p className="insp-hint">Zaznacz wszystko, co pasuje — im więcej, tym lepsza diagnoza</p>
-              <div className="insp-problem-groups">
-                {getProblemsForProcesses(selectedProcesses).map(group => (
-                  <div key={group.process} className="insp-problem-group">
-                    <span className="insp-problem-group-label">{group.process}</span>
-                    <div className="insp-opts">
-                      {group.problems.map(p => {
-                        const on = selectedProblems.includes(p);
-                        return (
-                          <button key={p} className={`insp-opt insp-opt--sm ${on ? 'on' : ''}`} onClick={() => toggleProblem(p)}>
-                            <span className="insp-chk">{on && <Icon name="check-circle" size={14} strokeWidth={2.5} />}</span>
-                            <span>{p}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ))}
+              <div className="insp-opts">
+                {universalProblems.map(p => {
+                  const on = selectedProblems.includes(p);
+                  return (
+                    <button key={p} className={`insp-opt insp-opt--sm ${on ? 'on' : ''}`} onClick={() => toggleProblem(p)}>
+                      <span className="insp-chk">{on && <Icon name="check-circle" size={14} strokeWidth={2.5} />}</span>
+                      <span>{p}</span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </motion.div>
