@@ -5,15 +5,15 @@ import './CaseStudies.css';
 
 interface Process {
   name: string;
-  before: string;
-  after: string;
+  was: string;
+  now: string;
 }
 
 interface Case {
   title: string;
-  context: string;
-  before: string;
-  after: string;
+  story: string;
+  was: string;
+  now: string;
   metricLabel: string;
   processes: Process[];
 }
@@ -33,51 +33,38 @@ const data: Industry[] = [
     icon: 'layers', color: '#06b6d4',
     cases: [
       {
-        title: 'Harmonogram produkcji',
-        context: 'Ręczne planowanie zleceń na 12 liniach w Excelu — każda zmiana priorytetów to godziny przeplanowywania.',
-        before: '3 dni', after: '15 min', metricLabel: 'ułożenie harmonogramu tygodniowego',
+        title: 'Od skanu faktury do księgowania w ERP — bez przepisywania',
+        story: 'Dział księgowości zakładu produkcyjnego opakowań dostawał 400+ faktur miesięcznie — mailem, kurierem, czasem jako zdjęcie z WhatsAppa. Każda była ręcznie przepisywana do systemu ERP. Pomyłki w kwotach, duplikaty, opóźnione płatności — norma.',
+        was: '6 min', now: '15 sek', metricLabel: 'obsługa jednej faktury kosztowej',
         processes: [
-          { name: 'Pobranie zamówień z ERP', before: 'Ręczne', after: 'Auto-sync' },
-          { name: 'Sprawdzenie dostępności maszyn', before: '2h', after: '0 — system wie' },
-          { name: 'Uwzględnienie przezbrojenia', before: 'Z głowy', after: 'Algorytm' },
-          { name: 'Reakcja na zmianę priorytetu', before: '4h', after: '2 min' },
-          { name: 'Komunikacja ze zmianami', before: 'Telefon/tablica', after: 'Auto push' },
+          { name: 'Rozpoznanie danych z faktury', was: 'Ręczne przepisywanie', now: 'OCR + AI, 99.7% skuteczności' },
+          { name: 'Dopasowanie do zamówienia', was: 'Szukanie w ERP ręcznie', now: 'Auto-matching po PO number' },
+          { name: 'Dekretacja kosztów', was: 'Księgowa decyduje per faktura', now: 'Auto-sugestia z historii (92% trafność)' },
+          { name: 'Wykrycie duplikatu', was: 'Czasem się nie udawało', now: 'Blokada automatyczna' },
+          { name: 'Synchronizacja z ERP', was: 'Ręczny import, raz dziennie', now: 'Dwukierunkowa, real-time' },
         ],
       },
       {
-        title: 'Predykcyjne utrzymanie maszyn',
-        context: 'Awarie wykrywane dopiero gdy maszyna stawała. Serwisanci reagowali zamiast zapobiegać.',
-        before: '4.5h', after: '35 min', metricLabel: 'średni czas od wykrycia do naprawy',
+        title: 'Panel klienta dla produkcji na zamówienie',
+        story: 'Producent komponentów metalowych dostawał 30+ telefonów dziennie z pytaniem "kiedy moje zamówienie?". Handlowcy szli do hali, pytali kierownika zmiany, oddzwaniali. A klient i tak nie wiedział, na jakim etapie jest jego zlecenie.',
+        was: '30+', now: '2-3', metricLabel: 'zapytań o status zamówienia dziennie',
         processes: [
-          { name: 'Wykrycie anomalii', before: 'Po awarii', after: '48h wcześniej' },
-          { name: 'Diagnoza przyczyny', before: '1.5h szukania', after: 'Auto z czujników' },
-          { name: 'Zamówienie części', before: 'Ad hoc, 2 dni', after: 'Zaplanowane z góry' },
-          { name: 'Raport zmianowy', before: '45 min ręcznie', after: 'Auto, real-time' },
-          { name: 'Historia serwisowa maszyny', before: 'Zeszyt', after: 'Cyfrowa książka' },
+          { name: 'Status zlecenia dla klienta', was: 'Telefon → handlowiec → hala', now: 'Portal online, live z produkcji' },
+          { name: 'Konfiguracja zamówienia', was: 'Mail z PDFem + telefon', now: 'Konfigurator w panelu klienta' },
+          { name: 'Potwierdzenie terminu', was: '2 dni (szacunek)', now: 'Auto z harmonogramu, instant' },
+          { name: 'Dokumenty jakości (atesty)', was: 'Mail na prośbę, szukanie', now: 'Auto-dostępne po wysyłce' },
+          { name: 'Historia zamówień i reorder', was: 'Szukanie w mailach', now: '1 klik — powtórz zamówienie' },
         ],
       },
       {
-        title: 'Kontrola jakości i traceability',
-        context: 'Papierowe karty kontrolne, ręczne przepisywanie. Klient pyta o historię partii — 3h szukania.',
-        before: '25 min', after: '3 min', metricLabel: 'kontrola jakości jednej partii',
+        title: 'System utrzymania ruchu zamiast zeszytu i Jasia',
+        story: 'Zakład z 12 liniami produkcyjnymi — wiedza serwisowa w głowach dwóch mechaników. Gdy Jasiek szedł na urlop, nikt nie wiedział co, kiedy i jak serwisować. Awarie kosztowały średnio 50k dziennie w utraconym outputcie.',
+        was: '4.5h', now: '40 min', metricLabel: 'średni czas od zgłoszenia do naprawy',
         processes: [
-          { name: 'Protokół kontrolny', before: 'Papier + przepisywanie', after: 'Tablet + QR' },
-          { name: 'Genealogia partii', before: '3h szukania', after: '10 sekund' },
-          { name: 'Blokada wadliwej partii', before: 'Telefon do kierownika', after: 'Auto-blokada' },
-          { name: 'Przygotowanie do audytu', before: '1 tydzień', after: '1 klik' },
-          { name: 'Analiza trendów jakości', before: 'Brak', after: 'Dashboard live' },
-        ],
-      },
-      {
-        title: 'Dashboard OEE w real-time',
-        context: 'Nikt nie wie, która maszyna "nie dowozi" i dlaczego. Dane zbierane ręcznie na koniec zmiany.',
-        before: 'Koniec zmiany', after: 'Real-time', metricLabel: 'dostępność danych o wydajności',
-        processes: [
-          { name: 'Pomiar dostępności', before: 'Ręczny, z zeszytu', after: 'Auto z PLC' },
-          { name: 'Pomiar wydajności', before: 'Szacunkowy', after: 'Dokładny, live' },
-          { name: 'Pomiar jakości', before: 'Po fakcie', after: 'W trakcie produkcji' },
-          { name: 'Identyfikacja wąskich gardeł', before: 'Spotkanie tygodniowe', after: 'Alert na bieżąco' },
-          { name: 'Raport dla zarządu', before: '2 dni kompilowania', after: 'Zawsze gotowy' },
+          { name: 'Historia serwisowa maszyny', was: 'Zeszyt w szafce', now: 'Cyfrowa książka z pełnym logiem' },
+          { name: 'Planowanie przeglądów', was: 'Z głowy / "jak się przypomni"', now: 'Auto z motogodzin lub czasu' },
+          { name: 'Zamówienie części zamiennych', was: 'Telefon do dostawcy ad hoc', now: 'Auto-zamówienie przy progu' },
+          { name: 'Onboarding nowego mechanika', was: '3 miesiące "przy kimś"', now: '2 tygodnie z systemem' },
         ],
       },
     ],
@@ -87,38 +74,38 @@ const data: Industry[] = [
     icon: 'truck', color: '#3b82f6',
     cases: [
       {
-        title: 'Dyspozycja i planowanie tras',
-        context: '200+ pojazdów, 15 dyspozytorów. Planowanie na telefon i w Excelu.',
-        before: '40 min', after: '90 sek', metricLabel: 'zaplanowanie jednej trasy',
+        title: 'Rozliczenia kierowców — z pendrive\'ów i papierów do jednego systemu',
+        story: 'Firma TSL ze 180 pojazdami. Na koniec miesiąca kierowcy przywozili pendrive\'y z tachografem, papierowe delegacje i paragony za paliwo. Kadrowa z dwoma osobami zamykała rozliczenia przez 5 dni. A i tak zdarzały się błędy w dietach.',
+        was: '5 dni', now: '6h', metricLabel: 'zamknięcie rozliczeń miesięcznych floty',
         processes: [
-          { name: 'Sprawdzenie dostępności pojazdów', before: 'Telefon', after: 'Dashboard live' },
-          { name: 'Optymalizacja kolejności', before: 'Z doświadczenia', after: 'Algorytm' },
-          { name: 'Komunikacja z kierowcą', before: 'Telefon + SMS', after: 'Auto push do apki' },
-          { name: 'Status dostawy dla klienta', before: '15 min (telefon)', after: 'Link w SMS' },
-          { name: 'Dokumenty CMR', before: 'Ręcznie, papier', after: 'Auto-generowane' },
+          { name: 'Import danych z tachografu', was: 'Pendrive + ręczny upload', now: 'Auto-download przez GSM' },
+          { name: 'Naliczanie diet i delegacji', was: 'Ręcznie wg tabelki', now: 'Auto z GPS + trasy' },
+          { name: 'Weryfikacja czasu pracy', was: 'Wyrywkowo, "na oko"', now: '100% automatyczna, ciągła' },
+          { name: 'Rozliczenie paliwowe', was: 'Paragony + Excel, raz/miesiąc', now: 'Karta flotowa → auto-import' },
+          { name: 'Wykrycie anomalii (np. tankowanie)', was: 'Praktycznie brak', now: 'Alert w ciągu godziny' },
         ],
       },
       {
-        title: 'Rozliczanie kierowców i floty',
-        context: 'Dane z tachografów na pendrive\'ach, delegacje w papierze. Zamknięcie miesiąca = tydzień.',
-        before: '5 dni', after: '4h', metricLabel: 'rozliczenie miesiąca całej floty',
+        title: 'Portal śledzenia dla klientów spedycji',
+        story: '15 dyspozytorów, a i tak klienci czekali na informację o statusie. Każdy telefon "gdzie jest moja paczka?" angażował dyspozytora na 10 minut — bo musiał zadzwonić do kierowcy, znaleźć zlecenie, oddzwonić.',
+        was: '10 min', now: '0 min', metricLabel: 'czas obsługi jednego zapytania o status',
         processes: [
-          { name: 'Import danych z tachografu', before: 'Pendrive + ręcznie', after: 'Auto-download' },
-          { name: 'Naliczanie diet i delegacji', before: 'Ręcznie w Excelu', after: 'Auto z GPS' },
-          { name: 'Kontrola czasu pracy', before: 'Wyrywkowo', after: '100%, real-time' },
-          { name: 'Raport paliwowy', before: 'Raz w miesiącu', after: 'Codzienny, auto' },
-          { name: 'Wykrycie anomalii (tankowanie)', before: 'Brak', after: 'Auto-alert' },
+          { name: 'Lokalizacja przesyłki', was: 'Telefon do kierowcy', now: 'GPS live → portal klienta' },
+          { name: 'ETA dostawy', was: 'Szacunek dyspozytora', now: 'Auto-kalkulacja z ruchu' },
+          { name: 'Potwierdzenie dostawy', was: 'CMR faxem/mailem, 2 dni', now: 'Foto podpisu w apce → instant' },
+          { name: 'Dokumenty przewozowe', was: 'Papier, potem skan', now: 'Cyfrowe, dostępne od razu' },
         ],
       },
       {
-        title: 'Zarządzanie magazynem',
-        context: 'Stany w Excelu, inwentaryzacja raz na kwartał. Kompletacja zamówień "z pamięci".',
-        before: '8 min', after: '90 sek', metricLabel: 'kompletacja jednego zamówienia',
+        title: 'Automatyczna analityka sprzedaży w dystrybucji',
+        story: 'Dystrybutor FMCG z 1200 klientami. Dane sprzedażowe w labiryncie Exceli — każdy handlowiec prowadził swój plik, kierownik regionu swój, a dyrektor łączył to na koniec kwartału. Decyzje podejmowane na danych sprzed 3 miesięcy.',
+        was: '65h/mies.', now: 'Auto', metricLabel: 'praca na przygotowaniu raportów sprzedażowych',
         processes: [
-          { name: 'Lokalizacja towaru', before: 'Szukanie po hali', after: 'Skan → lokalizacja' },
-          { name: 'Stany magazynowe', before: 'Excel, raz/dzień', after: 'Real-time, auto' },
-          { name: 'Inwentaryzacja', before: '2 dni, raz/kwartał', after: 'Ciągła, rolling' },
-          { name: 'Generowanie WZ/PZ', before: 'Ręcznie', after: 'Auto z operacji' },
+          { name: 'Import danych z kanałów', was: 'Ręczne kopiowanie z 6 Exceli', now: 'Auto z ERP + e-commerce' },
+          { name: 'Czyszczenie i spójność danych', was: '2 osoby, cały poniedziałek', now: 'Reguły walidacji, auto' },
+          { name: 'Raport dla zarządu', was: 'Piątek, koniec dnia (jeśli zdążę)', now: 'Zawsze aktualny, live' },
+          { name: 'Analiza trendu per klient', was: 'Na prośbę, 2-3 dni', now: 'Dostępna na klik' },
+          { name: 'Alerty o spadkach sprzedaży', was: 'Po kwartale, z zaskoczenia', now: 'Automatyczny alert tygodniowy' },
         ],
       },
     ],
@@ -128,38 +115,37 @@ const data: Industry[] = [
     icon: 'shopping-cart', color: '#f59e0b',
     cases: [
       {
-        title: 'Fulfillment — od zamówienia do wysyłki',
-        context: '2000+ zamówień/dzień, 4 magazyny, 12 osób na pełen etat do obsługi.',
-        before: '6h', after: '12 min', metricLabel: 'od zamówienia do gotowości wysyłki',
+        title: 'Koniec z overselling — jedno źródło prawdy dla 5 kanałów',
+        story: 'Sprzedaż na Allegro, własny Shopify, hurtownia B2B, Amazon i punkt stacjonarny — a stany magazynowe aktualizowane dwa razy dziennie ręcznym eksportem z WMS. Co tydzień ktoś kupował coś, czego fizycznie nie było.',
+        was: '2×/dzień', now: 'Real-time', metricLabel: 'synchronizacja stanów między kanałami',
         processes: [
-          { name: 'Weryfikacja płatności', before: 'Ręczna, 15 min', after: 'Auto, instant' },
-          { name: 'Dobór magazynu', before: 'Jeden domyślny', after: 'Najbliższy, auto' },
-          { name: 'Lista kompletacji', before: 'Druk + szukanie', after: 'Auto + nawigacja' },
-          { name: 'Etykieta kurierska', before: 'Ręcznie w panelu', after: 'Auto-druk' },
-          { name: 'Powiadomienie klienta', before: 'Ręczny mail', after: 'Auto + tracking' },
+          { name: 'Aktualizacja stanów', was: 'CSV export → import, ręcznie', now: 'Event-driven, per transakcja' },
+          { name: 'Overselling (sprzedaż bez towaru)', was: '~12 tygodniowo', now: '< 1 miesięcznie' },
+          { name: 'Dodanie nowego kanału', was: '3-4 tygodnie integracji', now: '2-3 dni z gotowym API' },
+          { name: 'Cenowanie per kanał', was: 'Ręczna zmiana per platforma', now: 'Reguły cenowe, auto-dystrybucja' },
         ],
       },
       {
-        title: 'Synchronizacja stanów i kanałów',
-        context: 'Allegro, własny sklep, hurtownia B2B — stany aktualizowane 2x dziennie. Overselling co tydzień.',
-        before: '2×/dzień', after: 'Real-time', metricLabel: 'synchronizacja stanów magazynowych',
+        title: 'Fulfillment, w którym człowiek tylko pakuje',
+        story: 'Sklep z 2000+ zamówień dziennie i 4 magazynami. Zamówienie wpadało → ktoś sprawdzał stan → ktoś przypisywał magazyn → ktoś drukował etykietę. 12 osób robiło pracę, którą może robić system.',
+        was: '6h', now: '12 min', metricLabel: 'od złożenia zamówienia do gotowości wysyłki',
         processes: [
-          { name: 'Aktualizacja stanów', before: 'Ręczny eksport/import', after: 'Auto-sync live' },
-          { name: 'Overselling', before: 'Co tydzień', after: 'Wyeliminowany' },
-          { name: 'Nowy kanał sprzedaży', before: '2 tyg integracji', after: '1 dzień' },
-          { name: 'Ceny między kanałami', before: 'Ręczne per kanał', after: '1 źródło prawdy' },
+          { name: 'Weryfikacja płatności', was: 'Ręczne sprawdzanie, 15 min', now: 'Auto-potwierdzenie z bramki' },
+          { name: 'Przypisanie do magazynu', was: 'Zawsze ten sam (domyślny)', now: 'Najbliższy z towarem na stanie' },
+          { name: 'Lista kompletacji', was: 'Druk + chodzenie po magazynie', now: 'Optymalna ścieżka na ekranie' },
+          { name: 'Etykieta kurierska', was: 'Ręcznie w panelu kuriera', now: 'Auto-druk po kompletacji' },
+          { name: 'Powiadomienie klienta', was: 'Mail ręcznie, czasem zapominam', now: 'Auto-sekwencja z trackingiem' },
         ],
       },
       {
-        title: 'Repricing i analityka cenowa',
-        context: 'Pricing manager ręcznie monitorował 4000 SKU. Tydzień na jedną rundę cenową.',
-        before: '5 dni', after: '15 min', metricLabel: 'aktualizacja cen w całym katalogu',
+        title: 'Repricing 4000 SKU — z tygodnia do kwadransa',
+        story: 'Pricing manager ręcznie monitorował ceny konkurencji — otwierał ich sklepy, porównywał, wpisywał do arkusza, kalkulował nową cenę. 4000 produktów × 3 kanały. Jedna runda cenowa: tydzień. Czyli ceny były aktualne przez 3 dni, potem znowu nieaktualne.',
+        was: '5 dni', now: '15 min', metricLabel: 'pełna aktualizacja cen w katalogu',
         processes: [
-          { name: 'Monitoring konkurencji', before: 'Ręczne sprawdzanie', after: 'Auto-scraping' },
-          { name: 'Kalkulacja nowych cen', before: 'Excel + intuicja', after: 'Reguły + algorytm' },
-          { name: 'Wdrożenie cen', before: 'Per kanał, ręcznie', after: '1 klik, wszystkie' },
-          { name: 'Analiza wpływu na marżę', before: 'Brak', after: 'Dashboard real-time' },
-          { name: 'Częstotliwość repricing', before: 'Raz na miesiąc', after: 'Codziennie' },
+          { name: 'Monitoring cen konkurencji', was: 'Ręczne wchodzenie na strony', now: 'Auto-scraping, codzienny' },
+          { name: 'Kalkulacja nowej ceny', was: 'Formuła w Excelu per produkt', now: 'Reguły cenowe z min. marżą' },
+          { name: 'Wdrożenie nowych cen', was: 'Per platforma, ręcznie', now: '1 klik → wszystkie kanały' },
+          { name: 'Kontrola wpływu na marżę', was: 'Nie mieliśmy tego', now: 'Dashboard per SKU, real-time' },
         ],
       },
     ],
@@ -169,39 +155,38 @@ const data: Industry[] = [
     icon: 'briefcase', color: '#8b5cf6',
     cases: [
       {
-        title: 'Pipeline projektowy',
-        context: 'PM-owie spędzali więcej czasu na statusach niż na dostarczaniu. Klient pyta — szukanie po Slacku.',
-        before: '8h/tyg', after: '45 min/tyg', metricLabel: 'czas PM na statusy i raportowanie',
+        title: 'Platforma do zarządzania projektami, budżetem i alokacją',
+        story: 'Software house z 80 developerami i 25 aktywnymi projektami. PM-owie kompilowali statusy ręcznie na standupach, klient pytał o progress — szukanie po Slacku i Jirze. Nikt dokładnie nie wiedział, które projekty się opłacają, a które jadą pod kreską.',
+        was: '8h/tyg', now: '< 1h/tyg', metricLabel: 'czas PM-a na statusy i raportowanie',
         processes: [
-          { name: 'Zbieranie statusów', before: 'Standup + Slack', after: 'Dashboard auto' },
-          { name: 'Raport dla klienta', before: '2h kompilowania', after: '1 klik' },
-          { name: 'Alokacja ludzi do projektu', before: '"Kto wolny?"', after: 'Skills + availability' },
-          { name: 'Alert o ryzyku budżetowym', before: 'Po fakcie', after: '72h wcześniej' },
-          { name: 'Timesheet', before: 'Z pamięci, piątek', after: 'Auto z tasków' },
+          { name: 'Status projektu', was: 'Standup + Slack + kompilacja', now: 'Dashboard auto z tasków' },
+          { name: 'Raport dla klienta', was: '2h ręcznego składania', now: 'Auto-generowany, 1 klik' },
+          { name: 'Śledzenie rentowności projektu', was: 'Nie wiedzieliśmy do zamknięcia', now: 'Live, per sprint' },
+          { name: 'Alokacja nowego developera', was: '"Kto jest wolny?"', now: 'Matching: skills + dostępność + velocity' },
+          { name: 'Timesheet', was: 'Z pamięci w piątek, bo nikt lubi', now: 'Auto z tasków, korekta 1×/tydzień' },
         ],
       },
       {
-        title: 'Zarządzanie sprawami (kancelaria)',
-        context: '800+ aktywnych spraw, terminy w Excelu. Ryzyko przegapienia terminu sądowego — realne.',
-        before: '1.5h/dzień', after: '15 min/dzień', metricLabel: 'administracja per prawnik dziennie',
+        title: 'System do obsługi spraw dla kancelarii',
+        story: 'Kancelaria z 30 prawnikami i 800+ aktywnych spraw. Dokumenty w folderach na dysku, terminy w kalendarzu Outlook i w Excelu. Dwukrotnie w roku zdarzało się przegapić termin sądowy. Za każdym razem: stres, kara, utrata zaufania klienta.',
+        was: '1.5h/dzień', now: '15 min/dzień', metricLabel: 'czas prawnika na administrację sprawy',
         processes: [
-          { name: 'Szukanie dokumentu w sprawie', before: '12 min', after: '8 sekund' },
-          { name: 'Przygotowanie pisma procesowego', before: '2h od zera', after: '20 min z szablonu' },
-          { name: 'Kontrola terminów', before: 'Ręczna, Excel', after: 'Auto + alerty' },
-          { name: 'Historia korespondencji', before: 'Folder mailowy', after: 'Timeline w sprawie' },
-          { name: 'Rozliczenie godzin klienta', before: 'Koniec miesiąca, ręcznie', after: 'Auto z aktywności' },
+          { name: 'Znalezienie dokumentu w sprawie', was: '10-15 min (folder na dysku)', now: 'Wyszukiwarka pełnotekstowa, 5 sek' },
+          { name: 'Kontrola terminów procesowych', was: 'Excel + kalendarz Outlook', now: 'System pilnuje + eskalacja 72h/24h/4h' },
+          { name: 'Przygotowanie pisma procesowego', was: 'Od zera w Wordzie, 2h', now: '20 min — szablon + auto-dane klienta' },
+          { name: 'Rozliczenie godzin per klient', was: 'Ręczne, koniec miesiąca', now: 'Auto z logów aktywności' },
         ],
       },
       {
-        title: 'Ofertowanie i sprzedaż',
-        context: 'Handlowiec przygotowuje ofertę 2h, wysyła mailem, zapomina o follow-upie. 40% ofert ginie.',
-        before: '2h', after: '10 min', metricLabel: 'przygotowanie spersonalizowanej oferty',
+        title: 'Zintegrowana ofertownia z CRM i follow-upem',
+        story: 'Agencja marketingowa — handlowiec pisał ofertę 2 godziny w Google Docs, wysyłał mailem, a potem zapominał o follow-upie. 40% ofert ginęło w próżni. Nie wiedzieli nawet, czy klient otworzył PDFa.',
+        was: '2h', now: '12 min', metricLabel: 'przygotowanie spersonalizowanej oferty',
         processes: [
-          { name: 'Generowanie oferty', before: 'Word + kopiuj/wklej', after: 'Auto z CRM' },
-          { name: 'Personalizacja', before: 'Ręczne dane', after: 'Auto z kontaktu' },
-          { name: 'Follow-up', before: 'Zapominam', after: 'Auto sekwencja' },
-          { name: 'Śledzenie otwarcia', before: 'Brak', after: 'Powiadomienie live' },
-          { name: 'Analiza win/loss', before: 'Brak', after: 'Auto per handlowiec' },
+          { name: 'Generowanie oferty', was: 'Kopiowanie starej w Google Docs', now: 'Szablon + auto-dane z CRM' },
+          { name: 'Personalizacja (logo, dane, zakres)', was: 'Ręczne wklejanie', now: 'Auto z kontaktu + checkboxy zakresu' },
+          { name: 'Follow-up po wysłaniu', was: 'Zapominam w 40% przypadków', now: 'Auto-sekwencja: 3d → 7d → 14d' },
+          { name: 'Czy klient otworzył ofertę?', was: 'Nie wiedziałem', now: 'Powiadomienie live + ile czasu spędził' },
+          { name: 'Win/loss analiza', was: 'Nie mieliśmy', now: 'Auto per handlowiec, per usługa' },
         ],
       },
     ],
@@ -211,38 +196,37 @@ const data: Industry[] = [
     icon: 'dollar-sign', color: '#10b981',
     cases: [
       {
-        title: 'Zamknięcie miesiąca',
-        context: 'Biuro rachunkowe, 200+ klientów. Faktury z maila, WhatsAppa, kuriera. Ręczne przepisywanie.',
-        before: '3 dni', after: '4h', metricLabel: 'zamknięcie miesiąca per klient',
+        title: 'OCR + AI do księgowania faktur — 200 klientów, zero przepisywania',
+        story: 'Biuro rachunkowe ze 200+ klientami. Faktury przychodziły mailem, WhatsAppem, kurierem, a czasem jako zdjęcie z telefonu. Każda ręcznie przepisywana. Na koniec miesiąca — wyścig z czasem, praca po godzinach, stres.',
+        was: '3 dni', now: '4h', metricLabel: 'zamknięcie miesiąca per klient',
         processes: [
-          { name: 'Zbieranie dokumentów', before: 'Mail + telefon', after: 'Portal + auto-remind' },
-          { name: 'Rozpoznanie faktury', before: '3 min ręcznie', after: '15 sek (OCR + AI)' },
-          { name: 'Dekretacja', before: 'Ręczna', after: 'Auto-sugestia (95%)' },
-          { name: 'Uzgodnienie z bankiem', before: '2h per klient', after: '5 min auto-match' },
-          { name: 'Brakujące dokumenty', before: 'Telefon, mail', after: 'Auto-przypomnienie' },
+          { name: 'Zbieranie dokumentów od klienta', was: 'Telefony + maile + WhatsApp', now: 'Portal — klient wrzuca, system potwierdza' },
+          { name: 'Rozpoznanie i odczyt faktury', was: '3 min ręcznego przepisywania', now: '15 sek — OCR + AI (99.7% accuracy)' },
+          { name: 'Dekretacja', was: 'Ręczna, per dokument', now: 'Auto-sugestia z historii klienta' },
+          { name: 'Uzgodnienie z wyciągiem bankowym', was: '2h per klient', now: 'Auto-matching, 5 min' },
+          { name: 'Brakujące dokumenty', was: 'Telefon → "proszę przysłać"', now: 'Auto-reminder na 3 dni przed deadline' },
         ],
       },
       {
-        title: 'Raportowanie finansowe',
-        context: 'Zarząd czekał 3 dni na raport miesięczny. Dane z 8 systemów zbierane ręcznie.',
-        before: '3 dni', after: '10 sek', metricLabel: 'generowanie raportu finansowego',
+        title: 'Dashboard finansowy zamiast Excela z 8 zakładkami',
+        story: 'Dyrektor finansowy dostawał raport miesięczny po 3 dniach od zamknięcia miesiąca. Dane z 8 systemów zbierane ręcznie, konsolidowane w Excelu z makrami, które rozumiał tylko autor. Gdy ten poszedł na urlop — raport się opóźniał.',
+        was: '3 dni', now: '10 sek', metricLabel: 'czas generowania raportu finansowego',
         processes: [
-          { name: 'Pobranie danych z banku', before: 'Eksport CSV', after: 'API real-time' },
-          { name: 'Konsolidacja danych', before: 'Excel, 8 plików', after: 'Auto, 1 źródło' },
-          { name: 'Wizualizacja KPI', before: 'Wykresy w Excelu', after: 'Dashboard live' },
-          { name: 'Dystrybucja raportu', before: 'PDF mailem', after: 'Link + auto-wysyłka' },
-          { name: 'Drill-down do szczegółów', before: 'Nowy raport = 1 dzień', after: '1 klik' },
+          { name: 'Pobranie danych z banku', was: 'Ręczny eksport CSV', now: 'API, auto-sync co godzinę' },
+          { name: 'Konsolidacja z wielu źródeł', was: 'Excel z makrami, 8 plików', now: 'Auto-pipeline, 1 źródło prawdy' },
+          { name: 'Wizualizacja dla zarządu', was: 'Wykresy w Excelu → PowerPoint', now: 'Interaktywny dashboard, drill-down' },
+          { name: 'Analiza odchyleń', was: 'Ręczne porównanie z budżetem', now: 'Auto-highlight anomalii' },
         ],
       },
       {
-        title: 'Compliance i kontrola podatkowa',
-        context: 'Przygotowanie do kontroli US = tydzień gorączkowego szukania. Ryzyko pomyłki = kara.',
-        before: '1 tydzień', after: '2h', metricLabel: 'przygotowanie pełnej dokumentacji do kontroli',
+        title: 'System do obsługi szkód z portalem klienta',
+        story: 'Broker ubezpieczeniowy — klient zgłaszał szkodę przez telefon, potem mailował zdjęcia, potem ktoś ręcznie wpisywał dane do systemu TU. Proces ciągnął się tygodniami, klient dzwonił codziennie "co ze szkodą?".',
+        was: '14 dni', now: '5 dni', metricLabel: 'średni czas likwidacji szkody',
         processes: [
-          { name: 'Zebranie dokumentów', before: 'Szafa + serwer', after: '1 filtr w systemie' },
-          { name: 'Sprawdzenie kompletności', before: 'Ręczna checklista', after: 'Auto-walidacja' },
-          { name: 'Historia zmian', before: 'Brak', after: 'Pełny audit trail' },
-          { name: 'Raporty JPK', before: '4h generowania', after: '1 klik' },
+          { name: 'Zgłoszenie szkody', was: 'Telefon + mail z opisem', now: 'Formularz online z foto + OCR dokumentów' },
+          { name: 'Weryfikacja polisy', was: 'Ręczne sprawdzenie w 3 systemach', now: 'Auto-match po PESEL/NIP' },
+          { name: 'Przesłanie do TU', was: 'Ręczne wklepanie do portalu TU', now: 'Auto-integracja API' },
+          { name: 'Status dla klienta', was: 'Telefon — "sprawdzę i oddzwonię"', now: 'Portal klienta, auto-update' },
         ],
       },
     ],
@@ -252,37 +236,25 @@ const data: Industry[] = [
     icon: 'home', color: '#ec4899',
     cases: [
       {
-        title: 'Dziennik budowy i dokumentacja',
-        context: 'Papierowy dziennik, zdjęcia na telefonie kierownika, raporty w Wordzie.',
-        before: '45 min/dzień', after: '5 min/dzień', metricLabel: 'czas kierownika na dokumentację',
+        title: 'Cyfrowy dziennik budowy — z telefonu, nie z kserówki',
+        story: 'Kierownik budowy prowadził dziennik na papierze, robił zdjęcia telefonem (które zostawały w telefonie), pisał raporty w Wordzie. Kontrola nadzoru? Tydzień szukania dokumentów po biurze i mailach.',
+        was: '45 min/dzień', now: '5 min/dzień', metricLabel: 'czas kierownika na dokumentację dzienną',
         processes: [
-          { name: 'Wpis do dziennika', before: 'Ręcznie, papier', after: 'Apka + głos' },
-          { name: 'Dokumentacja zdjęciowa', before: 'Telefon → folder', after: 'Apka → auto-tag' },
-          { name: 'Znalezienie protokołu', before: '30 min', after: '10 sekund' },
-          { name: 'Raport dzienny dla inwestora', before: '1h', after: 'Auto-generowany' },
-          { name: 'Gotowość do kontroli', before: '3 dni przygotowań', after: 'Zawsze gotowy' },
+          { name: 'Wpis do dziennika', was: 'Ręcznie na papierze', now: 'Apka — tekst, głos, zdjęcie w 1 miejscu' },
+          { name: 'Dokumentacja zdjęciowa', was: 'Telefon → "gdzieś mam"', now: 'Auto-tagowanie: data, lokalizacja, etap' },
+          { name: 'Raport dzienny dla inwestora', was: '1h pisania w Wordzie', now: 'Auto-generowany z wpisów dnia' },
+          { name: 'Przygotowanie do kontroli', was: '3-5 dni zbierania papierów', now: 'Zawsze gotowy, 1 filtr' },
         ],
       },
       {
-        title: 'Kosztorysowanie i przetargi',
-        context: 'Kosztorysant przygotowuje ofertę 3-5 dni. Ceny materiałów z zeszłego kwartału.',
-        before: '4 dni', after: '6h', metricLabel: 'przygotowanie pełnego kosztorysu',
+        title: 'System rozliczeń podwykonawców z odbiorami robót',
+        story: 'Deweloper z 5 równoległymi budowami i 40+ podwykonawcami. Odbiory robót na kartce, rozliczenia w Excelu u każdego project managera osobno. Nikt nie miał pełnego obrazu zaawansowania.',
+        was: '3h/tyg', now: '20 min/tyg', metricLabel: 'rozliczanie podwykonawców per budowa',
         processes: [
-          { name: 'Przedmiar robót', before: 'Ręczne liczenie', after: 'Auto z BIM/rysunku' },
-          { name: 'Ceny materiałów', before: 'Zeszły kwartał', after: 'Baza aktualna, live' },
-          { name: 'Wyceny podwykonawców', before: 'Telefon + mail', after: 'Portal zapytań' },
-          { name: 'Porównanie wariantów', before: 'Nowy plik Excela', after: 'Scenariusze, 1 klik' },
-        ],
-      },
-      {
-        title: 'Zarządzanie podwykonawcami',
-        context: 'Odbiory na kartce, rozliczenia w Excelu. Kto ile zrobił — nikt nie ma pełnego obrazu.',
-        before: '2h/tyg', after: '15 min/tyg', metricLabel: 'rozliczenie podwykonawców per projekt',
-        processes: [
-          { name: 'Odbiór robót', before: 'Kartka + podpis', after: 'Apka + zdjęcie + GPS' },
-          { name: 'Zaawansowanie prac', before: 'Szacunek PM-a', after: 'Auto z odbiorów' },
-          { name: 'Rozliczenie finansowe', before: 'Excel, raz/miesiąc', after: 'Auto z odbiorów' },
-          { name: 'Spory o zakres', before: 'Częste', after: 'Dowody w systemie' },
+          { name: 'Odbiór częściowy robót', was: 'Kartka z podpisem', now: 'Apka: zdjęcie + GPS + podpis cyfrowy' },
+          { name: 'Zaawansowanie finansowe', was: 'Excel PM-a, raz w miesiącu', now: 'Auto z odbiorów, real-time' },
+          { name: 'Faktura podwykonawcy', was: 'Weryfikacja 3 godziny', now: 'Auto-weryfikacja z protokołem' },
+          { name: 'Spory o zakres "co było w umowie"', was: 'Częste i kosztowne', now: 'Dokumentacja w systemie od dnia 1' },
         ],
       },
     ],
@@ -292,38 +264,26 @@ const data: Industry[] = [
     icon: 'coffee', color: '#f97316',
     cases: [
       {
-        title: 'Zamówienia surowców',
-        context: 'Szef kuchni zamawiał "na oko" — raz za dużo (marnowanie), raz za mało (brak dań).',
-        before: '1h/dzień', after: '5 min/dzień', metricLabel: 'planowanie zakupów dziennych',
+        title: 'Zamówienia surowców oparte o dane, nie o "oko" szefa kuchni',
+        story: 'Sieć 4 restauracji — szef kuchni zamawiał "ile trzeba" na podstawie doświadczenia. Raz za dużo (marnowanie), raz za mało (brak pozycji w menu). Nikt nie wiedział, ile naprawdę zużywają per danie.',
+        was: '1h/dzień', now: '5 min/dzień', metricLabel: 'planowanie zakupów na kuchnię',
         processes: [
-          { name: 'Analiza stanów', before: 'Na oko / liczenie', after: 'Auto z wagi + POS' },
-          { name: 'Zamówienie do dostawcy', before: 'Telefon', after: 'Auto-zamówienie' },
-          { name: 'Rozliczenie dostaw', before: 'Ręczne, raz/tydzień', after: 'Przy przyjęciu, auto' },
-          { name: 'Predykcja zużycia', before: 'Brak', after: 'ML z historii + rezerwacji' },
-          { name: 'Marnowanie surowców', before: '~15% wartości', after: '~3%' },
+          { name: 'Analiza stanów magazynowych', was: 'Na oko / ręczne liczenie', now: 'Auto z POS + kartoteka' },
+          { name: 'Zamówienie do dostawcy', was: 'Telefon / SMS', now: 'Auto-generowane z progu minimum' },
+          { name: 'Predykcja zużycia na jutro', was: 'Z doświadczenia', now: 'ML z historii + rezerwacji + pory roku' },
+          { name: 'Kontrola food waste', was: 'Nie mierzyliśmy tego', now: 'Codzienny raport, -45% marnowania' },
         ],
       },
       {
-        title: 'Obsługa zamówień cateringowych',
-        context: 'Telefon → ręczne wpisanie → kuchnia → dostawa. Pomyłki i brak potwierdzeń.',
-        before: '30 min', after: '2 min', metricLabel: 'przyjęcie i potwierdzenie zamówienia',
+        title: 'System obsługi cateringu — od formularza do dostawy',
+        story: 'Cukiernia obsługująca 200+ zamówień cateringowych miesięcznie. Zamówienia przez telefon, potwierdzenia mailem (jak ktoś pamięta), logistyka dostaw w głowie jednej osoby.',
+        was: '30 min', now: '2 min', metricLabel: 'przyjęcie i potwierdzenie zamówienia cateringowego',
         processes: [
-          { name: 'Przyjęcie zamówienia', before: 'Telefon + notka', after: 'Formularz online' },
-          { name: 'Potwierdzenie dla klienta', before: 'Mail ręcznie', after: 'Auto instant' },
-          { name: 'Przekazanie do kuchni', before: 'Karteczka', after: 'Auto na ekranie' },
-          { name: 'Planowanie dostawy', before: 'Ręczne', after: 'Auto z optymalizacją' },
-          { name: 'Fakturowanie', before: 'Po fakcie, ręcznie', after: 'Auto po dostawie' },
-        ],
-      },
-      {
-        title: 'Food cost i rentowność menu',
-        context: 'Food cost liczony raz w miesiącu. Marże dań — zgadywanka.',
-        before: 'Raz/mies.', after: 'Codziennie', metricLabel: 'kontrola food cost',
-        processes: [
-          { name: 'Kalkulacja kosztu dania', before: 'Ręczna, przybliżona', after: 'Auto z receptury' },
-          { name: 'Aktualizacja po zmianie cen', before: 'Zapominam', after: 'Auto-przeliczenie' },
-          { name: 'Ranking rentowności dań', before: 'Brak', after: 'Dashboard live' },
-          { name: 'Optymalizacja menu', before: 'Intuicja', after: 'Dane + marża + popularność' },
+          { name: 'Przyjęcie zamówienia', was: 'Telefon → karteczka', now: 'Formularz online z kalkulacją' },
+          { name: 'Potwierdzenie z ceną', was: 'Mail ręcznie, czasem dzień później', now: 'Auto, natychmiast po złożeniu' },
+          { name: 'Przekazanie do produkcji', was: 'Karteczka na ladzie', now: 'Auto na ekranie w kuchni' },
+          { name: 'Planowanie dostawy', was: 'Jedna osoba planuje z głowy', now: 'Auto-optymalizacja tras + timeframe' },
+          { name: 'Faktura / paragon', was: 'Ręcznie po dostawie', now: 'Auto-wysyłka po potwierdzeniu dostawy' },
         ],
       },
     ],
@@ -333,38 +293,26 @@ const data: Industry[] = [
     icon: 'code', color: '#6366f1',
     cases: [
       {
-        title: 'CI/CD i delivery pipeline',
-        context: 'Deployment ręczny co 2 tygodnie. Każdy release = dzień stresu i modlitwa.',
-        before: 'Co 2 tyg', after: 'Kilka ×/dzień', metricLabel: 'częstotliwość deploymentu',
+        title: 'Onboarding developera — z 3 tygodni do 3 dni',
+        story: 'Nowy developer dostawał 15 linków do Confluence (połowa nieaktualnych), 3 repozytoria i życzenia powodzenia. Setup środowiska = cały dzień. Dostępy do systemów = 3 dni czekania na IT. Produktywny po 3 tygodniach.',
+        was: '3 tyg', now: '3 dni', metricLabel: 'czas do pierwszego merge requesta',
         processes: [
-          { name: 'Build + testy', before: '45 min ręcznie', after: '8 min, auto' },
-          { name: 'Deploy na staging', before: '2h', after: '1 komenda, 3 min' },
-          { name: 'Deploy na produkcję', before: '4h + downtime', after: 'Zero-downtime, auto' },
-          { name: 'Rollback', before: '1h paniki', after: '1 klik, 30 sek' },
-          { name: 'Monitoring po deploy', before: 'Ręczne sprawdzanie', after: 'Auto health-check' },
+          { name: 'Setup środowiska lokalnego', was: '1 dzień + frustracja', now: '30 min, zautomatyzowany skrypt' },
+          { name: 'Dostępy do systemów', was: 'Mail do IT → 3 dni', now: 'Auto-provisioning z checklist' },
+          { name: 'Zrozumienie architektury', was: 'Confluence (nieaktualne)', now: 'Auto-generowana, zawsze świeża' },
+          { name: 'Przypisanie pierwszego taska', was: 'Tydzień 2, "jak się rozejrzysz"', now: 'Dzień 1, pre-selected onboarding task' },
         ],
       },
       {
-        title: 'Onboarding developera',
-        context: 'Nowy developer: 15 linków do Confluence, 3 repo, życzenia powodzenia. Produktywny po 3 tygodniach.',
-        before: '3 tyg', after: '3 dni', metricLabel: 'czas do pierwszego merge requesta',
+        title: 'Monitoring i incident response — zanim klient zadzwoni',
+        story: 'Klient dzwonił z "aplikacja nie działa" — zanim ktokolwiek w zespole wiedział o problemie. Diagnoza = 30 minut logowania się po serwerach i czytania logów. SLA compliance? 94% — bo każdy incydent zaczynał się od zera.',
+        was: '45 min', now: '90 sek', metricLabel: 'od incydentu do podjęcia działania',
         processes: [
-          { name: 'Setup środowiska', before: '1 dzień + frustracja', after: '30 min, skrypt' },
-          { name: 'Dostępy do systemów', before: '3 dni, 5 osób', after: '1 formularz, auto' },
-          { name: 'Dokumentacja architektury', before: 'Nieaktualna', after: 'Auto-generowana' },
-          { name: 'Pierwszy task', before: 'Tydzień 2', after: 'Dzień 1' },
-        ],
-      },
-      {
-        title: 'Incident response i monitoring',
-        context: 'Klient dzwoni "nie działa" zanim ktokolwiek w zespole wie. SLA? Teoretyczne.',
-        before: '45 min', after: '90 sek', metricLabel: 'czas od incydentu do reakcji',
-        processes: [
-          { name: 'Wykrycie problemu', before: 'Klient dzwoni', after: 'Alert automatyczny' },
-          { name: 'Diagnoza', before: '30 min logów', after: 'Auto-korelacja' },
-          { name: 'Powiadomienie zespołu', before: 'Slack ręcznie', after: 'Auto-eskalacja' },
-          { name: 'Post-mortem', before: 'Zapominamy', after: 'Auto-wygenerowany szkic' },
-          { name: 'SLA tracking', before: 'Excel, koniec miesiąca', after: 'Real-time dashboard' },
+          { name: 'Wykrycie problemu', was: 'Klient dzwoni / pisze', now: 'Auto-alert z metryk i logów' },
+          { name: 'Diagnoza root cause', was: '30 min szukania po logach', now: 'Auto-korelacja logów i metryk' },
+          { name: 'Eskalacja do odpowiedniej osoby', was: 'Slack → kto jest online?', now: 'Auto-routing wg on-call schedule' },
+          { name: 'Post-mortem', was: 'Zapominaliśmy robić', now: 'Auto-generowany szkic z timeline' },
+          { name: 'SLA compliance', was: '94% i spadało', now: '99.8% i stabilne' },
         ],
       },
     ],
@@ -374,37 +322,26 @@ const data: Industry[] = [
     icon: 'activity', color: '#ef4444',
     cases: [
       {
-        title: 'Rejestracja pacjentów',
-        context: 'Recepcja na telefonie non-stop. 30% wizyt to no-show. Pacjenci rezygnują z czekania.',
-        before: '5 min', after: '30 sek', metricLabel: 'rejestracja jednego pacjenta',
+        title: 'Rejestracja online + system przypomień — no-show z 30% do 8%',
+        story: 'Klinika z 6 gabinetami — recepcja non-stop na telefonie, kolejka dzwoniących. 30% umówionych pacjentów nie przychodziło (bo zapominali), a wolne terminy nie były zapełniane. Strata: ~40 wizyt tygodniowo.',
+        was: '5 min', now: '30 sek', metricLabel: 'czas rejestracji jednego pacjenta',
         processes: [
-          { name: 'Umawianie wizyty', before: 'Tylko telefon', after: 'Online 24/7 + telefon' },
-          { name: 'Przypomnienie o wizycie', before: 'Brak', after: 'SMS 24h + 2h przed' },
-          { name: 'No-show rate', before: '30%', after: '8%' },
-          { name: 'Zarządzanie kolejką', before: 'Karteczki', after: 'Ekran + auto-call' },
-          { name: 'Weryfikacja ubezpieczenia', before: '3 min ręcznie', after: 'Auto eWUŚ' },
+          { name: 'Umawianie wizyty', was: 'Tylko telefonicznie', now: 'Online 24/7 (70% bookingów) + tel' },
+          { name: 'Przypomnienie o wizycie', was: 'Nie robiliśmy tego', now: 'SMS 24h + 2h przed wizytą' },
+          { name: 'Odwołanie / przesunięcie', was: 'Telefon do recepcji', now: 'Self-service w SMS / portalu' },
+          { name: 'Zapełnianie luk z odwołań', was: 'Nie zdążaliśmy', now: 'Auto-oferta do listy oczekujących' },
+          { name: 'Weryfikacja ubezpieczenia', was: 'Ręczna, 3 min na pacjenta', now: 'Auto eWUŚ przy rejestracji' },
         ],
       },
       {
-        title: 'Dokumentacja medyczna',
-        context: 'Lekarz po wizycie: 15 minut na dokumentację. "Pracuję dla komputera, nie dla pacjenta."',
-        before: '15 min', after: '3 min', metricLabel: 'dokumentacja po wizycie',
+        title: 'System obiegu dokumentów medycznych i e-recepty',
+        story: 'Lekarz po każdej wizycie spędzał 15 minut na dokumentacji: wpisywanie ręcznie, szukanie historii pacjenta, wystawianie recept. "Pracuję dla systemu, nie dla pacjenta" — to zdanie słyszeliśmy od każdego.',
+        was: '15 min', now: '3 min', metricLabel: 'dokumentacja jednej wizyty',
         processes: [
-          { name: 'Opis wizyty', before: 'Od zera, każdorazowo', after: 'Szablon + auto-uzupeł.' },
-          { name: 'E-recepta', before: '5 min szukania leku', after: '30 sek, podpowiedzi' },
-          { name: 'E-skierowanie', before: 'Ręcznie, druk', after: 'Auto z rozpoznania' },
-          { name: 'Historia leczenia', before: 'Teczka papierowa', after: '1 ekran, pełna' },
-        ],
-      },
-      {
-        title: 'Wyniki badań i komunikacja',
-        context: 'Pacjent dzwoni po wyniki. Recepcja szuka, lekarz opisuje, pacjent dzwoni ponownie.',
-        before: '2-3 dni', after: '4h', metricLabel: 'od badania do wyniku u pacjenta',
-        processes: [
-          { name: 'Import wyników z laboratorium', before: 'Fax / mail', after: 'Auto-integracja' },
-          { name: 'Opis wyniku', before: 'Lekarz szuka karty', after: 'Auto-podpięcie do wizyty' },
-          { name: 'Udostępnienie pacjentowi', before: 'Wizyta po odbiór', after: 'Portal / SMS' },
-          { name: 'Telefony o wyniki', before: '~30/dzień', after: '~5/dzień' },
+          { name: 'Opis wizyty', was: 'Od zera, każdy raz', now: 'Szablon per specjalizacja + auto-uzupełnienie' },
+          { name: 'Wystawienie e-recepty', was: '5 min (szukanie leku, dawki)', now: '30 sek — podpowiedzi z historii' },
+          { name: 'Dostęp do historii pacjenta', was: 'Teczka papierowa / szukanie w systemie', now: '1 ekran — pełna historia, wyniki, recepty' },
+          { name: 'Udostępnienie wyników pacjentowi', was: 'Wizyta / telefon / mail', now: 'Portal pacjenta, auto po opisaniu' },
         ],
       },
     ],
@@ -414,38 +351,26 @@ const data: Industry[] = [
     icon: 'users', color: '#14b8a6',
     cases: [
       {
-        title: 'Proces rekrutacyjny',
-        context: 'CV w mailach, statusy w głowie rekrutera. Kandydat czeka tydzień i idzie do konkurencji.',
-        before: '14 dni', after: '3 dni', metricLabel: 'od aplikacji do decyzji',
+        title: 'Obieg dokumentów pracowniczych — z papierów do systemu',
+        story: 'Firma z 300 pracownikami — dział HR (3 osoby) tonął w papierach: umowy, aneksy, wnioski urlopowe, zaświadczenia. Onboarding nowego pracownika = 15 dokumentów do podpisania, 8 systemów do skonfigurowania, 5 osób zaangażowanych.',
+        was: '3 dni', now: '4h', metricLabel: 'pełny onboarding nowego pracownika',
         processes: [
-          { name: 'Screening CV', before: '3 min × 200', after: 'Auto-scoring + top 20' },
-          { name: 'Odpowiedź do kandydata', before: '5 dni', after: '2h auto' },
-          { name: 'Umawianie rozmów', before: 'Ping-pong mailowy', after: 'Kalendarz self-service' },
-          { name: 'Feedback po rozmowie', before: 'Mail do PM-a', after: 'Formularz → ATS' },
-          { name: 'Raport z rekrutacji', before: 'Ręcznie, z pamięci', after: 'Auto z pipeline' },
+          { name: 'Dokumenty do podpisania', was: '15 papierów, druk, podpis, skan', now: 'E-podpis, 10 minut, z domu' },
+          { name: 'Konto w systemach (mail, AD, narzędzia)', was: 'Mail do IT → 2 dni czekania', now: 'Auto-provisioning z HR-ówki' },
+          { name: 'Wnioski urlopowe', was: 'Papierowy wniosek → podpis przełożonego', now: 'Portal self-service → auto-akceptacja' },
+          { name: 'Zaświadczenia (o zatrudnieniu, zarobkach)', was: 'Prośba → HR szuka → 2 dni', now: 'Auto-generowane w portalu, instant' },
         ],
       },
       {
-        title: 'Onboarding nowego pracownika',
-        context: '15 dokumentów, 8 systemów, 5 osób musi coś "ogarnąć". Nowy czeka.',
-        before: '3 dni', after: '4h', metricLabel: 'pełny onboarding pracownika',
+        title: 'System do delegowania pracowników tymczasowych',
+        story: 'Agencja pracy delegująca 500+ osób do 30 klientów. Grafiki w Excelu, obecności na papierze, rozliczenia ręcznie. Gdy ktoś nie przyszedł — panika i telefony w poszukiwaniu zastępstwa.',
+        was: '2h/dzień', now: '15 min/dzień', metricLabel: 'zarządzanie grafikami i obecnościami',
         processes: [
-          { name: 'Dokumenty do podpisu', before: '15 papierów', after: 'E-podpis, 10 min' },
-          { name: 'Konta w systemach', before: 'Mail do IT, 2 dni', after: 'Auto-provisioning' },
-          { name: 'Szkolenie wstępne', before: 'Kto ma czas?', after: 'LMS + auto-harmonogram' },
-          { name: 'Checklist dla managera', before: 'Brak / email', after: 'Auto-tasklist' },
-        ],
-      },
-      {
-        title: 'Delegowanie pracowników tymczasowych',
-        context: 'Agencja pracy, 500+ osób. Grafiki, obecności, rozliczenia — Excel i telefony.',
-        before: '2h/dzień', after: '15 min/dzień', metricLabel: 'zarządzanie grafikami i obecnościami',
-        processes: [
-          { name: 'Grafik tygodniowy', before: 'Excel + telefon', after: 'System + auto-match' },
-          { name: 'Ewidencja czasu pracy', before: 'Papierowa lista', after: 'Apka + GPS' },
-          { name: 'Rozliczenie pracownika', before: 'Ręczne, koniec miesiąca', after: 'Auto z ewidencji' },
-          { name: 'Zastępstwo za nieobecność', before: 'Panika + telefony', after: 'Auto-sugestia' },
-          { name: 'Raport dla klienta', before: 'Excel, mail', after: 'Portal, auto' },
+          { name: 'Planowanie grafiku tygodniowego', was: 'Excel + telefon do każdego', now: 'System z auto-dopasowaniem' },
+          { name: 'Ewidencja obecności', was: 'Papierowa lista, faxowana', now: 'Apka mobilna + GPS' },
+          { name: 'Zastępstwo za nieobecność', was: '1-2h telefonów', now: 'Auto-sugestia z puli dostępnych' },
+          { name: 'Rozliczenie z klientem', was: 'Ręczne, koniec miesiąca, 3 dni', now: 'Auto z ewidencji, 1 klik eksport' },
+          { name: 'Raport dla klienta', was: 'Excel mailem', now: 'Portal klienta, auto-aktualizowany' },
         ],
       },
     ],
@@ -455,38 +380,26 @@ const data: Industry[] = [
     icon: 'book-open', color: '#a855f7',
     cases: [
       {
-        title: 'Zarządzanie kursami i zapisami',
-        context: 'Zapisy przez formularz, płatności na przelew, potwierdzenia ręcznie. 50+ kursów/miesiąc — chaos.',
-        before: '20 min', after: '0 min', metricLabel: 'obsługa jednego zapisu (pełna automatyzacja)',
+        title: 'Platforma kursowa — od zapisu po certyfikat bez ręcznej pracy',
+        story: 'Firma szkoleniowa z 50+ kursami miesięcznie. Zapisy przez Google Forms, płatności przelewem ("proszę w tytule wpisać..."), potwierdzenia ręcznie mailem. Przy 200+ uczestnikach miesięcznie — ktoś zawsze wypadał z listy.',
+        was: '20 min', now: '0 min', metricLabel: 'obsługa jednego zapisu (pełny automat)',
         processes: [
-          { name: 'Formularz zapisu', before: 'Google Form', after: 'Portal z płatnością' },
-          { name: 'Potwierdzenie', before: 'Mail ręcznie', after: 'Auto instant' },
-          { name: 'Płatność', before: 'Przelew + sprawdzanie', after: 'Online + auto-match' },
-          { name: 'Materiały do uczestnika', before: 'Mail z załącznikiem', after: 'Auto-dostęp LMS' },
-          { name: 'Reminder przed kursem', before: 'Zapominam', after: 'Auto, 24h + 1h' },
+          { name: 'Zapis na kurs', was: 'Google Form → Excel → mail', now: 'Portal z płatnością online' },
+          { name: 'Potwierdzenie + materiały', was: 'Ręczny mail z załącznikiem', now: 'Auto-mail + auto-dostęp do LMS' },
+          { name: 'Przypomnienie przed kursem', was: 'Zapominaliśmy', now: 'Auto: 24h + 1h przed' },
+          { name: 'Certyfikat po ukończeniu', was: '2 tygodnie (Word, druk, poczta)', now: '5 min — auto-generowany PDF z QR' },
+          { name: 'Weryfikacja certyfikatu', was: 'Telefon do nas', now: 'Skan QR = wynik online' },
         ],
       },
       {
-        title: 'Certyfikacja i egzaminy',
-        context: 'Egzaminy papierowe, ręczne sprawdzanie, certyfikat w Wordzie. 2 tygodnie czekania.',
-        before: '2 tyg', after: '5 min', metricLabel: 'od zdania egzaminu do certyfikatu',
+        title: 'System rozliczeń trenerów z ewidencją godzin',
+        story: 'Akademia szkoleniowa — 15 trenerów, każdy z inną stawką per typ szkolenia. Ewidencja z ręcznych wpisów, rozliczenie = 2 dni pracy administracji na koniec miesiąca. I co miesiąc te same pytania: "a to szkolenie to jaka stawka?".',
+        was: '2 dni', now: '30 min', metricLabel: 'rozliczenie wszystkich trenerów miesięcznie',
         processes: [
-          { name: 'Egzamin', before: 'Papierowy, sala', after: 'Online, auto-sprawdzany' },
-          { name: 'Sprawdzenie', before: 'Ręczne, 3 dni', after: 'Instant, auto' },
-          { name: 'Generowanie certyfikatu', before: 'Word, ręcznie', after: 'Auto + QR' },
-          { name: 'Wysyłka', before: 'Poczta / mail', after: 'Auto-link instant' },
-          { name: 'Weryfikacja ważności', before: 'Telefon do nas', after: 'Skan QR = wynik' },
-        ],
-      },
-      {
-        title: 'Rozliczenia trenerów i sal',
-        context: '12 szkoleń/miesiąc per trener, każde z inną stawką. Rozliczenie = 2 dni administracji.',
-        before: '2 dni', after: '30 min', metricLabel: 'rozliczenie wszystkich trenerów miesięcznie',
-        processes: [
-          { name: 'Ewidencja godzin', before: 'Ręczna, z grafiku', after: 'Auto z kalendarza' },
-          { name: 'Kalkulacja wynagrodzenia', before: 'Excel, 3 stawki', after: 'Auto per typ' },
-          { name: 'Rezerwacja sal', before: 'Telefon / mail', after: 'System, auto z grafiku' },
-          { name: 'Konflikty terminowe', before: 'Dowiaduję się za późno', after: 'Alert natychmiast' },
+          { name: 'Ewidencja godzin trenera', was: 'Ręczny wpis, z pamięci', now: 'Auto z kalendarza kursów' },
+          { name: 'Kalkulacja wynagrodzenia', was: 'Excel z 3 rodzajami stawek', now: 'Auto — stawka per typ kursu' },
+          { name: 'Rezerwacja sali', was: 'Telefon / mail do biura', now: 'Auto z grafiku, z konfliktem alert' },
+          { name: 'Rachunek / faktura trenera', was: 'Trener wystawia, my sprawdzamy', now: 'Auto-generowany z ewidencji' },
         ],
       },
     ],
@@ -526,32 +439,29 @@ export function CaseStudies() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: i * 0.07, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  {/* Left side — info + hero metric */}
-                  <div className="cs-card-left">
-                    <h3 className="cs-card-title">{c.title}</h3>
-                    <p className="cs-card-ctx">{c.context}</p>
-                    <div className="cs-card-hero">
-                      <span className="cs-card-before">{c.before}</span>
-                      <svg className="cs-card-arrow" width="32" height="12" viewBox="0 0 32 12" fill="none">
-                        <path d="M0 6h28m0 0l-4.5-4.5M28 6l-4.5 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                      <span className="cs-card-after">{c.after}</span>
+                  <div className="cs-card-head">
+                    <div className="cs-card-info">
+                      <h3 className="cs-card-title">{c.title}</h3>
+                      <p className="cs-card-story">{c.story}</p>
                     </div>
-                    <span className="cs-card-label">{c.metricLabel}</span>
+                    <div className="cs-card-metric">
+                      <div className="cs-card-nums">
+                        <span className="cs-card-was">{c.was}</span>
+                        <svg className="cs-card-arrow" width="24" height="10" viewBox="0 0 24 10" fill="none">
+                          <path d="M0 5h20m0 0l-3.5-3.5M20 5l-3.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                        <span className="cs-card-now">{c.now}</span>
+                      </div>
+                      <span className="cs-card-mlabel">{c.metricLabel}</span>
+                    </div>
                   </div>
 
-                  {/* Right side — process breakdown tiles */}
-                  <div className="cs-card-procs">
+                  <div className="cs-procs">
                     {c.processes.map((p, j) => (
                       <div className="cs-proc" key={j}>
                         <span className="cs-proc-name">{p.name}</span>
-                        <div className="cs-proc-vals">
-                          <span className="cs-proc-old">{p.before}</span>
-                          <svg className="cs-proc-arrow" width="16" height="8" viewBox="0 0 16 8" fill="none">
-                            <path d="M0 4h13m0 0l-2.5-2.5M13 4l-2.5 2.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
-                          </svg>
-                          <span className="cs-proc-new">{p.after}</span>
-                        </div>
+                        <span className="cs-proc-was">{p.was}</span>
+                        <span className="cs-proc-now">{p.now}</span>
                       </div>
                     ))}
                   </div>
